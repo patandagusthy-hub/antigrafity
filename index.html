@@ -59,18 +59,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <!-- JsBarcode for Barcode Generation -->
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js" crossorigin="anonymous"></script>
 
   <!-- jsQR for Barcode / QR Camera Scanning -->
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js" crossorigin="anonymous"></script>
 
   <!-- Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" crossorigin="anonymous"></script>
 
   <!-- React & Babel Standalone -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin="anonymous"></script>
 
   <style>
     body {
@@ -2278,7 +2278,6 @@
                     </button>
                   </div>
                 </div>
-              )}
               )}
 
               {/* TABEL DATA SISWA */}
@@ -5692,9 +5691,59 @@
       );
     }
 
+    // Error Boundary untuk Penanganan Masalah Rendering
+    class ErrorBoundary extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { hasError: false, error: null };
+      }
+      static getDerivedStateFromError(error) {
+        return { hasError: true, error };
+      }
+      componentDidCatch(error, errorInfo) {
+        console.error("ErrorBoundary caught an error:", error, errorInfo);
+      }
+      render() {
+        if (this.state.hasError) {
+          return (
+            <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
+              <div className="max-w-lg w-full bg-slate-900 border border-rose-500/40 rounded-2xl p-6 shadow-2xl space-y-4 text-center">
+                <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-2xl">
+                  ⚠️
+                </div>
+                <h2 className="text-lg font-bold text-white">Terjadi Kendala Memuat Antarmuka</h2>
+                <p className="text-xs text-slate-400">
+                  {this.state.error && this.state.error.message ? this.state.error.message : "Terjadi kesalahan pada komponen sistem."}
+                </p>
+                <div className="pt-2 flex justify-center gap-3">
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold rounded-xl text-xs hover:from-cyan-400 hover:to-blue-500 transition"
+                  >
+                    Muat Ulang Halaman
+                  </button>
+                  <button
+                    onClick={() => { localStorage.clear(); window.location.reload(); }}
+                    className="px-4 py-2 bg-slate-800 text-slate-300 border border-slate-700 font-semibold rounded-xl text-xs hover:bg-slate-700 transition"
+                  >
+                    Reset Cache
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+        return this.props.children;
+      }
+    }
+
     // Mount Application ke Root DOM
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
+    root.render(
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    );
   </script>
 </body>
 </html>

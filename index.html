@@ -3600,6 +3600,494 @@
         points: 10
       });
 
+      // State Upload Soal Multi-Format
+      const [showUploadModal, setShowUploadModal] = useState(false);
+      const [uploadTab, setUploadTab] = useState("file"); // "file" | "paste" | "template"
+      const [uploadFileLoading, setUploadFileLoading] = useState(false);
+      const [uploadFileType, setUploadFileType] = useState("");
+      const [uploadedFileName, setUploadedFileName] = useState("");
+      const [previewQuestions, setPreviewQuestions] = useState([]);
+      const [uploadDefaultCategory, setUploadDefaultCategory] = useState("Umum");
+      const [uploadDefaultPoints, setUploadDefaultPoints] = useState(10);
+      const [uploadImportMode, setUploadImportMode] = useState("append"); // "append" | "replace"
+      const [manualPasteText, setManualPasteText] = useState("");
+
+      // Parser Teks Soal (Word, PDF, Plain Text, atau Paste)
+      const parseQuestionsFromRawText = (rawText, defaultCategory, defaultPoints) => {
+        if (!rawText || !rawText.trim()) return [];
+        const cleanText = rawText.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+        const lines = cleanText.split("\n");
+        const parsedList = [];
+        let currentQ = null;
+
+        const finalizeCurrentQuestion = () => {
+          if (currentQ && currentQ.question.trim()) {
+            if (!currentQ.options || currentQ.options.length === 0) {
+              currentQ.type = "ESSAY";
+            }
+            if (!currentQ.correctAnswer) {
+              currentQ.correctAnswer = (currentQ.options && currentQ.options.length > 0) ? currentQ.options[0].key : "";
+            }
+            parsedList.push(currentQ);
+          }
+          currentQ = null;
+        };
+
+        const qStartRegex = /^ *(?:(?:Soal\s*)?#?\s*(\d+)[\.\)\:\-]\s*|(?:Pertanyaan\s*(\d+)[\.\)\:\-]\s*))(.*)$/i;
+        const optRegex = /^ *([\*]?[A-Ea-e])[\.\)\:\-]\s*(.*)$/;
+        const keyRegex = /^(?:Kunci(?:\s*Jawaban)?|Jawaban\s*Benar|Kunci)\s*[\:\=]\s*([A-Ea-e])/i;
+        const pointsRegex = /^(?:Bobot(?:\s*Poin)?|Poin|Nilai)\s*[\:\=]\s*(\d+)/i;
+        const expRegex = /^(?:Pembahasan|Penjelasan|Keterangan)\s*[\:\=]\s*(.*)$/i;
+
+        for (let i = 0; i < lines.length; i++) {
+          const rawLine = lines[i];
+          const trimmed = rawLine.trim();
+          if (!trimmed) continue;
+
+          // Cek Kunci Jawaban
+          const keyMatch = trimmed.match(keyRegex);
+          if (keyMatch && currentQ) {
+            currentQ.correctAnswer = keyMatch[1].toUpperCase();
+            continue;
+          }
+
+          // Cek Bobot Poin
+          const pointsMatch = trimmed.match(pointsRegex);
+          if (pointsMatch && currentQ) {
+            currentQ.points = parseInt(pointsMatch[1], 10) || defaultPoints;
+            continue;
+          }
+
+          // Cek Pembahasan
+          const expMatch = trimmed.match(expRegex);
+          if (expMatch && currentQ) {
+            currentQ.explanation = expMatch[1].trim();
+            continue;
+          }
+
+          // Cek Nomor Soal Baru
+          const qMatch = trimmed.match(qStartRegex);
+          if (qMatch) {
+            finalizeCurrentQuestion();
+            const qNum = parseInt(qMatch[1] || qMatch[2], 10) || (parsedList.length + 1);
+            const qContent = qMatch[3].trim();
+            currentQ = {
+              id: "Q_IMP_" + Date.now() + "_" + (parsedList.length + 1),
+              number: qNum,
+              type: "PILIHAN_GANDA",
+              category: defaultCategory || "Umum",
+              question: qContent,
+              options: [],
+              correctAnswer: "",
+              points: parseInt(defaultPoints, 10) || 10,
+              explanation: ""
+            };
+            continue;
+          }
+
+          // Cek Opsi Pilihan Ganda (A-E)
+          const optMatch = trimmed.match(optRegex);
+          if (optMatch && currentQ) {
+            let keyStr = optMatch[1].trim();
+            let isMarkedKey = false;
+            if (keyStr.startsWith("*")) {
+              isMarkedKey = true;
+              keyStr = keyStr.substring(1);
+            }
+            keyStr = keyStr.toUpperCase();
+            const optText = optMatch[2].trim();
+            currentQ.options.push({
+              key: keyStr,
+              text: optText
+            });
+            if (isMarkedKey) {
+              currentQ.correctAnswer = keyStr;
+            }
+            continue;
+          }
+
+          // Lanjutan Baris (pertanyaan multi-line atau opsi multi-line)
+          if (currentQ) {
+            if (currentQ.options.length > 0) {
+              const lastOpt = currentQ.options[currentQ.options.length - 1];
+              lastOpt.text += " " + trimmed;
+            } else {
+              currentQ.question += (currentQ.question ? " " : "") + trimmed;
+            }
+          }
+        }
+
+        finalizeCurrentQuestion();
+        return parsedList;
+      };
+
+      // Parser Excel (.xlsx / .xls)
+      const parseQuestionsFromExcel = (wb, defaultCategory, defaultPoints) => {
+        if (!wb || !wb.SheetNames || wb.SheetNames.length === 0) return [];
+        const firstSheet = wb.Sheets[wb.SheetNames[0]];
+        const rawRows = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: "" });
+        if (!rawRows || rawRows.length < 2) return [];
+
+        let headerIdx = -1;
+        let colMap = { soal: -1, optA: -1, optB: -1, optC: -1, optD: -1, optE: -1, kunci: -1, kategori: -1, bobot: -1, pembahasan: -1 };
+
+        for (let r = 0; r < Math.min(rawRows.length, 5); r++) {
+          const row = rawRows[r].map(c => String(c).trim().toUpperCase());
+          for (let c = 0; c < row.length; c++) {
+            const h = row[c];
+            if (h.includes("SOAL") || h.includes("PERTANYAAN") || h.includes("QUESTION")) colMap.soal = c;
+            else if (h === "A" || h === "OPSI_A" || h === "OPSI A" || h.includes("PILIHAN A")) colMap.optA = c;
+            else if (h === "B" || h === "OPSI_B" || h === "OPSI B" || h.includes("PILIHAN B")) colMap.optB = c;
+            else if (h === "C" || h === "OPSI_C" || h === "OPSI C" || h.includes("PILIHAN C")) colMap.optC = c;
+            else if (h === "D" || h === "OPSI_D" || h === "OPSI D" || h.includes("PILIHAN D")) colMap.optD = c;
+            else if (h === "E" || h === "OPSI_E" || h === "OPSI E" || h.includes("PILIHAN E")) colMap.optE = c;
+            else if (h.includes("KUNCI") || h.includes("JAWABAN") || h.includes("ANSWER") || h === "KEY") colMap.kunci = c;
+            else if (h.includes("KATEGORI") || h.includes("MAPEL") || h.includes("PELAJARAN")) colMap.kategori = c;
+            else if (h.includes("BOBOT") || h.includes("POIN") || h.includes("SKOR")) colMap.bobot = c;
+            else if (h.includes("PEMBAHASAN") || h.includes("PENJELASAN")) colMap.pembahasan = c;
+          }
+          if (colMap.soal !== -1) {
+            headerIdx = r;
+            break;
+          }
+        }
+
+        if (headerIdx === -1) {
+          colMap.soal = 0;
+          colMap.optA = 1;
+          colMap.optB = 2;
+          colMap.optC = 3;
+          colMap.optD = 4;
+          colMap.kunci = 5;
+          headerIdx = 0;
+        }
+
+        const parsedList = [];
+        for (let r = headerIdx + 1; r < rawRows.length; r++) {
+          const row = rawRows[r];
+          if (!row || row.length === 0) continue;
+          const soalText = String(row[colMap.soal] || "").trim();
+          if (!soalText) continue;
+
+          const options = [];
+          if (colMap.optA !== -1 && row[colMap.optA]) options.push({ key: "A", text: String(row[colMap.optA]).trim() });
+          if (colMap.optB !== -1 && row[colMap.optB]) options.push({ key: "B", text: String(row[colMap.optB]).trim() });
+          if (colMap.optC !== -1 && row[colMap.optC]) options.push({ key: "C", text: String(row[colMap.optC]).trim() });
+          if (colMap.optD !== -1 && row[colMap.optD]) options.push({ key: "D", text: String(row[colMap.optD]).trim() });
+          if (colMap.optE !== -1 && row[colMap.optE]) options.push({ key: "E", text: String(row[colMap.optE]).trim() });
+
+          let kunci = colMap.kunci !== -1 ? String(row[colMap.kunci] || "").trim().toUpperCase() : "A";
+          if (kunci.length > 1) {
+            const firstChar = kunci.charAt(0);
+            if (["A", "B", "C", "D", "E"].includes(firstChar)) kunci = firstChar;
+          }
+          const cat = colMap.kategori !== -1 && row[colMap.kategori] ? String(row[colMap.kategori]).trim() : defaultCategory;
+          const pts = colMap.bobot !== -1 && row[colMap.bobot] ? (parseInt(row[colMap.bobot], 10) || defaultPoints) : defaultPoints;
+          const exp = colMap.pembahasan !== -1 && row[colMap.pembahasan] ? String(row[colMap.pembahasan]).trim() : "";
+
+          parsedList.push({
+            id: "Q_XLS_" + Date.now() + "_" + (parsedList.length + 1),
+            number: parsedList.length + 1,
+            type: options.length > 0 ? "PILIHAN_GANDA" : "ESSAY",
+            category: cat || "Umum",
+            question: soalText,
+            options: options.length > 0 ? options : null,
+            correctAnswer: kunci,
+            points: pts,
+            explanation: exp
+          });
+        }
+        return parsedList;
+      };
+
+      // Handler Upload Berkas Soal (Word, PDF, Excel, Text)
+      const handleQuestionFileUpload = async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        setUploadedFileName(file.name);
+        setUploadFileLoading(true);
+        setPreviewQuestions([]);
+
+        const ext = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+        setUploadFileType(ext);
+
+        try {
+          if (ext === ".xlsx" || ext === ".xls") {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              try {
+                const data = new Uint8Array(evt.target.result);
+                const wb = XLSX.read(data, { type: "array" });
+                const parsed = parseQuestionsFromExcel(wb, uploadDefaultCategory, uploadDefaultPoints);
+                setPreviewQuestions(parsed);
+                setUploadFileLoading(false);
+                if (parsed.length === 0) {
+                  showToast("Format kolom Excel tidak cocok atau tidak ada baris soal yang terbaca.", "warning");
+                } else {
+                  showToast(`Berhasil membaca ${parsed.length} soal dari file Excel!`, "success");
+                }
+              } catch (err) {
+                setUploadFileLoading(false);
+                showToast("Gagal memproses file Excel: " + err.message, "error");
+              }
+            };
+            reader.readAsArrayBuffer(file);
+          } else if (ext === ".docx" || ext === ".doc") {
+            const reader = new FileReader();
+            reader.onload = async (evt) => {
+              try {
+                const arrayBuffer = evt.target.result;
+                let extractedText = "";
+                if (window.mammoth) {
+                  try {
+                    const result = await window.mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+                    extractedText = result.value || "";
+                  } catch (mErr) {
+                    // Fallback jika Mammoth gagal membaca format doc lama
+                    const dec = new TextDecoder("utf-8", { fatal: false });
+                    const rawHtml = dec.decode(arrayBuffer);
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(rawHtml, "text/html");
+                    extractedText = doc.body.innerText || doc.body.textContent || "";
+                  }
+                } else {
+                  const dec = new TextDecoder("utf-8", { fatal: false });
+                  extractedText = dec.decode(arrayBuffer);
+                }
+
+                const parsed = parseQuestionsFromRawText(extractedText, uploadDefaultCategory, uploadDefaultPoints);
+                setPreviewQuestions(parsed);
+                setUploadFileLoading(false);
+                if (parsed.length === 0) {
+                  showToast("Gagal mendeteksi butir soal dari Word. Pastikan format penomoran menggunakan 1. 2. dan A. B. C.", "warning");
+                } else {
+                  showToast(`Berhasil mengekstrak ${parsed.length} soal dari dokumen Word!`, "success");
+                }
+              } catch (err) {
+                setUploadFileLoading(false);
+                showToast("Gagal memproses file Word: " + err.message, "error");
+              }
+            };
+            reader.readAsArrayBuffer(file);
+          } else if (ext === ".pdf") {
+            const reader = new FileReader();
+            reader.onload = async (evt) => {
+              try {
+                if (typeof pdfjsLib === "undefined") {
+                  throw new Error("Pustaka PDF.js belum siap dimuat.");
+                }
+                const typedarray = new Uint8Array(evt.target.result);
+                const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
+                let fullText = "";
+
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                  const page = await pdf.getPage(pageNum);
+                  const textContent = await page.getTextContent();
+                  const pageItems = textContent.items.map(item => item.str);
+                  fullText += pageItems.join(" ") + "\n";
+                }
+
+                const parsed = parseQuestionsFromRawText(fullText, uploadDefaultCategory, uploadDefaultPoints);
+                setPreviewQuestions(parsed);
+                setUploadFileLoading(false);
+                if (parsed.length === 0) {
+                  showToast("PDF tidak berisi teks yang dapat diekstrak atau nomor soal tidak terdeteksi.", "warning");
+                } else {
+                  showToast(`Berhasil mengekstrak ${parsed.length} soal dari PDF!`, "success");
+                }
+              } catch (err) {
+                setUploadFileLoading(false);
+                showToast("Gagal membaca PDF: " + err.message, "error");
+              }
+            };
+            reader.readAsArrayBuffer(file);
+          } else {
+            // Plain text (.txt atau lainnya)
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              try {
+                const text = evt.target.result || "";
+                const parsed = parseQuestionsFromRawText(text, uploadDefaultCategory, uploadDefaultPoints);
+                setPreviewQuestions(parsed);
+                setUploadFileLoading(false);
+                if (parsed.length === 0) {
+                  showToast("Tidak ada butir soal yang terdeteksi dari file teks.", "warning");
+                } else {
+                  showToast(`Berhasil membaca ${parsed.length} soal dari file teks!`, "success");
+                }
+              } catch (err) {
+                setUploadFileLoading(false);
+                showToast("Gagal membaca file: " + err.message, "error");
+              }
+            };
+            reader.readAsText(file);
+          }
+        } catch (globalErr) {
+          setUploadFileLoading(false);
+          showToast("Terjadi kendala saat membaca file: " + globalErr.message, "error");
+        }
+      };
+
+      // Handler Parse Teks Manual (Paste Langsung)
+      const handleProcessManualPaste = () => {
+        if (!manualPasteText.trim()) {
+          showToast("Silakan tempel teks naskah soal terlebih dahulu!", "warning");
+          return;
+        }
+        const parsed = parseQuestionsFromRawText(manualPasteText, uploadDefaultCategory, uploadDefaultPoints);
+        if (parsed.length === 0) {
+          showToast("Format soal tidak terdeteksi. Gunakan pola penomoran: 1. Soal ... A. Opsi A B. Opsi B Kunci: A", "error");
+        } else {
+          setPreviewQuestions(parsed);
+          setUploadedFileName("Input Salin-Tempel Manual");
+          showToast(`Berhasil memproses ${parsed.length} butir soal dari teks!`, "success");
+        }
+      };
+
+      // Unduh Template Contoh Word (.doc)
+      const downloadSampleWordTemplate = () => {
+        const sampleContent = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Template Soal Word</title></head>
+<body>
+<h2>PETUNJUK PENULISAN NASKAH SOAL CBT</h2>
+<p>Format standar:</p>
+<p>1. Ketik nomor soal dengan format <b>1. </b> atau <b>1) </b></p>
+<p>2. Ketik opsi pilihan ganda dengan format <b>A. </b>, <b>B. </b>, <b>C. </b>, <b>D. </b>, <b>E. </b></p>
+<p>3. Tulis kunci jawaban di bawah opsi dengan format <b>Kunci: A</b> (atau berikan tanda bintang pada kunci, misal: *A.)</p>
+<hr/>
+<p><b>1. Apa fungsi utama organel sel mitokondria?</b></p>
+<p>A. Sintesis protein</p>
+<p>B. Respirasi sel dan penghasil energi ATP</p>
+<p>C. Mengatur seluruh kegiatan sel</p>
+<p>D. Tempat terjadinya fotosintesis</p>
+<p>Kunci: B</p>
+<p>Bobot: 10</p>
+<p>Pembahasan: Mitokondria adalah tempat metabolisme aerobik dan produksi energi sel dalam bentuk ATP.</p>
+<br/>
+<p><b>2. Siapakah proklamator kemerdekaan Republik Indonesia?</b></p>
+<p>A. Ir. Soekarno dan Drs. Mohammad Hatta</p>
+<p>B. Jenderal Sudirman</p>
+<p>C. Pangeran Diponegoro</p>
+<p>D. Ki Hajar Dewantara</p>
+<p>Kunci: A</p>
+<p>Bobot: 10</p>
+<p>Pembahasan: Proklamasi kemerdekaan RI dibacakan oleh Soekarno didampingi Moh. Hatta pada 17 Agustus 1945.</p>
+</body>
+</html>`;
+        const blob = new Blob(['\ufeff' + sampleContent], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Template_Soal_CBT.doc";
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("Template Word (.doc) berhasil diunduh!", "success");
+      };
+
+      // Unduh Template Contoh Excel (.xlsx)
+      const downloadSampleExcelTemplate = () => {
+        if (!window.XLSX) return;
+        const rows = [
+          ["SOAL", "OPSI_A", "OPSI_B", "OPSI_C", "OPSI_D", "OPSI_E", "KUNCI", "KATEGORI", "BOBOT", "PENJELASAN"],
+          [
+            "Apa fungsi utama organel sel mitokondria?",
+            "Sintesis protein",
+            "Respirasi sel dan penghasil ATP",
+            "Mengatur kegiatan sel",
+            "Fotosintesis",
+            "Pencernaan sel",
+            "B",
+            "Biologi",
+            10,
+            "Mitokondria merupakan penghasil energi sel"
+          ],
+          [
+            "Siapakah proklamator kemerdekaan Republik Indonesia?",
+            "Ir. Soekarno & Drs. Moh. Hatta",
+            "Jenderal Sudirman",
+            "Pangeran Diponegoro",
+            "Ki Hajar Dewantara",
+            "Raden Saleh",
+            "A",
+            "Sejarah",
+            10,
+            "Proklamasi 17 Agustus 1945 dibacakan oleh Soekarno-Hatta"
+          ]
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Template_Soal");
+        XLSX.writeFile(wb, "Template_Bank_Soal_CBT.xlsx");
+        showToast("Template Excel (.xlsx) berhasil diunduh!", "success");
+      };
+
+      // Unduh Template Contoh Plain Text (.txt)
+      const downloadSampleTextTemplate = () => {
+        const text = `1. Apa fungsi utama organel sel mitokondria?
+A. Sintesis protein
+B. Respirasi sel dan penghasil energi ATP
+C. Mengatur seluruh kegiatan sel
+D. Tempat terjadinya fotosintesis
+Kunci: B
+Bobot: 10
+Pembahasan: Mitokondria menghasilkan ATP melalui fosforilasi oksidatif.
+
+2. Siapakah proklamator kemerdekaan Republik Indonesia?
+A. Ir. Soekarno dan Drs. Mohammad Hatta
+B. Jenderal Sudirman
+C. Pangeran Diponegoro
+D. Ki Hajar Dewantara
+Kunci: A
+Bobot: 10
+Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
+`;
+        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Template_Soal_CBT.txt";
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("Template Text (.txt) berhasil diunduh!", "success");
+      };
+
+      // Konfirmasi Simpan Impor Soal
+      const handleConfirmImport = () => {
+        if (!previewQuestions || previewQuestions.length === 0) {
+          showToast("Tidak ada butir soal untuk diimpor!", "warning");
+          return;
+        }
+
+        let updated = [];
+        if (uploadImportMode === "replace") {
+          updated = previewQuestions.map((q, idx) => ({
+            ...q,
+            id: "Q" + (idx + 1),
+            number: idx + 1
+          }));
+        } else {
+          // Mode Append (Tambahkan)
+          const baseNum = questions.length;
+          const renumberedNew = previewQuestions.map((q, idx) => ({
+            ...q,
+            id: "Q" + (baseNum + idx + 1),
+            number: baseNum + idx + 1
+          }));
+          updated = [...questions, ...renumberedNew];
+        }
+
+        setQuestions(updated);
+        handleSaveBankSoalToGAS(updated);
+
+        setShowUploadModal(false);
+        setPreviewQuestions([]);
+        setUploadedFileName("");
+        setManualPasteText("");
+        showToast(`Sukses! ${previewQuestions.length} soal berhasil dimasukkan ke Bank Soal.`, "success");
+      };
+
       // Simpan Bank Soal ke Spreadsheet via google.script.run
       const handleSaveBankSoalToGAS = (customList) => {
         const listToSave = customList || questions;

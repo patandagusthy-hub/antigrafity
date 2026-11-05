@@ -52,6 +52,12 @@
   <!-- SheetJS (Excel .xlsx Export/Import) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
+  <!-- Mammoth.js for Word (.docx / .doc) Document Parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+
+  <!-- PDF.js for PDF Question Document Parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
   <!-- JsBarcode for Barcode Generation -->
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
@@ -361,7 +367,10 @@
       AlertTriangle: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>,
       Eye: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>,
       EyeOff: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/></svg>,
-      Key: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+      Key: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>,
+      Edit: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>,
+      List: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>,
+      X: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
     };
 
     // =========================================================================
@@ -1475,9 +1484,60 @@
       const [onlyActiveClasses, setOnlyActiveClasses] = useState(false);
       const [selectedStudentIds, setSelectedStudentIds] = useState([]);
 
-      // Modal Siswa Baru
+      // Modal Siswa Baru (Tunggal & Massal)
       const [showAddStudentModal, setShowAddStudentModal] = useState(false);
+      const [studentModalTab, setStudentModalTab] = useState("single"); // "single" | "bulk"
       const [newStudentForm, setNewStudentForm] = useState({ name: "", nisn: "", classId: classes[0]?.id || "X-1" });
+      const [bulkAddClassId, setBulkAddClassId] = useState(classes[0]?.id || "X-1");
+      const [bulkAddNamesText, setBulkAddNamesText] = useState("");
+
+      // Modal Edit Massal
+      const [showBulkEditModal, setShowBulkEditModal] = useState(false);
+      const [bulkEditClassFilter, setBulkEditClassFilter] = useState("ALL");
+      const [bulkEditMode, setBulkEditMode] = useState("text"); // "text" | "table"
+      const [bulkEditStudentsList, setBulkEditStudentsList] = useState([]);
+      const [bulkEditTextNames, setBulkEditTextNames] = useState("");
+      const [bulkChangeClassTarget, setBulkChangeClassTarget] = useState(classes[0]?.id || "X-1");
+
+      // Modal Edit Tunggal
+      const [showEditSingleModal, setShowEditSingleModal] = useState(false);
+      const [editingStudent, setEditingStudent] = useState(null);
+
+      // Modal Hapus Massal
+      const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false);
+      const [bulkDeleteTarget, setBulkDeleteTarget] = useState("selected"); // "selected" | "class" | "all"
+      const [bulkDeleteClassId, setBulkDeleteClassId] = useState(classes[0]?.id || "X-1");
+      const [deleteConfirmationText, setDeleteConfirmationText] = useState("");
+
+      // Helper Sinkronisasi ke Google Spreadsheet sheet Data_Siswa
+      const syncStudentsWithGAS = (updatedList, toastMsg) => {
+        setStudents(updatedList);
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler((res) => {
+              if (toastMsg) showToast(toastMsg, "success");
+            })
+            .withFailureHandler((err) => {
+              showToast("Peringatan: Gagal sinkron ke Google Spreadsheet: " + (err.message || err), "error");
+            })
+            .simpanDataSiswa(updatedList);
+        } else if (toastMsg) {
+          showToast(toastMsg, "success");
+        }
+      };
+
+      // Helper Generator NISN 10-Digit Unik
+      const generateUniqueNisn = (existingSet) => {
+        let candidate;
+        let attempts = 0;
+        do {
+          const rand = Math.floor(10000000 + Math.random() * 90000000); // 8 digit acak
+          candidate = "00" + rand;
+          attempts++;
+        } while (existingSet.has(candidate) && attempts < 1000);
+        existingSet.add(candidate);
+        return candidate;
+      };
 
       // Hitung Metrik Dashboard
       const totalStudents = students.length;
@@ -1516,17 +1576,17 @@
       // Bulk Reset Login
       const handleBulkResetLogin = () => {
         if (selectedStudentIds.length === 0) return;
-        setStudents(prev => prev.map(s => selectedStudentIds.includes(s.id) ? { ...s, isLocked: false, violations: 0 } : s));
-        showToast(`Berhasil mereset login untuk ${selectedStudentIds.length} siswa!`, "success");
+        const updated = students.map(s => selectedStudentIds.includes(s.id) ? { ...s, isLocked: false, violations: 0 } : s);
+        syncStudentsWithGAS(updated, `Berhasil mereset login untuk ${selectedStudentIds.length} siswa!`);
         setSelectedStudentIds([]);
       };
 
-      // Bulk Delete
+      // Bulk Delete Terpilih
       const handleBulkDelete = () => {
         if (selectedStudentIds.length === 0) return;
-        if (!confirm(`Hapus ${selectedStudentIds.length} siswa yang dipilih?`)) return;
-        setStudents(prev => prev.filter(s => !selectedStudentIds.includes(s.id)));
-        showToast(`Daftar siswa terpilih telah dihapus.`, "success");
+        if (!confirm(`Hapus ${selectedStudentIds.length} siswa yang dipilih secara permanen?`)) return;
+        const remaining = students.filter(s => !selectedStudentIds.includes(s.id));
+        syncStudentsWithGAS(remaining, `Daftar ${selectedStudentIds.length} siswa terpilih telah dihapus.`);
         setSelectedStudentIds([]);
       };
 
@@ -1539,11 +1599,11 @@
         }
         const newEntry = {
           id: "S" + (Date.now().toString().slice(-4)),
-          nisn: newStudentForm.nisn,
-          name: newStudentForm.name,
+          nisn: newStudentForm.nisn.trim(),
+          name: newStudentForm.name.trim(),
           classId: newStudentForm.classId,
-          username: newStudentForm.name.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8),
-          token: `GPP-${newStudentForm.classId}-${newStudentForm.nisn.slice(-3)}`,
+          username: newStudentForm.name.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8) || "siswa" + newStudentForm.nisn.slice(-3),
+          token: `GPP-${newStudentForm.classId}-${newStudentForm.nisn.trim().slice(-3)}`,
           isLocked: false,
           examStatus: "Belum Mulai",
           score: 0,
@@ -1551,22 +1611,256 @@
           violationsList: [],
           lastActivity: "-"
         };
-        setStudents(prev => [newEntry, ...prev]);
+        const updated = [newEntry, ...students];
+        syncStudentsWithGAS(updated, "Siswa baru berhasil ditambahkan!");
         setShowAddStudentModal(false);
         setNewStudentForm({ name: "", nisn: "", classId: classes[0]?.id || "X-1" });
-        showToast("Siswa baru berhasil ditambahkan!", "success");
+      };
 
-        // Otomatis simpan ke Google Spreadsheet sheet Data_Siswa
-        if (typeof google !== 'undefined' && google.script && google.script.run) {
-          google.script.run
-            .withSuccessHandler((res) => {
-              showToast("Data siswa baru langsung tersimpan di Google Spreadsheet!", "success");
-            })
-            .withFailureHandler((err) => {
-              showToast("Penyimpanan spreadsheet gagal: " + (err.message || err), "error");
-            })
-            .simpanDataSiswa({ appendOnly: true, student: newEntry });
+      // Tambah Siswa Massal (HANYA NAMA)
+      const handleBulkAddSubmit = (e) => {
+        if (e) e.preventDefault();
+        const rawLines = bulkAddNamesText
+          .split(/\r?\n/)
+          .map(line => line.trim().replace(/^[\d\.\-\)\*]+\s*/, "")) // Bersihkan nomor urut (1. Nama, 2) Nama, - Nama)
+          .filter(line => line.length > 0);
+
+        if (rawLines.length === 0) {
+          showToast("Daftar nama siswa masih kosong! Masukkan minimal 1 nama siswa.", "error");
+          return;
         }
+
+        const existingNisns = new Set(students.map(s => String(s.nisn)));
+        const targetClass = bulkAddClassId || classes[0]?.id || "X-1";
+        const timestamp = Date.now().toString().slice(-4);
+
+        const newEntries = rawLines.map((name, index) => {
+          const nisn = generateUniqueNisn(existingNisns);
+          const cleanUser = name.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 10) || ("siswa" + nisn.slice(-4));
+          return {
+            id: "S" + timestamp + "_" + (index + 1),
+            nisn: nisn,
+            name: name,
+            classId: targetClass,
+            username: cleanUser,
+            token: `GPP-${targetClass}-${nisn.slice(-3)}`,
+            isLocked: false,
+            examStatus: "Belum Mulai",
+            score: 0,
+            violations: 0,
+            violationsList: [],
+            lastActivity: "-"
+          };
+        });
+
+        const merged = [...newEntries, ...students];
+        syncStudentsWithGAS(merged, `Berhasil menambahkan ${newEntries.length} siswa baru ke rombel ${targetClass}!`);
+        setBulkAddNamesText("");
+        setShowAddStudentModal(false);
+      };
+
+      // Buka Modal Edit Massal
+      const handleOpenBulkEdit = () => {
+        let targetStudents = [];
+        let filterVal = "ALL";
+        if (selectedStudentIds.length > 0) {
+          targetStudents = students.filter(s => selectedStudentIds.includes(s.id));
+          filterVal = "SELECTED";
+        } else if (selectedClassFilter !== "ALL") {
+          targetStudents = students.filter(s => s.classId === selectedClassFilter);
+          filterVal = selectedClassFilter;
+        } else {
+          targetStudents = [...students];
+          filterVal = "ALL";
+        }
+
+        setBulkEditClassFilter(filterVal);
+        setBulkEditStudentsList(targetStudents.map(s => ({ ...s })));
+        setBulkEditTextNames(targetStudents.map(s => s.name).join("\n"));
+        setShowBulkEditModal(true);
+      };
+
+      // Saat filter di Modal Edit Massal diubah
+      const handleBulkEditFilterChange = (filterVal) => {
+        setBulkEditClassFilter(filterVal);
+        let target = [];
+        if (filterVal === "SELECTED") {
+          target = students.filter(s => selectedStudentIds.includes(s.id));
+        } else if (filterVal === "ALL") {
+          target = [...students];
+        } else {
+          target = students.filter(s => s.classId === filterVal);
+        }
+        setBulkEditStudentsList(target.map(s => ({ ...s })));
+        setBulkEditTextNames(target.map(s => s.name).join("\n"));
+      };
+
+      // Simpan Perubahan Edit Massal (Mode Tabel)
+      const handleSaveBulkEditTable = () => {
+        const editMap = new Map();
+        bulkEditStudentsList.forEach(s => {
+          editMap.set(s.id, s);
+        });
+
+        const updated = students.map(s => {
+          if (editMap.has(s.id)) {
+            const edited = editMap.get(s.id);
+            const finalClass = edited.classId || s.classId;
+            const finalNisn = (edited.nisn || s.nisn).trim();
+            return {
+              ...s,
+              name: (edited.name || s.name).trim(),
+              nisn: finalNisn,
+              classId: finalClass,
+              token: `GPP-${finalClass}-${finalNisn.slice(-3)}`
+            };
+          }
+          return s;
+        });
+
+        syncStudentsWithGAS(updated, `Berhasil memperbarui ${bulkEditStudentsList.length} data siswa!`);
+        setShowBulkEditModal(false);
+      };
+
+      // Simpan Perubahan Edit Massal (Mode Teks - Hanya Nama)
+      const handleSaveBulkEditText = () => {
+        const lines = bulkEditTextNames
+          .split(/\r?\n/)
+          .map(l => l.trim().replace(/^[\d\.\-\)\*]+\s*/, ""))
+          .filter(l => l.length > 0);
+
+        if (lines.length === 0) {
+          showToast("Daftar nama tidak boleh kosong!", "error");
+          return;
+        }
+
+        const targetList = [...bulkEditStudentsList];
+        const existingNisns = new Set(students.map(s => String(s.nisn)));
+        const targetClass = bulkEditClassFilter === "ALL" || bulkEditClassFilter === "SELECTED"
+          ? (classes[0]?.id || "X-1")
+          : bulkEditClassFilter;
+
+        const updatedMap = new Map();
+        const newlyAdded = [];
+
+        lines.forEach((name, idx) => {
+          if (idx < targetList.length) {
+            const existing = targetList[idx];
+            updatedMap.set(existing.id, {
+              ...existing,
+              name: name
+            });
+          } else {
+            const newNisn = generateUniqueNisn(existingNisns);
+            newlyAdded.push({
+              id: "S" + Date.now().toString().slice(-4) + "_" + (idx + 1),
+              nisn: newNisn,
+              name: name,
+              classId: targetClass,
+              username: name.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 10) || ("siswa" + newNisn.slice(-4)),
+              token: `GPP-${targetClass}-${newNisn.slice(-3)}`,
+              isLocked: false,
+              examStatus: "Belum Mulai",
+              score: 0,
+              violations: 0,
+              violationsList: [],
+              lastActivity: "-"
+            });
+          }
+        });
+
+        let updatedAll = students.map(s => {
+          if (updatedMap.has(s.id)) {
+            return updatedMap.get(s.id);
+          }
+          return s;
+        });
+
+        if (newlyAdded.length > 0) {
+          updatedAll = [...newlyAdded, ...updatedAll];
+        }
+
+        syncStudentsWithGAS(updatedAll, `Berhasil memperbarui ${lines.length} nama siswa!`);
+        setShowBulkEditModal(false);
+      };
+
+      // Terapkan perubahan kelas serentak pada daftar edit massal
+      const handleApplyBulkChangeClass = () => {
+        if (!bulkChangeClassTarget) return;
+        setBulkEditStudentsList(prev => prev.map(s => ({
+          ...s,
+          classId: bulkChangeClassTarget
+        })));
+        showToast(`Kelas seluruh siswa di daftar diset ke ${bulkChangeClassTarget}`, "success");
+      };
+
+      // Simpan Edit Siswa Individual
+      const handleSaveEditSingleStudent = (e) => {
+        e.preventDefault();
+        if (!editingStudent) return;
+        if (!editingStudent.name || !editingStudent.nisn) {
+          showToast("Nama dan NISN wajib diisi!", "error");
+          return;
+        }
+
+        const finalClass = editingStudent.classId;
+        const finalNisn = editingStudent.nisn.trim();
+        const updated = students.map(s => {
+          if (s.id === editingStudent.id) {
+            return {
+              ...editingStudent,
+              name: editingStudent.name.trim(),
+              nisn: finalNisn,
+              classId: finalClass,
+              token: editingStudent.token || `GPP-${finalClass}-${finalNisn.slice(-3)}`
+            };
+          }
+          return s;
+        });
+
+        syncStudentsWithGAS(updated, `Data siswa ${editingStudent.name} berhasil diperbarui!`);
+        setShowEditSingleModal(false);
+        setEditingStudent(null);
+      };
+
+      // Eksekusi Hapus Massal
+      const handleExecuteBulkDelete = () => {
+        let remaining = [];
+        let deletedCount = 0;
+
+        if (bulkDeleteTarget === "selected") {
+          if (selectedStudentIds.length === 0) {
+            showToast("Tidak ada siswa yang dipilih!", "error");
+            return;
+          }
+          if (!confirm(`Hapus ${selectedStudentIds.length} siswa terpilih secara permanen?`)) return;
+          deletedCount = selectedStudentIds.length;
+          remaining = students.filter(s => !selectedStudentIds.includes(s.id));
+          setSelectedStudentIds([]);
+        } else if (bulkDeleteTarget === "class") {
+          const countInClass = students.filter(s => s.classId === bulkDeleteClassId).length;
+          if (countInClass === 0) {
+            showToast(`Tidak ada siswa di rombel ${bulkDeleteClassId}.`, "error");
+            return;
+          }
+          if (!confirm(`Hapus seluruh ${countInClass} siswa di rombel ${bulkDeleteClassId}?`)) return;
+          deletedCount = countInClass;
+          remaining = students.filter(s => s.classId !== bulkDeleteClassId);
+          setSelectedStudentIds(prev => prev.filter(id => remaining.some(r => r.id === id)));
+        } else if (bulkDeleteTarget === "all") {
+          if (deleteConfirmationText.trim() !== "HAPUS") {
+            showToast("Ketik kata 'HAPUS' dengan huruf besar untuk konfirmasi pengosongan total!", "error");
+            return;
+          }
+          if (!confirm(`PERINGATAN: Seluruh ${students.length} siswa akan dihapus permanen. Lanjutkan?`)) return;
+          deletedCount = students.length;
+          remaining = [];
+          setSelectedStudentIds([]);
+        }
+
+        syncStudentsWithGAS(remaining, `Sukses menghapus ${deletedCount} data siswa.`);
+        setShowBulkDeleteModal(false);
+        setDeleteConfirmationText("");
       };
 
       // Reset Single Student Emergency
@@ -1843,7 +2137,10 @@
                   {/* Tombol Aksi Siswa */}
                   <div className="flex flex-wrap items-center gap-2">
                     <button
-                      onClick={() => setShowAddStudentModal(true)}
+                      onClick={() => {
+                        setStudentModalTab("single");
+                        setShowAddStudentModal(true);
+                      }}
                       className="px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-cyan-500/20"
                     >
                       <Icons.Plus />
@@ -1851,11 +2148,41 @@
                     </button>
 
                     <button
+                      onClick={() => {
+                        setStudentModalTab("bulk");
+                        setShowAddStudentModal(true);
+                      }}
+                      className="px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-emerald-500/20"
+                      title="Input nama-nama siswa sekaligus tanpa perlu mengisi NISN satu per satu"
+                    >
+                      <Icons.Users />
+                      <span>+ Tambah Massal (Hanya Nama)</span>
+                    </button>
+
+                    <button
+                      onClick={handleOpenBulkEdit}
+                      className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                      title="Edit nama dan data siswa secara massal"
+                    >
+                      <Icons.Edit />
+                      <span>Edit Massal</span>
+                    </button>
+
+                    <button
+                      onClick={() => setShowBulkDeleteModal(true)}
+                      className="px-3 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                      title="Hapus data siswa secara massal per kelas atau keseluruhan"
+                    >
+                      <Icons.Trash />
+                      <span>Hapus Massal</span>
+                    </button>
+
+                    <button
                       onClick={downloadExcelTemplate}
                       className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
                     >
                       <Icons.Download />
-                      <span>Unduh Template Excel</span>
+                      <span>Unduh Template</span>
                     </button>
 
                     <label className="px-3 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition">
@@ -1866,25 +2193,13 @@
 
                     <button
                       onClick={() => {
-                        if (typeof google !== 'undefined' && google.script && google.script.run) {
-                          showToast("Menyimpan seluruh data siswa ke Spreadsheet...", "success");
-                          google.script.run
-                            .withSuccessHandler((res) => {
-                              showToast(`Sukses! ${students.length} data siswa tersimpan di Google Spreadsheet.`, "success");
-                            })
-                            .withFailureHandler((err) => {
-                              showToast("Gagal menyimpan ke Spreadsheet: " + (err.message || err), "error");
-                            })
-                            .simpanDataSiswa(students);
-                        } else {
-                          showToast("Data siswa tersimpan di penyimpanan browser lokal.", "success");
-                        }
+                        syncStudentsWithGAS(students, `Sukses! ${students.length} data siswa tersimpan di Google Spreadsheet.`);
                       }}
                       className="px-3 py-2 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
                       title="Sinkronkan seluruh data siswa ke Sheet Data_Siswa"
                     >
                       <Icons.Cloud />
-                      <span>Simpan Siswa ke Spreadsheet</span>
+                      <span>Simpan ke Spreadsheet</span>
                     </button>
                   </div>
                 </div>
@@ -1930,10 +2245,18 @@
               {/* BULK ACTIONS BAR (Jika ada item terpilih) */}
               {selectedStudentIds.length > 0 && (
                 <div className="p-3 bg-cyan-950/60 border border-cyan-500/40 rounded-xl flex flex-wrap items-center justify-between gap-3 text-xs">
-                  <span className="text-cyan-200 font-semibold">
+                  <span className="text-cyan-200 font-semibold flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
                     {selectedStudentIds.length} Siswa Terpilih
                   </span>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      onClick={handleOpenBulkEdit}
+                      className="px-3 py-1.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold rounded-lg hover:bg-amber-500/30 transition flex items-center gap-1"
+                    >
+                      <Icons.Edit />
+                      <span>Edit {selectedStudentIds.length} Terpilih</span>
+                    </button>
                     <button
                       onClick={handleBulkResetLogin}
                       className="px-3 py-1.5 bg-cyan-500 text-slate-950 font-bold rounded-lg hover:bg-cyan-400 transition"
@@ -1942,9 +2265,10 @@
                     </button>
                     <button
                       onClick={handleBulkDelete}
-                      className="px-3 py-1.5 bg-rose-500/20 text-rose-300 border border-rose-500/40 font-semibold rounded-lg hover:bg-rose-500/30 transition"
+                      className="px-3 py-1.5 bg-rose-500/20 text-rose-300 border border-rose-500/40 font-semibold rounded-lg hover:bg-rose-500/30 transition flex items-center gap-1"
                     >
-                      Hapus Terpilih
+                      <Icons.Trash />
+                      <span>Hapus Terpilih</span>
                     </button>
                     <button
                       onClick={() => setAdminTab("barcodes")}
@@ -1954,6 +2278,7 @@
                     </button>
                   </div>
                 </div>
+              )}
               )}
 
               {/* TABEL DATA SISWA */}
@@ -2055,7 +2380,7 @@
                                   <span className="text-slate-500">0</span>
                                 )}
                               </td>
-                              <td className="p-3 text-right space-x-1">
+                              <td className="p-3 text-right space-x-1 whitespace-nowrap">
                                 {student.isLocked && (
                                   <button
                                     onClick={() => emergencyReset(student.nisn)}
@@ -2067,9 +2392,19 @@
                                 )}
                                 <button
                                   onClick={() => {
+                                    setEditingStudent({ ...student });
+                                    setShowEditSingleModal(true);
+                                  }}
+                                  title="Edit Siswa"
+                                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-amber-500/20 hover:text-amber-300 text-slate-400 transition"
+                                >
+                                  <Icons.Edit />
+                                </button>
+                                <button
+                                  onClick={() => {
                                     if (confirm(`Hapus data siswa ${student.name}?`)) {
-                                      setStudents(prev => prev.filter(s => s.id !== student.id));
-                                      showToast("Siswa berhasil dihapus.", "success");
+                                      const remaining = students.filter(s => s.id !== student.id);
+                                      syncStudentsWithGAS(remaining, `Siswa ${student.name} berhasil dihapus.`);
                                     }
                                   }}
                                   title="Hapus Siswa"
@@ -2087,42 +2422,468 @@
                 </div>
               </div>
 
-              {/* MODAL TAMBAH SISWA BARU */}
+              {/* MODAL TAMBAH SISWA (TUNGGAL & MASSAL - HANYA NAMA) */}
               {showAddStudentModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                  <div className={`bg-slate-900 border border-slate-800 rounded-2xl w-full p-6 shadow-2xl transition-all ${
+                    studentModalTab === "bulk" ? "max-w-xl" : "max-w-md"
+                  }`}>
+                    {/* Header Modal & Tab Switcher */}
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                      <h3 className="text-base font-bold text-white flex items-center gap-2">
+                        {studentModalTab === "single" ? <Icons.Plus /> : <Icons.Users />}
+                        <span>{studentModalTab === "single" ? "Tambah Siswa Baru" : "Tambah Siswa Massal (Hanya Nama)"}</span>
+                      </h3>
+                      <button
+                        onClick={() => setShowAddStudentModal(false)}
+                        className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+                      >
+                        <Icons.X />
+                      </button>
+                    </div>
+
+                    {/* Tab Switcher */}
+                    <div className="grid grid-cols-2 gap-2 p-1 bg-slate-950 border border-slate-800 rounded-xl mb-4 text-xs font-semibold">
+                      <button
+                        type="button"
+                        onClick={() => setStudentModalTab("single")}
+                        className={`py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5 ${
+                          studentModalTab === "single"
+                            ? "bg-slate-800 text-cyan-400 font-bold border border-cyan-500/30 shadow"
+                            : "text-slate-400 hover:text-slate-200"
+                        }`}
+                      >
+                        <Icons.Plus />
+                        <span>Siswa Tunggal</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setStudentModalTab("bulk")}
+                        className={`py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5 ${
+                          studentModalTab === "bulk"
+                            ? "bg-emerald-950/70 text-emerald-300 font-bold border border-emerald-500/40 shadow"
+                            : "text-slate-400 hover:text-slate-200"
+                        }`}
+                      >
+                        <Icons.Users />
+                        <span>Massal (Hanya Nama)</span>
+                      </button>
+                    </div>
+
+                    {/* FORM 1: SISWA TUNGGAL */}
+                    {studentModalTab === "single" && (
+                      <form onSubmit={handleAddStudentSubmit} className="space-y-4 text-xs">
+                        <div>
+                          <label className="block text-slate-400 font-semibold mb-1">Nama Lengkap Siswa</label>
+                          <input
+                            type="text"
+                            required
+                            value={newStudentForm.name}
+                            onChange={(e) => setNewStudentForm({ ...newStudentForm, name: e.target.value })}
+                            placeholder="misal: Muhammad Al-Fatih"
+                            className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-cyan-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-slate-400 font-semibold mb-1">NISN (10 Digit Angka)</label>
+                          <input
+                            type="text"
+                            required
+                            maxLength="10"
+                            value={newStudentForm.nisn}
+                            onChange={(e) => setNewStudentForm({ ...newStudentForm, nisn: e.target.value })}
+                            placeholder="misal: 0061234588"
+                            className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-cyan-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-slate-400 font-semibold mb-1">Kelas / Rombel</label>
+                          <select
+                            value={newStudentForm.classId}
+                            onChange={(e) => setNewStudentForm({ ...newStudentForm, classId: e.target.value })}
+                            className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-cyan-500"
+                          >
+                            {classes.map(c => (
+                              <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="flex justify-end gap-2 pt-2">
+                          <button
+                            type="button"
+                            onClick={() => setShowAddStudentModal(false)}
+                            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition"
+                          >
+                            Batal
+                          </button>
+                          <button
+                            type="submit"
+                            className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold rounded-xl transition"
+                          >
+                            Simpan Siswa
+                          </button>
+                        </div>
+                      </form>
+                    )}
+
+                    {/* FORM 2: TAMBAH SISWA MASSAL (HANYA NAMA) */}
+                    {studentModalTab === "bulk" && (
+                      <form onSubmit={handleBulkAddSubmit} className="space-y-4 text-xs">
+                        <div className="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-xl text-emerald-200 text-[11px] leading-relaxed">
+                          <strong className="text-emerald-300">💡 Fitur Cepat (Hanya Nama):</strong> Cukup salin (copy-paste) daftar nama siswa di bawah (1 baris per nama). 
+                          Nomor urut (seperti <code className="bg-emerald-900/50 px-1 rounded">1. </code> atau <code className="bg-emerald-900/50 px-1 rounded">- </code>) otomatis dibersihkan. 
+                          Sistem akan otomatis men-generate <strong>NISN 10-digit unik</strong>, username, dan password/barcode ujian!
+                        </div>
+
+                        <div>
+                          <label className="block text-slate-300 font-semibold mb-1">Pilih Kelas / Rombel Tujuan</label>
+                          <select
+                            value={bulkAddClassId}
+                            onChange={(e) => setBulkAddClassId(e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-semibold focus:outline-none focus:border-emerald-500"
+                          >
+                            {classes.map(c => (
+                              <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="block text-slate-300 font-semibold">
+                              Daftar Nama Siswa (1 Baris per Nama)
+                            </label>
+                            {(() => {
+                              const count = bulkAddNamesText.split(/\r?\n/).map(l => l.trim().replace(/^[\d\.\-\)\*]+\s*/, "")).filter(l => l.length > 0).length;
+                              return (
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                  count > 0 ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40" : "text-slate-500"
+                                }`}>
+                                  {count} Siswa Terdeteksi
+                                </span>
+                              );
+                            })()}
+                          </div>
+                          <textarea
+                            rows="8"
+                            value={bulkAddNamesText}
+                            onChange={(e) => setBulkAddNamesText(e.target.value)}
+                            placeholder={`Contoh:\nMuhammad Al-Fatih\nBeatrix Wulan Patanda\nCandra Wijaya\nDewi Lestari Gusthy\nEko Prasetyo`}
+                            className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-xs focus:outline-none focus:border-emerald-500 leading-relaxed"
+                          ></textarea>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setBulkAddNamesText("Ahmad Rizky Pratama\nBeatrix Wulan Patanda\nCandra Wijaya\nDewi Lestari Gusthy\nEko Prasetyo\nFathir Muhammad\nGita Permatasari");
+                            }}
+                            className="text-[11px] text-cyan-400 hover:underline"
+                          >
+                            Isi Contoh Nama
+                          </button>
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setShowAddStudentModal(false)}
+                              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition"
+                            >
+                              Batal
+                            </button>
+                            <button
+                              type="submit"
+                              className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-emerald-500/20"
+                            >
+                              Simpan Siswa Massal
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* MODAL EDIT SISWA MASSAL */}
+              {showBulkEditModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+                  <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl max-h-[90vh] flex flex-col">
+                    {/* Header Modal */}
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                      <div>
+                        <h3 className="text-base font-bold text-white flex items-center gap-2">
+                          <Icons.Edit />
+                          <span>Edit Data Siswa Massal</span>
+                        </h3>
+                        <p className="text-slate-400 text-xs mt-0.5">Ubah nama, rombel, atau NISN siswa secara serentak</p>
+                      </div>
+                      <button
+                        onClick={() => setShowBulkEditModal(false)}
+                        className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+                      >
+                        <Icons.X />
+                      </button>
+                    </div>
+
+                    {/* Filter / Pilihan Rombel & Mode Switcher */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-4 text-xs">
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-400 font-semibold">Tampilkan:</span>
+                        <select
+                          value={bulkEditClassFilter}
+                          onChange={(e) => handleBulkEditFilterChange(e.target.value)}
+                          className="px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-semibold focus:outline-none focus:border-amber-500"
+                        >
+                          {selectedStudentIds.length > 0 && (
+                            <option value="SELECTED">Hanya {selectedStudentIds.length} Siswa Terpilih</option>
+                          )}
+                          <option value="ALL">Semua Rombel ({students.length} Siswa)</option>
+                          {classes.map(c => (
+                            <option key={c.id} value={c.id}>{c.name} ({students.filter(s => s.classId === c.id).length} Siswa)</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Mode Toggle */}
+                      <div className="flex p-0.5 bg-slate-950 border border-slate-800 rounded-xl text-xs">
+                        <button
+                          type="button"
+                          onClick={() => setBulkEditMode("text")}
+                          className={`px-3 py-1 rounded-lg font-semibold transition ${
+                            bulkEditMode === "text" ? "bg-amber-500 text-slate-950 font-bold" : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          Editor Teks (Hanya Nama)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setBulkEditMode("table")}
+                          className={`px-3 py-1 rounded-lg font-semibold transition ${
+                            bulkEditMode === "table" ? "bg-amber-500 text-slate-950 font-bold" : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          Tabel Form Lengkap
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* BODY 1: MODE TEXT EDITOR (HANYA NAMA) */}
+                    {bulkEditMode === "text" && (
+                      <div className="space-y-3 flex-1 overflow-y-auto">
+                        <div className="p-3 bg-amber-950/30 border border-amber-500/30 rounded-xl text-amber-200 text-[11px] leading-relaxed">
+                          <strong className="text-amber-300">💡 Edit Teks Cepat (Hanya Nama):</strong> Anda dapat langsung mengedit ejaan nama siswa baris demi baris di bawah. 
+                          Setiap baris mewakili 1 siswa secara berurutan. Jika menambahkan baris baru di bawah, siswa baru otomatis dibuatkan NISN & kartu ujian!
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between items-center mb-1 text-xs">
+                            <label className="text-slate-300 font-semibold">
+                              Daftar Nama Siswa ({bulkEditTextNames.split(/\r?\n/).filter(l => l.trim().length > 0).length} Baris)
+                            </label>
+                            <span className="text-slate-500 text-[11px]">1 Nama per baris</span>
+                          </div>
+                          <textarea
+                            rows="10"
+                            value={bulkEditTextNames}
+                            onChange={(e) => setBulkEditTextNames(e.target.value)}
+                            className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-xs focus:outline-none focus:border-amber-500 leading-relaxed"
+                          ></textarea>
+                        </div>
+
+                        <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                          <button
+                            type="button"
+                            onClick={() => setShowBulkEditModal(false)}
+                            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition"
+                          >
+                            Batal
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleSaveBulkEditText}
+                            className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-lg shadow-amber-500/20"
+                          >
+                            Simpan Perubahan Nama
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* BODY 2: MODE TABEL FORM LENGKAP */}
+                    {bulkEditMode === "table" && (
+                      <div className="space-y-3 flex-1 flex flex-col min-h-0">
+                        {/* Aksi Ubah Kelas Massal */}
+                        <div className="p-2.5 bg-slate-950 border border-slate-800 rounded-xl flex flex-wrap items-center justify-between gap-2 text-xs">
+                          <span className="text-slate-400">Pindahkan semua siswa di daftar ini ke rombel:</span>
+                          <div className="flex items-center gap-1.5">
+                            <select
+                              value={bulkChangeClassTarget}
+                              onChange={(e) => setBulkChangeClassTarget(e.target.value)}
+                              className="px-2.5 py-1 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs"
+                            >
+                              {classes.map(c => (
+                                <option key={c.id} value={c.id}>{c.name}</option>
+                              ))}
+                            </select>
+                            <button
+                              type="button"
+                              onClick={handleApplyBulkChangeClass}
+                              className="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg text-xs transition"
+                            >
+                              Terapkan
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* List Table Scrollable */}
+                        <div className="flex-1 overflow-y-auto border border-slate-800 rounded-xl max-h-80">
+                          <table className="w-full text-left text-xs">
+                            <thead className="bg-slate-950 text-slate-400 sticky top-0 border-b border-slate-800 z-10">
+                              <tr>
+                                <th className="p-2.5 w-12 text-center">No</th>
+                                <th className="p-2.5">Nama Lengkap Siswa</th>
+                                <th className="p-2.5 w-32">Kelas</th>
+                                <th className="p-2.5 w-32">NISN</th>
+                                <th className="p-2.5 w-12 text-center">Hapus</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-800/60 bg-slate-900/50">
+                              {bulkEditStudentsList.length === 0 ? (
+                                <tr>
+                                  <td colSpan="5" className="p-6 text-center text-slate-500">
+                                    Tidak ada siswa dalam filter ini.
+                                  </td>
+                                </tr>
+                              ) : (
+                                bulkEditStudentsList.map((st, idx) => (
+                                  <tr key={st.id} className="hover:bg-slate-800/30">
+                                    <td className="p-2 text-center text-slate-500 font-mono text-[11px]">{idx + 1}</td>
+                                    <td className="p-2">
+                                      <input
+                                        type="text"
+                                        value={st.name}
+                                        onChange={(e) => {
+                                          const val = e.target.value;
+                                          setBulkEditStudentsList(prev => prev.map((item, i) => i === idx ? { ...item, name: val } : item));
+                                        }}
+                                        className="w-full px-2.5 py-1 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-amber-500 text-xs"
+                                      />
+                                    </td>
+                                    <td className="p-2">
+                                      <select
+                                        value={st.classId}
+                                        onChange={(e) => {
+                                          const val = e.target.value;
+                                          setBulkEditStudentsList(prev => prev.map((item, i) => i === idx ? { ...item, classId: val } : item));
+                                        }}
+                                        className="w-full px-2 py-1 bg-slate-950 border border-slate-800 rounded-lg text-white focus:outline-none focus:border-amber-500 text-xs"
+                                      >
+                                        {classes.map(c => (
+                                          <option key={c.id} value={c.id}>{c.name}</option>
+                                        ))}
+                                      </select>
+                                    </td>
+                                    <td className="p-2">
+                                      <input
+                                        type="text"
+                                        value={st.nisn}
+                                        onChange={(e) => {
+                                          const val = e.target.value;
+                                          setBulkEditStudentsList(prev => prev.map((item, i) => i === idx ? { ...item, nisn: val } : item));
+                                        }}
+                                        className="w-full px-2 py-1 bg-slate-950 border border-slate-800 rounded-lg text-white font-mono text-[11px] focus:outline-none focus:border-amber-500"
+                                      />
+                                    </td>
+                                    <td className="p-2 text-center">
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setBulkEditStudentsList(prev => prev.filter((_, i) => i !== idx));
+                                        }}
+                                        className="p-1 rounded text-slate-500 hover:text-rose-400 hover:bg-rose-500/10"
+                                      >
+                                        <Icons.Trash />
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                          <button
+                            type="button"
+                            onClick={() => setShowBulkEditModal(false)}
+                            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition"
+                          >
+                            Batal
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleSaveBulkEditTable}
+                            className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-lg shadow-amber-500/20"
+                          >
+                            Simpan Semua Perubahan
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* MODAL EDIT SISWA TUNGGAL */}
+              {showEditSingleModal && editingStudent && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                   <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
-                    <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-                      <Icons.Plus /> Tambah Siswa Baru
-                    </h3>
-                    <form onSubmit={handleAddStudentSubmit} className="space-y-4 text-xs">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                      <h3 className="text-base font-bold text-white flex items-center gap-2">
+                        <Icons.Edit /> Edit Data Siswa
+                      </h3>
+                      <button
+                        onClick={() => {
+                          setShowEditSingleModal(false);
+                          setEditingStudent(null);
+                        }}
+                        className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+                      >
+                        <Icons.X />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleSaveEditSingleStudent} className="space-y-4 text-xs">
                       <div>
                         <label className="block text-slate-400 font-semibold mb-1">Nama Lengkap Siswa</label>
                         <input
                           type="text"
                           required
-                          value={newStudentForm.name}
-                          onChange={(e) => setNewStudentForm({ ...newStudentForm, name: e.target.value })}
-                          placeholder="misal: Muhammad Al-Fatih"
+                          value={editingStudent.name}
+                          onChange={(e) => setEditingStudent({ ...editingStudent, name: e.target.value })}
                           className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-cyan-500"
                         />
                       </div>
+
                       <div>
                         <label className="block text-slate-400 font-semibold mb-1">NISN (10 Digit Angka)</label>
                         <input
                           type="text"
                           required
                           maxLength="10"
-                          value={newStudentForm.nisn}
-                          onChange={(e) => setNewStudentForm({ ...newStudentForm, nisn: e.target.value })}
-                          placeholder="misal: 0061234588"
+                          value={editingStudent.nisn}
+                          onChange={(e) => setEditingStudent({ ...editingStudent, nisn: e.target.value })}
                           className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-cyan-500"
                         />
                       </div>
+
                       <div>
                         <label className="block text-slate-400 font-semibold mb-1">Kelas / Rombel</label>
                         <select
-                          value={newStudentForm.classId}
-                          onChange={(e) => setNewStudentForm({ ...newStudentForm, classId: e.target.value })}
+                          value={editingStudent.classId}
+                          onChange={(e) => setEditingStudent({ ...editingStudent, classId: e.target.value })}
                           className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-cyan-500"
                         >
                           {classes.map(c => (
@@ -2131,10 +2892,36 @@
                         </select>
                       </div>
 
+                      <div>
+                        <label className="block text-slate-400 font-semibold mb-1">Token Barcode Ujian</label>
+                        <input
+                          type="text"
+                          value={editingStudent.token}
+                          onChange={(e) => setEditingStudent({ ...editingStudent, token: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-cyan-400 focus:outline-none focus:border-cyan-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-400 font-semibold mb-1">Status Ujian</label>
+                        <select
+                          value={editingStudent.examStatus}
+                          onChange={(e) => setEditingStudent({ ...editingStudent, examStatus: e.target.value })}
+                          className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-cyan-500"
+                        >
+                          <option value="Belum Mulai">Belum Mulai</option>
+                          <option value="Sedang Mengerjakan">Sedang Mengerjakan</option>
+                          <option value="Selesai">Selesai</option>
+                        </select>
+                      </div>
+
                       <div className="flex justify-end gap-2 pt-2">
                         <button
                           type="button"
-                          onClick={() => setShowAddStudentModal(false)}
+                          onClick={() => {
+                            setShowEditSingleModal(false);
+                            setEditingStudent(null);
+                          }}
                           className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition"
                         >
                           Batal
@@ -2143,10 +2930,148 @@
                           type="submit"
                           className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold rounded-xl transition"
                         >
-                          Simpan Siswa
+                          Simpan Perubahan
                         </button>
                       </div>
                     </form>
+                  </div>
+                </div>
+              )}
+
+              {/* MODAL HAPUS SISWA MASSAL */}
+              {showBulkDeleteModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                  <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                      <h3 className="text-base font-bold text-rose-400 flex items-center gap-2">
+                        <Icons.Trash /> Hapus Data Siswa Massal
+                      </h3>
+                      <button
+                        onClick={() => {
+                          setShowBulkDeleteModal(false);
+                          setDeleteConfirmationText("");
+                        }}
+                        className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+                      >
+                        <Icons.X />
+                      </button>
+                    </div>
+
+                    <div className="space-y-4 text-xs">
+                      <p className="text-slate-300">Pilih opsi penghapusan siswa yang Anda inginkan:</p>
+
+                      <div className="space-y-2">
+                        {/* Opsi 1: Hapus Terpilih */}
+                        <label className={`block p-3 rounded-xl border cursor-pointer transition ${
+                          bulkDeleteTarget === "selected"
+                            ? "bg-rose-950/40 border-rose-500 text-white"
+                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                        }`}>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="radio"
+                              name="bulkDeleteTarget"
+                              value="selected"
+                              checked={bulkDeleteTarget === "selected"}
+                              onChange={(e) => setBulkDeleteTarget(e.target.value)}
+                              className="text-rose-500 focus:ring-0"
+                            />
+                            <span className="font-bold">Hapus Siswa Terpilih</span>
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-1 pl-5">
+                            Menghapus {selectedStudentIds.length} siswa yang sedang dicentang pada tabel.
+                          </p>
+                        </label>
+
+                        {/* Opsi 2: Hapus Per Rombel */}
+                        <label className={`block p-3 rounded-xl border cursor-pointer transition ${
+                          bulkDeleteTarget === "class"
+                            ? "bg-rose-950/40 border-rose-500 text-white"
+                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                        }`}>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="radio"
+                              name="bulkDeleteTarget"
+                              value="class"
+                              checked={bulkDeleteTarget === "class"}
+                              onChange={(e) => setBulkDeleteTarget(e.target.value)}
+                              className="text-rose-500 focus:ring-0"
+                            />
+                            <span className="font-bold">Hapus Siswa Berdasarkan Rombel</span>
+                          </div>
+                          {bulkDeleteTarget === "class" && (
+                            <div className="mt-2 pl-5 space-y-1">
+                              <select
+                                value={bulkDeleteClassId}
+                                onChange={(e) => setBulkDeleteClassId(e.target.value)}
+                                className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-white font-semibold text-xs"
+                              >
+                                {classes.map(c => (
+                                  <option key={c.id} value={c.id}>
+                                    {c.name} ({students.filter(s => s.classId === c.id).length} Siswa)
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          )}
+                        </label>
+
+                        {/* Opsi 3: Kosongkan Total */}
+                        <label className={`block p-3 rounded-xl border cursor-pointer transition ${
+                          bulkDeleteTarget === "all"
+                            ? "bg-rose-950/60 border-rose-600 text-white"
+                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                        }`}>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="radio"
+                              name="bulkDeleteTarget"
+                              value="all"
+                              checked={bulkDeleteTarget === "all"}
+                              onChange={(e) => setBulkDeleteTarget(e.target.value)}
+                              className="text-rose-600 focus:ring-0"
+                            />
+                            <span className="font-bold text-rose-400">Kosongkan Seluruh Siswa (Reset Total)</span>
+                          </div>
+                          <p className="text-[11px] text-rose-300/80 mt-1 pl-5">
+                            Menghapus semua {students.length} siswa di seluruh rombel.
+                          </p>
+                          {bulkDeleteTarget === "all" && (
+                            <div className="mt-2 pl-5 space-y-1">
+                              <p className="text-[11px] text-amber-300">Ketik kata <strong>HAPUS</strong> untuk mengonfirmasi:</p>
+                              <input
+                                type="text"
+                                placeholder="Ketik HAPUS..."
+                                value={deleteConfirmationText}
+                                onChange={(e) => setDeleteConfirmationText(e.target.value)}
+                                className="w-full px-2.5 py-1.5 bg-slate-900 border border-rose-500 rounded-lg text-rose-200 font-bold text-xs"
+                              />
+                            </div>
+                          )}
+                        </label>
+                      </div>
+
+                      <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowBulkDeleteModal(false);
+                            setDeleteConfirmationText("");
+                          }}
+                          className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition"
+                        >
+                          Batal
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleExecuteBulkDelete}
+                          className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl transition shadow-lg shadow-rose-600/30"
+                        >
+                          Konfirmasi Hapus
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -2891,6 +3816,15 @@
               </button>
 
               <button
+                onClick={() => setShowUploadModal(true)}
+                className="px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-emerald-500/20"
+                title="Unggah berkas soal dari Word (.doc/.docx), PDF (.pdf), Excel (.xlsx/.xls), atau Plain Text (.txt)"
+              >
+                <Icons.Upload />
+                <span>Upload Soal (Word / PDF / Excel / Text)</span>
+              </button>
+
+              <button
                 onClick={() => handleSaveBankSoalToGAS()}
                 className="px-3 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
                 title="Simpan seluruh butir soal ke Google Spreadsheet sheet Bank_Soal"
@@ -3200,6 +4134,309 @@
                     </button>
                   </div>
                 </form>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL UPLOAD SOAL MULTI-FORMAT (WORD, PDF, EXCEL, TXT) */}
+          {showUploadModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl max-h-[92vh] flex flex-col">
+                {/* Header Modal */}
+                <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                  <div>
+                    <h3 className="text-base font-bold text-white flex items-center gap-2">
+                      <Icons.Upload />
+                      <span>Upload & Import Naskah Soal</span>
+                    </h3>
+                    <p className="text-slate-400 text-xs mt-0.5">
+                      Support: Word (<code className="text-cyan-400 font-mono">.doc/.docx</code>), PDF (<code className="text-rose-400 font-mono">.pdf</code>), Excel (<code className="text-emerald-400 font-mono">.xlsx/.xls</code>), Plain Text (<code className="text-amber-400 font-mono">.txt</code>)
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setShowUploadModal(false);
+                      setPreviewQuestions([]);
+                      setUploadedFileName("");
+                    }}
+                    className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+                  >
+                    <Icons.X />
+                  </button>
+                </div>
+
+                {/* Sub-Tab Switcher */}
+                <div className="grid grid-cols-3 gap-2 p-1 bg-slate-950 border border-slate-800 rounded-xl mb-4 text-xs font-semibold">
+                  <button
+                    type="button"
+                    onClick={() => setUploadTab("file")}
+                    className={`py-2 rounded-lg transition flex items-center justify-center gap-1.5 ${
+                      uploadTab === "file" ? "bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 shadow font-bold" : "text-slate-400 hover:text-slate-200"
+                    }`}
+                  >
+                    <Icons.Upload />
+                    <span>Upload File</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUploadTab("paste")}
+                    className={`py-2 rounded-lg transition flex items-center justify-center gap-1.5 ${
+                      uploadTab === "paste" ? "bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 shadow font-bold" : "text-slate-400 hover:text-slate-200"
+                    }`}
+                  >
+                    <Icons.FileText />
+                    <span>Tempel Teks (Paste)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUploadTab("template")}
+                    className={`py-2 rounded-lg transition flex items-center justify-center gap-1.5 ${
+                      uploadTab === "template" ? "bg-slate-800 text-slate-200 border border-slate-700 shadow font-bold" : "text-slate-400 hover:text-slate-200"
+                    }`}
+                  >
+                    <Icons.Download />
+                    <span>Unduh Template</span>
+                  </button>
+                </div>
+
+                {/* TAB 1: UPLOAD FILE DRAG & DROP */}
+                {uploadTab === "file" && (
+                  <div className="space-y-3">
+                    <label className={`block border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition ${
+                      uploadFileLoading 
+                        ? "border-cyan-500 bg-cyan-950/20" 
+                        : "border-slate-700 hover:border-emerald-500 bg-slate-950/60 hover:bg-slate-950"
+                    }`}>
+                      <input
+                        type="file"
+                        accept=".doc, .docx, .pdf, .xlsx, .xls, .txt"
+                        onChange={handleQuestionFileUpload}
+                        className="hidden"
+                      />
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-1">
+                          <Icons.Upload />
+                        </div>
+                        <p className="font-bold text-sm text-white">
+                          {uploadedFileName ? uploadedFileName : "Klik untuk Pilih File atau Seret ke Sini"}
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          Pilih file naskah soal dari perangkat Anda
+                        </p>
+                        <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
+                          <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 text-[10px] font-bold">Word (.doc, .docx)</span>
+                          <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold">PDF (.pdf)</span>
+                          <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold">Excel (.xlsx, .xls)</span>
+                          <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold">Plain Text (.txt)</span>
+                        </div>
+                      </div>
+                    </label>
+
+                    {uploadFileLoading && (
+                      <div className="p-3 rounded-xl bg-slate-950 border border-cyan-500/30 text-center text-xs text-cyan-300 animate-pulse flex items-center justify-center gap-2">
+                        <Icons.RefreshCw />
+                        <span>Sedang membaca dan mengekstrak butir soal...</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* TAB 2: MANUAL PASTE */}
+                {uploadTab === "paste" && (
+                  <div className="space-y-3">
+                    <div className="p-2.5 bg-cyan-950/40 border border-cyan-500/30 rounded-xl text-cyan-200 text-[11px] leading-relaxed">
+                      💡 <strong>Salin & Tempel Langsung:</strong> Buka file Word atau catatan soal Anda, tekan <kbd className="bg-slate-800 px-1 rounded">Ctrl+A</kbd> lalu <kbd className="bg-slate-800 px-1 rounded">Ctrl+C</kbd>, kemudian tempelkan teksnya di bawah ini.
+                    </div>
+                    <textarea
+                      rows="7"
+                      value={manualPasteText}
+                      onChange={(e) => setManualPasteText(e.target.value)}
+                      placeholder={`1. Apa fungsi utama organel mitokondria?\nA. Respirasi sel dan penghasil energi ATP\nB. Sintesis protein\nC. Fotosintesis\nD. Pencernaan sel\nKunci: A\nPembahasan: Mitokondria adalah tempat berlangsungnya metabolisme energi sel.\n\n2. Lambang negara Indonesia adalah ...\nA. Garuda Pancasila\nB. Harimau Sumatera\nC. Burung Merpati\nD. Komodo\nKunci: A`}
+                      className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-xs focus:outline-none focus:border-cyan-500 leading-relaxed"
+                    ></textarea>
+                    <div className="flex justify-end">
+                      <button
+                        type="button"
+                        onClick={handleProcessManualPaste}
+                        className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs transition"
+                      >
+                        Proses Teks Soal
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 3: UNDUH FORMAT TEMPLATE */}
+                {uploadTab === "template" && (
+                  <div className="space-y-3 p-2">
+                    <p className="text-xs text-slate-300">
+                      Unduh template resmi di bawah ini agar format soal terbaca otomatis dengan akurasi 100%:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <button
+                        type="button"
+                        onClick={downloadSampleWordTemplate}
+                        className="p-4 bg-slate-950 hover:bg-slate-800/80 border border-blue-500/30 hover:border-blue-500 rounded-xl text-center space-y-2 transition group"
+                      >
+                        <div className="w-10 h-10 mx-auto rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
+                          .DOC
+                        </div>
+                        <p className="font-bold text-xs text-white group-hover:text-blue-300">Template Word</p>
+                        <p className="text-[11px] text-slate-400">Format standar naskah ujian resmi sekolah</p>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={downloadSampleExcelTemplate}
+                        className="p-4 bg-slate-950 hover:bg-slate-800/80 border border-emerald-500/30 hover:border-emerald-500 rounded-xl text-center space-y-2 transition group"
+                      >
+                        <div className="w-10 h-10 mx-auto rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+                          .XLSX
+                        </div>
+                        <p className="font-bold text-xs text-white group-hover:text-emerald-300">Template Excel</p>
+                        <p className="text-[11px] text-slate-400">Tabel kolom Soal, Opsi A-E, dan Kunci</p>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={downloadSampleTextTemplate}
+                        className="p-4 bg-slate-950 hover:bg-slate-800/80 border border-amber-500/30 hover:border-amber-500 rounded-xl text-center space-y-2 transition group"
+                      >
+                        <div className="w-10 h-10 mx-auto rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+                          .TXT
+                        </div>
+                        <p className="font-bold text-xs text-white group-hover:text-amber-300">Template Plain Text</p>
+                        <p className="text-[11px] text-slate-400">Format teks ringan tanpa format rumit</p>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* KONFIGURASI IMPORT DEFAULT (KATEGORI & BOBOT) */}
+                <div className="mt-4 pt-3 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Kategori / Mata Pelajaran</label>
+                    <input
+                      type="text"
+                      value={uploadDefaultCategory}
+                      onChange={(e) => setUploadDefaultCategory(e.target.value)}
+                      placeholder="misal: Matematika / Umum"
+                      className="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Bobot Poin Default per Soal</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="100"
+                      value={uploadDefaultPoints}
+                      onChange={(e) => setUploadDefaultPoints(e.target.value)}
+                      className="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Metode Impor</label>
+                    <div className="flex items-center gap-3 pt-1 text-[11px]">
+                      <label className="flex items-center gap-1.5 cursor-pointer text-slate-300">
+                        <input
+                          type="radio"
+                          name="uploadImportMode"
+                          value="append"
+                          checked={uploadImportMode === "append"}
+                          onChange={(e) => setUploadImportMode(e.target.value)}
+                          className="text-emerald-500 focus:ring-0"
+                        />
+                        <span>Tambahkan (Append)</span>
+                      </label>
+                      <label className="flex items-center gap-1.5 cursor-pointer text-slate-300">
+                        <input
+                          type="radio"
+                          name="uploadImportMode"
+                          value="replace"
+                          checked={uploadImportMode === "replace"}
+                          onChange={(e) => setUploadImportMode(e.target.value)}
+                          className="text-rose-500 focus:ring-0"
+                        />
+                        <span>Gantikan Semua</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PREVIEW HASIL PARSING BUTIR SOAL */}
+                {previewQuestions.length > 0 && (
+                  <div className="mt-3 flex-1 overflow-y-auto space-y-2 border border-slate-800 rounded-xl p-3 bg-slate-950/70 max-h-56">
+                    <div className="flex items-center justify-between text-xs pb-1 border-b border-slate-800">
+                      <span className="font-bold text-emerald-400 flex items-center gap-1.5">
+                        <Icons.CheckCircle />
+                        <span>{previewQuestions.length} Butir Soal Terdeteksi ({uploadedFileName || "Input Manual"})</span>
+                      </span>
+                      <span className="text-[11px] text-slate-500">Pratinjau sebelum disimpan ke Bank Soal</span>
+                    </div>
+
+                    <div className="space-y-2">
+                      {previewQuestions.map((q, qIdx) => (
+                        <div key={qIdx} className="p-2.5 rounded-lg bg-slate-900 border border-slate-800/80 text-xs space-y-1.5">
+                          <div className="flex justify-between items-start">
+                            <p className="font-bold text-white">
+                              #{qIdx + 1}. {q.question}
+                            </p>
+                            <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold shrink-0 ml-2">
+                              Kunci: {q.correctAnswer}
+                            </span>
+                          </div>
+
+                          {q.options && (
+                            <div className="grid grid-cols-2 gap-1 text-[11px] pt-1">
+                              {q.options.map((opt, oIdx) => (
+                                <div
+                                  key={oIdx}
+                                  className={`px-2 py-1 rounded border flex items-center gap-1.5 ${
+                                    opt.key === q.correctAnswer
+                                      ? "bg-emerald-950/50 border-emerald-500/40 text-emerald-200 font-semibold"
+                                      : "bg-slate-950 border-slate-800 text-slate-400"
+                                  }`}
+                                >
+                                  <span className="font-bold">{opt.key}.</span>
+                                  <span className="truncate">{opt.text}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Footer Buttons */}
+                <div className="flex justify-end gap-2 pt-3 mt-2 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowUploadModal(false);
+                      setPreviewQuestions([]);
+                      setUploadedFileName("");
+                    }}
+                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="button"
+                    disabled={previewQuestions.length === 0}
+                    onClick={handleConfirmImport}
+                    className={`px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+                      previewQuestions.length > 0
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 shadow-lg shadow-emerald-500/20"
+                        : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                    }`}
+                  >
+                    <Icons.CheckCircle />
+                    <span>Impor {previewQuestions.length > 0 ? `${previewQuestions.length} Butir Soal` : "Soal"} ke Bank Soal</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}

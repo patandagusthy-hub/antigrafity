@@ -223,11 +223,26 @@
     ];
 
     // =========================================================================
-    // DATA SEED BANK SOAL (MULTI-TIPE & FORMULA KATEX)
+    // DATA SEED BERKAS DOKUMEN SOAL & BANK SOAL (MULTI-TIPE & FORMULA KATEX)
     // =========================================================================
+    const INITIAL_QUESTION_FILES = [
+      {
+        id: "FILE_MAIN",
+        name: "Naskah Soal Utama CBT",
+        subject: "Teknologi Informasi & Pemrograman",
+        gradeLevel: "Semua Kelas",
+        targetClasses: ["ALL"],
+        durationMinutes: 60,
+        scheduleDay: "",
+        createdAt: "2026-11-01"
+      }
+    ];
+
     const INITIAL_QUESTIONS = [
       {
         id: "Q1",
+        fileId: "FILE_MAIN",
+        fileName: "Naskah Soal Utama CBT",
         number: 1,
         type: "PILIHAN_GANDA", // PG Biasa
         category: "Pilihan Ganda",
@@ -248,6 +263,8 @@
       },
       {
         id: "Q2",
+        fileId: "FILE_MAIN",
+        fileName: "Naskah Soal Utama CBT",
         number: 2,
         type: "AUDIO_LISTENING", // Audio Listening Module
         category: "Pilihan Ganda",
@@ -269,6 +286,8 @@
       },
       {
         id: "Q3",
+        fileId: "FILE_MAIN",
+        fileName: "Naskah Soal Utama CBT",
         number: 3,
         type: "PILIHAN_GANDA_KOMPLEKS", // Checklist Multi Pilihan
         category: "Pilihan Ganda Kompleks",
@@ -287,6 +306,8 @@
       },
       {
         id: "Q4",
+        fileId: "FILE_MAIN",
+        fileName: "Naskah Soal Utama CBT",
         number: 4,
         type: "MENJODOHKAN", // Matching Pairs
         category: "Menjodohkan",
@@ -303,6 +324,8 @@
       },
       {
         id: "Q5",
+        fileId: "FILE_MAIN",
+        fileName: "Naskah Soal Utama CBT",
         number: 5,
         type: "BENAR_SALAH", // True / False
         category: "Benar / Salah",
@@ -319,6 +342,8 @@
       },
       {
         id: "Q6",
+        fileId: "FILE_MAIN",
+        fileName: "Naskah Soal Utama CBT",
         number: 6,
         type: "ESAI", // Essay dengan AI Rubric Keywords
         category: "Essay",
@@ -370,7 +395,13 @@
       Key: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>,
       Edit: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>,
       List: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>,
-      X: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      X: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>,
+      Folder: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>,
+      FolderPlus: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>,
+      Sliders: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>,
+      Layers: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>,
+      Shuffle: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>,
+      Calendar: () => <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
     };
 
     // =========================================================================
@@ -417,7 +448,10 @@
     function App() {
       // Peran & Tampilan: 'admin' atau 'student'
       const [role, setRole] = useState('admin');
-      const [adminTab, setAdminTab] = useState('dashboard'); // 'dashboard', 'students', 'questions', 'duckrace', 'barcodes', 'analytics', 'settings'
+      const [adminTab, setAdminTab] = useState(() => {
+        const h = (window.location.hash || "").replace("#", "");
+        return ['dashboard', 'students', 'questions', 'duckrace', 'barcodes', 'analytics', 'settings'].includes(h) ? h : 'dashboard';
+      }); // 'dashboard', 'students', 'questions', 'duckrace', 'barcodes', 'analytics', 'settings'
 
       // State Konfigurasi Sistem & Fitur APK
       const [appConfig, setAppConfig] = useState(() => {
@@ -453,10 +487,89 @@
       const [changePasswordForm, setChangePasswordForm] = useState({ oldPassword: "", newPassword: "", confirmPassword: "" });
       const [passwordVisibilities, setPasswordVisibilities] = useState({ auth: false, old: false, next: false, confirm: false });
 
-      // Master State Data
+      // Master State Data (dengan persistensi otomatis localStorage)
       const [classes, setClasses] = useState(INITIAL_CLASSES);
-      const [students, setStudents] = useState(INITIAL_STUDENTS);
-      const [questions, setQuestions] = useState(INITIAL_QUESTIONS);
+      const [students, setStudents] = useState(() => {
+        try {
+          const saved = localStorage.getItem("GPP_STUDENTS_BACKUP");
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          }
+        } catch (e) {}
+        return INITIAL_STUDENTS;
+      });
+      const [questions, setQuestions] = useState(() => {
+        try {
+          const saved = localStorage.getItem("GPP_QUESTIONS_BACKUP");
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          }
+        } catch (e) {}
+        return INITIAL_QUESTIONS;
+      });
+      const [questionFiles, setQuestionFiles] = useState(() => {
+        try {
+          const saved = localStorage.getItem("GPP_QUESTION_FILES_V2");
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          }
+        } catch (e) {}
+        return INITIAL_QUESTION_FILES;
+      });
+      const [activeExamFileId, setActiveExamFileId] = useState(() => {
+        try {
+          const saved = localStorage.getItem("GPP_ACTIVE_EXAM_FILE_V2");
+          if (saved) return saved;
+        } catch (e) {}
+        return "FILE_MAIN";
+      });
+
+      // Persistensi otomatis ke localStorage setiap kali state berubah
+      useEffect(() => {
+        try { localStorage.setItem("GPP_STUDENTS_BACKUP", JSON.stringify(students)); } catch (e) {}
+      }, [students]);
+
+      useEffect(() => {
+        try { localStorage.setItem("GPP_QUESTIONS_BACKUP", JSON.stringify(questions)); } catch (e) {}
+      }, [questions]);
+
+      useEffect(() => {
+        try { localStorage.setItem("GPP_QUESTION_FILES_V2", JSON.stringify(questionFiles)); } catch (e) {}
+      }, [questionFiles]);
+
+      useEffect(() => {
+        try { localStorage.setItem("GPP_ACTIVE_EXAM_FILE_V2", activeExamFileId); } catch (e) {}
+      }, [activeExamFileId]);
+
+      // Pastikan setiap soal memiliki berkas yang terdaftar di questionFiles
+      useEffect(() => {
+        if (!questions || questions.length === 0) return;
+        setQuestionFiles(prevFiles => {
+          const existingIds = new Set(prevFiles.map(f => f.id));
+          const additions = [];
+          questions.forEach(q => {
+            const fId = q.fileId || "FILE_MAIN";
+            if (!existingIds.has(fId)) {
+              existingIds.add(fId);
+              additions.push({
+                id: fId,
+                name: q.fileName || (fId === "FILE_MAIN" ? "Naskah Soal Utama CBT" : `Berkas Soal (${fId})`),
+                subject: q.category || "Umum",
+                gradeLevel: "Semua Kelas",
+                targetClasses: ["ALL"],
+                durationMinutes: 60,
+                scheduleDay: "",
+                createdAt: new Date().toISOString().slice(0, 10)
+              });
+            }
+          });
+          return additions.length > 0 ? [...prevFiles, ...additions] : prevFiles;
+        });
+      }, [questions]);
+
       const [targetFolderId, setTargetFolderId] = useState(appConfig.sync.targetFolderId || DEFAULT_TARGET_FOLDER_ID);
       const [gasUrl, setGasUrl] = useState(appConfig.sync.gasUrl || DEFAULT_GAS_URL);
       const [gasSyncStatus, setGasSyncStatus] = useState({ connected: false, message: "Belum terkoneksi ke GAS Web App" });
@@ -527,6 +640,41 @@
       const [isSubmitting, setIsSubmitting] = useState(false);
       const [submissionCountdown, setSubmissionCountdown] = useState(null);
       const [examFinishedData, setExamFinishedData] = useState(null);
+
+      // Filter & Acak Soal Ujian Aktif berdasarkan Berkas yang Dipilih (activeExamFileId) & Seed NISN Siswa
+      const activeExamQuestions = useMemo(() => {
+        let baseList = questions;
+        if (activeExamFileId && activeExamFileId !== "ALL") {
+          const filtered = questions.filter(q => (q.fileId || "FILE_MAIN") === activeExamFileId);
+          if (filtered.length > 0) {
+            baseList = filtered;
+          }
+        }
+        let result = [...baseList];
+        // Acak urutan soal berbasis seed NISN jika fitur Anti-Nyontek aktif dan siswa sudah login
+        if (appConfig?.exam?.shuffleQuestions !== false && loggedStudent && loggedStudent.nisn) {
+          const seedStr = String(loggedStudent.nisn) + "_" + String(activeExamFileId || "ALL");
+          let seed = 0;
+          for (let i = 0; i < seedStr.length; i++) {
+            seed = ((seed << 5) - seed) + seedStr.charCodeAt(i);
+            seed |= 0;
+          }
+          const seededRandom = () => {
+            seed = (seed * 1664525 + 1013904223) % 4294967296;
+            return Math.abs(seed / 4294967296);
+          };
+          for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(seededRandom() * (i + 1));
+            const temp = result[i];
+            result[i] = result[j];
+            result[j] = temp;
+          }
+        }
+        return result.map((q, idx) => ({
+          ...q,
+          number: idx + 1
+        }));
+      }, [questions, activeExamFileId, loggedStudent, appConfig?.exam?.shuffleQuestions]);
 
       // Notifikasi Toast
       const [toast, setToast] = useState(null);
@@ -893,11 +1041,11 @@
         if (isSubmitting) return;
         setIsSubmitting(true);
 
-        // Hitung Skor Siswa Secara Otomatis
+        // Hitung Skor Siswa Secara Otomatis berdasarkan Berkas Soal Ujian Aktif
         let mcPoints = 0;
         let totalPossible = 0;
 
-        questions.forEach(q => {
+        activeExamQuestions.forEach(q => {
           totalPossible += q.points;
           const ans = studentAnswers[q.id];
 
@@ -1396,6 +1544,10 @@
                 setStudents={setStudents}
                 questions={questions}
                 setQuestions={setQuestions}
+                questionFiles={questionFiles}
+                setQuestionFiles={setQuestionFiles}
+                activeExamFileId={activeExamFileId}
+                setActiveExamFileId={setActiveExamFileId}
                 revisions={revisions}
                 setRevisions={setRevisions}
                 targetFolderId={targetFolderId}
@@ -1418,7 +1570,7 @@
               <StudentExamPortal
                 students={students}
                 setStudents={setStudents}
-                questions={questions}
+                questions={activeExamQuestions}
                 loggedStudent={loggedStudent}
                 setLoggedStudent={setLoggedStudent}
                 examActive={examActive}
@@ -1466,6 +1618,8 @@
       classes, setClasses,
       students, setStudents,
       questions, setQuestions,
+      questionFiles, setQuestionFiles,
+      activeExamFileId, setActiveExamFileId,
       revisions, setRevisions,
       targetFolderId, setTargetFolderId,
       gasUrl, setGasUrl,
@@ -3082,6 +3236,13 @@
             <QuestionBankModule
               questions={questions}
               setQuestions={setQuestions}
+              questionFiles={questionFiles}
+              setQuestionFiles={setQuestionFiles}
+              activeExamFileId={activeExamFileId}
+              setActiveExamFileId={setActiveExamFileId}
+              classes={classes}
+              appConfig={appConfig}
+              setAppConfig={setAppConfig}
               revisions={revisions}
               setRevisions={setRevisions}
               showToast={showToast}
@@ -3580,9 +3741,23 @@
     }
 
     // =========================================================================
-    // MODUL 2: BANK SOAL, FILTER KATEGORI, REVISI & EKSPOR
+    // MODUL 2: BANK SOAL, MANAJEMEN MULTI-BERKAS, FILTER, REVISI & EKSPOR
     // =========================================================================
-    function QuestionBankModule({ questions, setQuestions, revisions, setRevisions, showToast }) {
+    function QuestionBankModule({
+      questions,
+      setQuestions,
+      questionFiles = INITIAL_QUESTION_FILES,
+      setQuestionFiles,
+      activeExamFileId = "FILE_MAIN",
+      setActiveExamFileId,
+      classes = [],
+      appConfig,
+      setAppConfig,
+      revisions,
+      setRevisions,
+      showToast
+    }) {
+      const [selectedFileId, setSelectedFileId] = useState(activeExamFileId || "FILE_MAIN");
       const [filterCategory, setFilterCategory] = useState("SEMUA");
       const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
       const [showRevisionModal, setShowRevisionModal] = useState(false);
@@ -3600,17 +3775,201 @@
         points: 10
       });
 
-      // State Upload Soal Multi-Format
+      // State Manajemen Berkas Soal (Buat Berkas, Pengaturan Jadwal/Kelas/Durasi, Rename, Hapus, Anti-Nyontek)
+      const [showCreateFileModal, setShowCreateFileModal] = useState(false);
+      const [newFileForm, setNewFileForm] = useState({
+        name: "",
+        subject: "Bahasa Inggris",
+        gradeLevel: "Semua Kelas",
+        targetClasses: ["ALL"],
+        durationMinutes: 60,
+        scheduleDay: ""
+      });
+      const [showFileSettingsModal, setShowFileSettingsModal] = useState(false);
+      const [editingFileSettings, setEditingFileSettings] = useState(null);
+      const [showRenameFileModal, setShowRenameFileModal] = useState(false);
+      const [renamingFile, setRenamingFile] = useState(null);
+      const [showDeleteFileModal, setShowDeleteFileModal] = useState(false);
+      const [deletingFile, setDeletingFile] = useState(null);
+      const [showAntiCheatModal, setShowAntiCheatModal] = useState(false);
+
+      // State Upload Soal Multi-Format (Default: Berkas Terpisah / Tidak Gabung)
       const [showUploadModal, setShowUploadModal] = useState(false);
       const [uploadTab, setUploadTab] = useState("file"); // "file" | "paste" | "template"
       const [uploadFileLoading, setUploadFileLoading] = useState(false);
       const [uploadFileType, setUploadFileType] = useState("");
       const [uploadedFileName, setUploadedFileName] = useState("");
+      const [uploadTargetFileName, setUploadTargetFileName] = useState("");
+      const [uploadedFilesBatch, setUploadedFilesBatch] = useState([]); // Support multi-file upload sekaligus
       const [previewQuestions, setPreviewQuestions] = useState([]);
-      const [uploadDefaultCategory, setUploadDefaultCategory] = useState("Umum");
+      const [uploadDefaultCategory, setUploadDefaultCategory] = useState("Bahasa Inggris");
       const [uploadDefaultPoints, setUploadDefaultPoints] = useState(10);
-      const [uploadImportMode, setUploadImportMode] = useState("append"); // "append" | "replace"
+      const [uploadGradeLevel, setUploadGradeLevel] = useState("Semua Kelas");
+      const [uploadDurationMinutes, setUploadDurationMinutes] = useState(60);
+      const [uploadScheduleDay, setUploadScheduleDay] = useState("");
+      const [uploadImportMode, setUploadImportMode] = useState("new_file"); // "new_file" | "append" | "replace"
       const [manualPasteText, setManualPasteText] = useState("");
+
+      // Hitung jumlah soal per berkas
+      const fileQuestionCounts = useMemo(() => {
+        const counts = {};
+        questionFiles.forEach(f => { counts[f.id] = 0; });
+        questions.forEach(q => {
+          const fId = q.fileId || "FILE_MAIN";
+          counts[fId] = (counts[fId] || 0) + 1;
+        });
+        return counts;
+      }, [questions, questionFiles]);
+
+      const currentSelectedFileObj = useMemo(() => {
+        if (selectedFileId === "ALL") {
+          return { id: "ALL", name: "Semua Berkas (Gabungan)", subject: "Seluruh Naskah Soal" };
+        }
+        return questionFiles.find(f => f.id === selectedFileId) || questionFiles[0] || INITIAL_QUESTION_FILES[0];
+      }, [selectedFileId, questionFiles]);
+
+      // Fungsi Jadikan Berkas sebagai Ujian Aktif Siswa
+      const handleSetAsActiveExam = (fileId) => {
+        if (typeof setActiveExamFileId === "function") {
+          setActiveExamFileId(fileId);
+        }
+        setSelectedFileId(fileId);
+
+        if (fileId === "ALL") {
+          if (typeof setAppConfig === "function" && appConfig) {
+            setAppConfig({
+              ...appConfig,
+              exam: {
+                ...appConfig.exam,
+                examTitle: "Ujian Gabungan Seluruh Berkas Soal",
+                bannerAnnouncement: `UJIAN AKTIF: Semua Berkas Soal Gabungan (${questions.length} Soal)`
+              }
+            });
+          }
+          showToast(`Mode Semua Berkas Gabungan (${questions.length} soal) dijadikan Ujian Aktif!`, "success");
+        } else {
+          const targetFile = questionFiles.find(f => f.id === fileId);
+          if (targetFile) {
+            const qCount = fileQuestionCounts[fileId] || 0;
+            if (typeof setAppConfig === "function" && appConfig) {
+              setAppConfig({
+                ...appConfig,
+                exam: {
+                  ...appConfig.exam,
+                  examTitle: `${targetFile.name} (${targetFile.subject || "CBT"})`,
+                  durationMinutes: Number(targetFile.durationMinutes) || 60,
+                  bannerAnnouncement: `UJIAN AKTIF: ${targetFile.name} • ${targetFile.subject || "Umum"} (${qCount} Butir Soal • ${targetFile.durationMinutes || 60} Menit)`
+                }
+              });
+            }
+            showToast(`Berkas "${targetFile.name}" (${qCount} butir soal) berhasil dijadikan Ujian Aktif!`, "success");
+          }
+        }
+      };
+
+      // Fungsi Buat Berkas Kosong Baru
+      const handleCreateNewFileSubmit = (e) => {
+        e.preventDefault();
+        if (!newFileForm.name.trim()) {
+          showToast("Nama berkas naskah soal wajib diisi!", "error");
+          return;
+        }
+        const newId = "FILE_" + Date.now();
+        const createdFile = {
+          id: newId,
+          name: newFileForm.name.trim(),
+          subject: newFileForm.subject.trim() || "Umum",
+          gradeLevel: newFileForm.gradeLevel || "Semua Kelas",
+          targetClasses: newFileForm.targetClasses || ["ALL"],
+          durationMinutes: Number(newFileForm.durationMinutes) || 60,
+          scheduleDay: newFileForm.scheduleDay || "",
+          createdAt: new Date().toISOString().slice(0, 10)
+        };
+        if (typeof setQuestionFiles === "function") {
+          setQuestionFiles(prev => [...prev, createdFile]);
+        }
+        setSelectedFileId(newId);
+        setShowCreateFileModal(false);
+        setNewFileForm({
+          name: "",
+          subject: "Bahasa Inggris",
+          gradeLevel: "Semua Kelas",
+          targetClasses: ["ALL"],
+          durationMinutes: 60,
+          scheduleDay: ""
+        });
+        showToast(`Berkas baru "${createdFile.name}" berhasil dibuat! Silakan tambah atau upload soal.`, "success");
+      };
+
+      // Fungsi Simpan Pengaturan Berkas (Kelas, Durasi, Hari)
+      const handleSaveFileSettings = (e) => {
+        e.preventDefault();
+        if (!editingFileSettings) return;
+        if (typeof setQuestionFiles === "function") {
+          setQuestionFiles(prev => prev.map(f => f.id === editingFileSettings.id ? {
+            ...f,
+            gradeLevel: editingFileSettings.gradeLevel || "Semua Kelas",
+            targetClasses: editingFileSettings.targetClasses || ["ALL"],
+            durationMinutes: Number(editingFileSettings.durationMinutes) || 60,
+            scheduleDay: editingFileSettings.scheduleDay || ""
+          } : f));
+        }
+        setShowFileSettingsModal(false);
+        setEditingFileSettings(null);
+        showToast("Pengaturan berkas ujian berhasil diperbarui!", "success");
+      };
+
+      // Fungsi Simpan Ubah Nama & Mapel Berkas
+      const handleSaveRenameFile = (e) => {
+        e.preventDefault();
+        if (!renamingFile || !renamingFile.name.trim()) return;
+        const newName = renamingFile.name.trim();
+        const newSubj = renamingFile.subject.trim() || "Umum";
+        if (typeof setQuestionFiles === "function") {
+          setQuestionFiles(prev => prev.map(f => f.id === renamingFile.id ? {
+            ...f,
+            name: newName,
+            subject: newSubj
+          } : f));
+        }
+        setQuestions(prev => prev.map(q => (q.fileId || "FILE_MAIN") === renamingFile.id ? {
+          ...q,
+          fileName: newName,
+          category: newSubj
+        } : q));
+        setShowRenameFileModal(false);
+        setRenamingFile(null);
+        showToast("Nama berkas dan mata pelajaran berhasil diubah!", "success");
+      };
+
+      // Fungsi Hapus Berkas beserta Butir Soalnya
+      const handleConfirmDeleteFile = () => {
+        if (!deletingFile) return;
+        if (questionFiles.length <= 1) {
+          showToast("Minimal harus menyisakan 1 berkas naskah soal!", "error");
+          setShowDeleteFileModal(false);
+          return;
+        }
+        const targetId = deletingFile.id;
+        const remainingFiles = questionFiles.filter(f => f.id !== targetId);
+        const remainingQuestions = questions.filter(q => (q.fileId || "FILE_MAIN") !== targetId);
+
+        if (typeof setQuestionFiles === "function") {
+          setQuestionFiles(remainingFiles);
+        }
+        setQuestions(remainingQuestions);
+        handleSaveBankSoalToGAS(remainingQuestions);
+
+        if (selectedFileId === targetId) {
+          setSelectedFileId(remainingFiles[0]?.id || "FILE_MAIN");
+        }
+        if (activeExamFileId === targetId && typeof setActiveExamFileId === "function") {
+          setActiveExamFileId(remainingFiles[0]?.id || "FILE_MAIN");
+        }
+        setShowDeleteFileModal(false);
+        setDeletingFile(null);
+        showToast(`Berkas "${deletingFile.name}" beserta soal di dalamnya telah dihapus.`, "success");
+      };
 
       // Parser Teks Soal (Word, PDF, Plain Text, atau Paste)
       const parseQuestionsFromRawText = (rawText, defaultCategory, defaultPoints) => {
@@ -3800,19 +4159,10 @@
         return parsedList;
       };
 
-      // Handler Upload Berkas Soal (Word, PDF, Excel, Text)
-      const handleQuestionFileUpload = async (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (!file) return;
-
-        setUploadedFileName(file.name);
-        setUploadFileLoading(true);
-        setPreviewQuestions([]);
-
-        const ext = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
-        setUploadFileType(ext);
-
-        try {
+      // Helper ekstrak satu berkas (Promise) untuk mendukung single maupun multi-file upload
+      const extractSingleFileQuestions = (file) => {
+        return new Promise((resolve, reject) => {
+          const ext = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
           if (ext === ".xlsx" || ext === ".xls") {
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -3820,18 +4170,12 @@
                 const data = new Uint8Array(evt.target.result);
                 const wb = XLSX.read(data, { type: "array" });
                 const parsed = parseQuestionsFromExcel(wb, uploadDefaultCategory, uploadDefaultPoints);
-                setPreviewQuestions(parsed);
-                setUploadFileLoading(false);
-                if (parsed.length === 0) {
-                  showToast("Format kolom Excel tidak cocok atau tidak ada baris soal yang terbaca.", "warning");
-                } else {
-                  showToast(`Berhasil membaca ${parsed.length} soal dari file Excel!`, "success");
-                }
+                resolve({ fileName: file.name, ext, questions: parsed });
               } catch (err) {
-                setUploadFileLoading(false);
-                showToast("Gagal memproses file Excel: " + err.message, "error");
+                reject(err);
               }
             };
+            reader.onerror = () => reject(new Error("Gagal membaca file Excel"));
             reader.readAsArrayBuffer(file);
           } else if (ext === ".docx" || ext === ".doc") {
             const reader = new FileReader();
@@ -3844,7 +4188,6 @@
                     const result = await window.mammoth.extractRawText({ arrayBuffer: arrayBuffer });
                     extractedText = result.value || "";
                   } catch (mErr) {
-                    // Fallback jika Mammoth gagal membaca format doc lama
                     const dec = new TextDecoder("utf-8", { fatal: false });
                     const rawHtml = dec.decode(arrayBuffer);
                     const parser = new DOMParser();
@@ -3855,20 +4198,13 @@
                   const dec = new TextDecoder("utf-8", { fatal: false });
                   extractedText = dec.decode(arrayBuffer);
                 }
-
                 const parsed = parseQuestionsFromRawText(extractedText, uploadDefaultCategory, uploadDefaultPoints);
-                setPreviewQuestions(parsed);
-                setUploadFileLoading(false);
-                if (parsed.length === 0) {
-                  showToast("Gagal mendeteksi butir soal dari Word. Pastikan format penomoran menggunakan 1. 2. dan A. B. C.", "warning");
-                } else {
-                  showToast(`Berhasil mengekstrak ${parsed.length} soal dari dokumen Word!`, "success");
-                }
+                resolve({ fileName: file.name, ext, questions: parsed });
               } catch (err) {
-                setUploadFileLoading(false);
-                showToast("Gagal memproses file Word: " + err.message, "error");
+                reject(err);
               }
             };
+            reader.onerror = () => reject(new Error("Gagal membaca file Word"));
             reader.readAsArrayBuffer(file);
           } else if (ext === ".pdf") {
             const reader = new FileReader();
@@ -3880,52 +4216,85 @@
                 const typedarray = new Uint8Array(evt.target.result);
                 const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
                 let fullText = "";
-
                 for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                   const page = await pdf.getPage(pageNum);
                   const textContent = await page.getTextContent();
                   const pageItems = textContent.items.map(item => item.str);
                   fullText += pageItems.join(" ") + "\n";
                 }
-
                 const parsed = parseQuestionsFromRawText(fullText, uploadDefaultCategory, uploadDefaultPoints);
-                setPreviewQuestions(parsed);
-                setUploadFileLoading(false);
-                if (parsed.length === 0) {
-                  showToast("PDF tidak berisi teks yang dapat diekstrak atau nomor soal tidak terdeteksi.", "warning");
-                } else {
-                  showToast(`Berhasil mengekstrak ${parsed.length} soal dari PDF!`, "success");
-                }
+                resolve({ fileName: file.name, ext, questions: parsed });
               } catch (err) {
-                setUploadFileLoading(false);
-                showToast("Gagal membaca PDF: " + err.message, "error");
+                reject(err);
               }
             };
+            reader.onerror = () => reject(new Error("Gagal membaca file PDF"));
             reader.readAsArrayBuffer(file);
           } else {
-            // Plain text (.txt atau lainnya)
             const reader = new FileReader();
             reader.onload = (evt) => {
               try {
                 const text = evt.target.result || "";
                 const parsed = parseQuestionsFromRawText(text, uploadDefaultCategory, uploadDefaultPoints);
-                setPreviewQuestions(parsed);
-                setUploadFileLoading(false);
-                if (parsed.length === 0) {
-                  showToast("Tidak ada butir soal yang terdeteksi dari file teks.", "warning");
-                } else {
-                  showToast(`Berhasil membaca ${parsed.length} soal dari file teks!`, "success");
-                }
+                resolve({ fileName: file.name, ext, questions: parsed });
               } catch (err) {
-                setUploadFileLoading(false);
-                showToast("Gagal membaca file: " + err.message, "error");
+                reject(err);
               }
             };
+            reader.onerror = () => reject(new Error("Gagal membaca file Teks"));
             reader.readAsText(file);
+          }
+        });
+      };
+
+      // Handler Upload Berkas Soal (Mendukung 1 atau Banyak File Sekaligus -> Masing-masing Jadi Berkas Terpisah)
+      const handleQuestionFileUpload = async (e) => {
+        const filesList = e.target.files ? Array.from(e.target.files) : [];
+        if (filesList.length === 0) return;
+
+        setUploadFileLoading(true);
+        setPreviewQuestions([]);
+        setUploadedFilesBatch([]);
+
+        if (filesList.length === 1) {
+          setUploadedFileName(filesList[0].name);
+          setUploadTargetFileName(filesList[0].name);
+        } else {
+          setUploadedFileName(`${filesList.length} Berkas Dipilih (${filesList.map(f => f.name).join(", ")})`);
+          setUploadTargetFileName(`${filesList.length} Berkas Terpisah`);
+        }
+
+        try {
+          const batchResults = [];
+          let combinedPreview = [];
+
+          for (let i = 0; i < filesList.length; i++) {
+            const res = await extractSingleFileQuestions(filesList[i]);
+            if (res.questions && res.questions.length > 0) {
+              batchResults.push(res);
+              combinedPreview = [
+                ...combinedPreview,
+                ...res.questions.map(q => ({ ...q, _sourceFileName: res.fileName }))
+              ];
+            }
+          }
+
+          setUploadedFilesBatch(batchResults);
+          setPreviewQuestions(combinedPreview);
+          setUploadFileLoading(false);
+
+          if (combinedPreview.length === 0) {
+            showToast("Tidak ada butir soal yang terdeteksi. Pastikan penomoran soal menggunakan 1. 2. dan opsi A. B. C. D.", "warning");
+          } else if (batchResults.length > 1) {
+            setUploadImportMode("new_file");
+            showToast(`Berhasil membaca ${combinedPreview.length} soal dari ${batchResults.length} berkas berbeda!`, "success");
+          } else {
+            setUploadImportMode("new_file");
+            showToast(`Berhasil mengekstrak ${combinedPreview.length} soal dari berkas "${batchResults[0].fileName}"!`, "success");
           }
         } catch (globalErr) {
           setUploadFileLoading(false);
-          showToast("Terjadi kendala saat membaca file: " + globalErr.message, "error");
+          showToast("Terjadi kendala saat membaca berkas: " + (globalErr.message || globalErr), "error");
         }
       };
 
@@ -3939,8 +4308,14 @@
         if (parsed.length === 0) {
           showToast("Format soal tidak terdeteksi. Gunakan pola penomoran: 1. Soal ... A. Opsi A B. Opsi B Kunci: A", "error");
         } else {
-          setPreviewQuestions(parsed);
-          setUploadedFileName("Input Salin-Tempel Manual");
+          const defaultPasteName = uploadTargetFileName.trim() || `Naskah Soal Baru (${questionFiles.length + 1})`;
+          setPreviewQuestions(parsed.map(q => ({ ...q, _sourceFileName: defaultPasteName })));
+          setUploadedFilesBatch([{ fileName: defaultPasteName, ext: ".txt", questions: parsed }]);
+          setUploadedFileName(defaultPasteName);
+          if (!uploadTargetFileName.trim()) {
+            setUploadTargetFileName(defaultPasteName);
+          }
+          setUploadImportMode("new_file");
           showToast(`Berhasil memproses ${parsed.length} butir soal dari teks!`, "success");
         }
       };
@@ -4053,39 +4428,126 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
         showToast("Template Text (.txt) berhasil diunduh!", "success");
       };
 
-      // Konfirmasi Simpan Impor Soal
+      // Konfirmasi Simpan Impor Soal (Default: Buat Berkas Baru Terpisah untuk Setiap File yang Diunggah)
       const handleConfirmImport = () => {
         if (!previewQuestions || previewQuestions.length === 0) {
           showToast("Tidak ada butir soal untuk diimpor!", "warning");
           return;
         }
 
-        let updated = [];
-        if (uploadImportMode === "replace") {
-          updated = previewQuestions.map((q, idx) => ({
-            ...q,
-            id: "Q" + (idx + 1),
-            number: idx + 1
-          }));
+        let updatedQuestions = [...questions];
+
+        if (uploadImportMode === "new_file") {
+          // Buat berkas tersendiri (tidak digabung dengan soal lama)
+          if (uploadedFilesBatch.length > 1) {
+            const newFilesToCreate = [];
+            let firstCreatedId = "";
+            uploadedFilesBatch.forEach((batchItem, bIdx) => {
+              const newFileId = "FILE_" + Date.now() + "_" + bIdx;
+              if (bIdx === 0) firstCreatedId = newFileId;
+              const fName = batchItem.fileName || `Berkas Soal ${questionFiles.length + bIdx + 1}`;
+              newFilesToCreate.push({
+                id: newFileId,
+                name: fName,
+                subject: uploadDefaultCategory || "Umum",
+                gradeLevel: uploadGradeLevel || "Semua Kelas",
+                targetClasses: ["ALL"],
+                durationMinutes: Number(uploadDurationMinutes) || 60,
+                scheduleDay: uploadScheduleDay || "",
+                createdAt: new Date().toISOString().slice(0, 10)
+              });
+              const taggedQs = batchItem.questions.map((q, qIdx) => ({
+                ...q,
+                id: "Q_" + Date.now() + "_" + bIdx + "_" + (qIdx + 1),
+                fileId: newFileId,
+                fileName: fName,
+                number: qIdx + 1,
+                category: q.category || uploadDefaultCategory || "Umum",
+                points: Number(q.points) || Number(uploadDefaultPoints) || 10
+              }));
+              updatedQuestions = [...updatedQuestions, ...taggedQs];
+            });
+
+            if (typeof setQuestionFiles === "function") {
+              setQuestionFiles(prev => [...prev, ...newFilesToCreate]);
+            }
+            if (firstCreatedId) setSelectedFileId(firstCreatedId);
+            showToast(`Sukses! ${newFilesToCreate.length} berkas soal baru (${previewQuestions.length} butir soal) berhasil dibuat secara terpisah!`, "success");
+          } else {
+            const newFileId = "FILE_" + Date.now();
+            const fName = (uploadTargetFileName || uploadedFileName || `Berkas Soal ${questionFiles.length + 1}`).trim();
+            const newFileEntry = {
+              id: newFileId,
+              name: fName,
+              subject: uploadDefaultCategory || "Umum",
+              gradeLevel: uploadGradeLevel || "Semua Kelas",
+              targetClasses: ["ALL"],
+              durationMinutes: Number(uploadDurationMinutes) || 60,
+              scheduleDay: uploadScheduleDay || "",
+              createdAt: new Date().toISOString().slice(0, 10)
+            };
+
+            const taggedQs = previewQuestions.map((q, idx) => ({
+              ...q,
+              id: "Q_" + Date.now() + "_" + (idx + 1),
+              fileId: newFileId,
+              fileName: fName,
+              number: idx + 1,
+              category: q.category || uploadDefaultCategory || "Umum",
+              points: Number(q.points) || Number(uploadDefaultPoints) || 10
+            }));
+
+            updatedQuestions = [...updatedQuestions, ...taggedQs];
+            if (typeof setQuestionFiles === "function") {
+              setQuestionFiles(prev => [...prev, newFileEntry]);
+            }
+            setSelectedFileId(newFileId);
+            showToast(`Berkas baru "${fName}" (${taggedQs.length} butir soal) berhasil ditambahkan secara terpisah!`, "success");
+          }
         } else {
-          // Mode Append (Tambahkan)
-          const baseNum = questions.length;
-          const renumberedNew = previewQuestions.map((q, idx) => ({
-            ...q,
-            id: "Q" + (baseNum + idx + 1),
-            number: baseNum + idx + 1
-          }));
-          updated = [...questions, ...renumberedNew];
+          // Mode Tambahkan atau Gantikan pada Berkas yang Sedang Dipilih
+          const targetFId = selectedFileId === "ALL" ? (questionFiles[0]?.id || "FILE_MAIN") : selectedFileId;
+          const targetFObj = questionFiles.find(f => f.id === targetFId) || { id: targetFId, name: "Naskah Soal Utama CBT" };
+
+          if (uploadImportMode === "replace") {
+            const otherFilesQuestions = questions.filter(q => (q.fileId || "FILE_MAIN") !== targetFId);
+            const replacedForThisFile = previewQuestions.map((q, idx) => ({
+              ...q,
+              id: "Q_" + Date.now() + "_" + (idx + 1),
+              fileId: targetFId,
+              fileName: targetFObj.name,
+              number: idx + 1,
+              category: q.category || uploadDefaultCategory || "Umum",
+              points: Number(q.points) || Number(uploadDefaultPoints) || 10
+            }));
+            updatedQuestions = [...otherFilesQuestions, ...replacedForThisFile];
+            showToast(`Isi berkas "${targetFObj.name}" berhasil diganti dengan ${replacedForThisFile.length} soal baru!`, "success");
+          } else {
+            const existingInFile = questions.filter(q => (q.fileId || "FILE_MAIN") === targetFId);
+            const baseNum = existingInFile.length;
+            const appendedForThisFile = previewQuestions.map((q, idx) => ({
+              ...q,
+              id: "Q_" + Date.now() + "_" + (idx + 1),
+              fileId: targetFId,
+              fileName: targetFObj.name,
+              number: baseNum + idx + 1,
+              category: q.category || uploadDefaultCategory || "Umum",
+              points: Number(q.points) || Number(uploadDefaultPoints) || 10
+            }));
+            updatedQuestions = [...questions, ...appendedForThisFile];
+            showToast(`${appendedForThisFile.length} soal berhasil ditambahkan ke berkas "${targetFObj.name}"!`, "success");
+          }
         }
 
-        setQuestions(updated);
-        handleSaveBankSoalToGAS(updated);
+        setQuestions(updatedQuestions);
+        handleSaveBankSoalToGAS(updatedQuestions);
 
         setShowUploadModal(false);
         setPreviewQuestions([]);
+        setUploadedFilesBatch([]);
         setUploadedFileName("");
+        setUploadTargetFileName("");
         setManualPasteText("");
-        showToast(`Sukses! ${previewQuestions.length} soal berhasil dimasukkan ke Bank Soal.`, "success");
       };
 
       // Simpan Bank Soal ke Spreadsheet via google.script.run
@@ -4106,7 +4568,7 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
         }
       };
 
-      // Tambah Soal Baru
+      // Tambah Soal Baru Manual ke Berkas yang Sedang Dipilih
       const handleAddQuestionSubmit = (e) => {
         e.preventDefault();
         if (!newQForm.question.trim()) {
@@ -4114,11 +4576,17 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
           return;
         }
 
+        const targetFId = selectedFileId === "ALL" ? (questionFiles[0]?.id || "FILE_MAIN") : selectedFileId;
+        const targetFObj = questionFiles.find(f => f.id === targetFId) || { id: targetFId, name: "Naskah Soal Utama CBT" };
+        const existingInFile = questions.filter(q => (q.fileId || "FILE_MAIN") === targetFId);
+
         const newQ = {
-          id: "Q" + (questions.length + 1),
-          number: questions.length + 1,
+          id: "Q_" + Date.now(),
+          fileId: targetFId,
+          fileName: targetFObj.name,
+          number: existingInFile.length + 1,
           type: newQForm.type,
-          category: newQForm.category,
+          category: newQForm.category || targetFObj.subject || "Umum",
           question: newQForm.question,
           options: (newQForm.type === "PILIHAN_GANDA" || newQForm.type === "PILIHAN_GANDA_KOMPLEKS" || newQForm.type === "AUDIO_LISTENING") ? [
             { key: "A", text: newQForm.optA || "Pilihan A" },
@@ -4136,7 +4604,7 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
         setShowAddQuestionModal(false);
         setNewQForm({
           type: "PILIHAN_GANDA",
-          category: "Umum",
+          category: targetFObj.subject || "Umum",
           question: "",
           optA: "",
           optB: "",
@@ -4145,17 +4613,33 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
           correctAnswer: "A",
           points: 10
         });
-        showToast("Soal baru berhasil ditambahkan!", "success");
-
-        // Otomatis simpan ke Google Spreadsheet
+        showToast(`Soal baru berhasil ditambahkan ke berkas "${targetFObj.name}"!`, "success");
         handleSaveBankSoalToGAS(updatedQuestions);
       };
 
-      // Filter Soal
+      // Hapus Butir Soal Satuan
+      const handleDeleteSingleQuestion = (qId) => {
+        const updatedQuestions = questions.filter(q => q.id !== qId);
+        setQuestions(updatedQuestions);
+        handleSaveBankSoalToGAS(updatedQuestions);
+        showToast("Butir soal berhasil dihapus dari berkas.", "success");
+      };
+
+      // Filter Soal Berdasarkan Berkas yang Dipilih & Kategori
       const filteredQuestions = useMemo(() => {
-        if (filterCategory === "SEMUA") return questions;
-        return questions.filter(q => q.category.toLowerCase().includes(filterCategory.toLowerCase()) || q.type === filterCategory);
-      }, [questions, filterCategory]);
+        let byFile = questions;
+        if (selectedFileId && selectedFileId !== "ALL") {
+          byFile = questions.filter(q => (q.fileId || "FILE_MAIN") === selectedFileId);
+        }
+        let byCat = byFile;
+        if (filterCategory !== "SEMUA") {
+          byCat = byFile.filter(q => (q.category || "").toLowerCase().includes(filterCategory.toLowerCase()) || q.type === filterCategory);
+        }
+        return byCat.map((q, idx) => ({
+          ...q,
+          displayNumber: idx + 1
+        }));
+      }, [questions, selectedFileId, filterCategory]);
 
       // Rollback Revisi Soal
       const handleRollback = (rev) => {
@@ -4175,11 +4659,13 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
         handleSaveBankSoalToGAS(updatedList);
       };
 
-      // Ekspor Dokumen Word (.doc) Ber-Kop Surat Resmi
+      // Ekspor Dokumen Word (.doc) Ber-Kop Surat Resmi (Berdasarkan Berkas yang Sedang Dipilih)
       const exportToWord = (includeKey = false) => {
+        const targetList = filteredQuestions.length > 0 ? filteredQuestions : questions;
+        const fileLabel = currentSelectedFileObj?.name || "Naskah_Soal";
         const headerHtml = `
           <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-          <head><meta charset='utf-8'><title>Naskah Soal Ujian</title>
+          <head><meta charset='utf-8'><title>Naskah Soal Ujian - ${fileLabel}</title>
           <style>
             body { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.5; color: #000; }
             .kop { text-align: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 20px; }
@@ -4193,14 +4679,15 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
               <h2 style='margin:0;'>SMAN 1 SEBATIK • SISTEM GUSTHYPALINPATANDAEXAM</h2>
               <p style='margin:0; font-size:10pt;'>Naskah Ujian Sumatif Komprehensif Semester Berbasis CBT Anti-Kecurangan</p>
             </div>
-            <h4 style='text-align:center;'>LEMBAR SOAL UJIAN ONLINE</h4>
+            <h4 style='text-align:center; margin-bottom:4px;'>LEMBAR SOAL UJIAN ONLINE</h4>
+            <p style='text-align:center; margin-top:0; font-size:11pt;'><strong>Berkas:</strong> ${fileLabel} (${targetList.length} Butir Soal)</p>
         `;
 
         let bodyHtml = "";
-        questions.forEach((q, idx) => {
+        targetList.forEach((q, idx) => {
           bodyHtml += `
             <div class='soal-box'>
-              <p><strong>${idx + 1}. [${q.category} - Bobot: ${q.points} Poin]</strong><br/>${q.question.replace(/\$/g, "")}</p>
+              <p><strong>${idx + 1}. [${q.category} - Bobot: ${q.points} Poin]</strong><br/>${(q.question || "").replace(/\$/g, "")}</p>
           `;
           if (q.options) {
             bodyHtml += "<div style='margin-left: 20px;'>";
@@ -4225,26 +4712,30 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
         const footerHtml = "</body></html>";
         const fullContent = headerHtml + bodyHtml + footerHtml;
 
+        const safeName = fileLabel.replace(/[^a-zA-Z0-9_-]/g, "_");
         const blob = new Blob(['\ufeff' + fullContent], { type: 'application/msword' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `Naskah_Soal_GPP_${includeKey ? "Dengan_Kunci" : "Siswa"}.doc`;
+        a.download = `Naskah_${safeName}_${includeKey ? "Dengan_Kunci" : "Siswa"}.doc`;
         a.click();
         URL.revokeObjectURL(url);
-        showToast("Naskah Word (.doc) berhasil diunduh!", "success");
+        showToast(`Naskah Word "${fileLabel}" berhasil diunduh!`, "success");
       };
 
-      // Ekspor Rekap Excel Bank Soal
+      // Ekspor Rekap Excel Bank Soal (Berdasarkan Berkas yang Sedang Dipilih)
       const exportQuestionsToExcel = () => {
         if (!window.XLSX) return;
+        const targetList = filteredQuestions.length > 0 ? filteredQuestions : questions;
+        const fileLabel = currentSelectedFileObj?.name || "Bank_Soal";
         const rows = [
-          ["ID_SOAL", "NOMOR", "TIPE", "KATEGORI", "BOBOT", "TEKS_SOAL", "KUNCI_JAWABAN", "PENJELASAN"]
+          ["ID_SOAL", "BERKAS_NASKAH", "NOMOR", "TIPE", "KATEGORI", "BOBOT", "TEKS_SOAL", "KUNCI_JAWABAN", "PENJELASAN"]
         ];
-        questions.forEach(q => {
+        targetList.forEach((q, idx) => {
           rows.push([
             q.id,
-            q.number,
+            q.fileName || fileLabel,
+            idx + 1,
             q.type,
             q.category,
             q.points,
@@ -4254,207 +4745,900 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
           ]);
         });
 
+        const safeName = fileLabel.replace(/[^a-zA-Z0-9_-]/g, "_");
         const ws = XLSX.utils.aoa_to_sheet(rows);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Bank_Soal");
-        XLSX.writeFile(wb, "Bank_Soal_GusthyPalinPatandaExam.xlsx");
-        showToast("Bank Soal Excel berhasil diekspor!", "success");
+        XLSX.writeFile(wb, `Bank_Soal_${safeName}.xlsx`);
+        showToast(`Bank Soal Excel "${fileLabel}" berhasil diekspor!`, "success");
       };
 
       return (
-        <div className="space-y-4">
-          {/* TOOLBAR BANK SOAL */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
-            {/* Filter Kategori Dropdown / Button */}
-            <div className="relative">
-              <button
-                onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/40 rounded-xl text-xs font-bold flex items-center gap-2 transition"
-              >
-                <Icons.Filter />
-                <span>Filter Kategori: [{filterCategory}]</span>
-              </button>
-
-              {showCategoryDropdown && (
-                <div className="absolute left-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-30 p-1 space-y-0.5 text-xs">
-                  {["SEMUA", "Pilihan Ganda", "Pilihan Ganda Kompleks", "Menjodohkan", "Benar / Salah", "Essay"].map(cat => (
-                    <button
-                      key={cat}
-                      onClick={() => { setFilterCategory(cat); setShowCategoryDropdown(false); }}
-                      className={`w-full text-left px-3 py-2 rounded-lg font-medium transition ${
-                        filterCategory === cat ? "bg-cyan-500 text-slate-950 font-bold" : "text-slate-300 hover:bg-slate-800"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
+        <div className="space-y-5">
+          {/* 1. BANNER PROTEKSI ANTI-NYONTEK SISWA (ACAK URUTAN SOAL & PILIHAN) */}
+          <div className="bg-gradient-to-r from-indigo-950/90 via-purple-950/85 to-slate-900 border border-purple-500/30 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-lg">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-xl bg-purple-500/20 border border-purple-500/40 text-purple-300 flex items-center justify-center shrink-0">
+                <Icons.Shuffle />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-sm font-bold text-white">
+                    Proteksi Anti-Nyontek Siswa (Acak Urutan Soal & Pilihan)
+                  </h3>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide uppercase border ${
+                    appConfig?.exam?.shuffleQuestions !== false
+                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                      : "bg-amber-500/20 text-amber-300 border-amber-500/40"
+                  }`}>
+                    {appConfig?.exam?.shuffleQuestions !== false ? "Aktif Otomatis" : "Urutan Tetap"}
+                  </span>
                 </div>
-              )}
+                <p className="text-xs text-slate-300/90 mt-0.5">
+                  Setiap siswa login menerima urutan soal unik berbasis seed NISN & ID Ujian. Siswa bersebelahan memiliki soal berbeda di setiap nomor.
+                </p>
+              </div>
             </div>
 
-            {/* Tombol Aksi & Ekspor Options */}
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                onClick={() => setShowAddQuestionModal(true)}
-                className="px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-cyan-500/20"
-              >
-                <Icons.Plus />
-                <span>Tambah Soal Baru</span>
-              </button>
-
-              <button
-                onClick={() => setShowUploadModal(true)}
-                className="px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-emerald-500/20"
-                title="Unggah berkas soal dari Word (.doc/.docx), PDF (.pdf), Excel (.xlsx/.xls), atau Plain Text (.txt)"
-              >
-                <Icons.Upload />
-                <span>Upload Soal (Word / PDF / Excel / Text)</span>
-              </button>
-
-              <button
-                onClick={() => handleSaveBankSoalToGAS()}
-                className="px-3 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-                title="Simpan seluruh butir soal ke Google Spreadsheet sheet Bank_Soal"
-              >
-                <Icons.Cloud />
-                <span>Simpan ke Spreadsheet</span>
-              </button>
-
-              <button
-                onClick={() => setShowRevisionModal(true)}
-                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-              >
-                <Icons.Clock />
-                <span>Riwayat Revisi ({revisions.length})</span>
-              </button>
-
-              <button
-                onClick={() => exportToWord(false)}
-                className="px-3 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-              >
-                <Icons.FileText />
-                <span>Ekspor Word (.doc)</span>
-              </button>
-
-              <button
-                onClick={() => exportToWord(true)}
-                className="px-3 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-              >
-                <Icons.CheckCircle />
-                <span>Word + Kunci</span>
-              </button>
-
-              <button
-                onClick={exportQuestionsToExcel}
-                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-              >
-                <Icons.Download />
-                <span>Ekspor Excel (.xlsx)</span>
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowAntiCheatModal(true)}
+              className="px-3.5 py-2 bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 border border-purple-400/40 rounded-xl text-xs font-bold transition shrink-0"
+            >
+              Ubah Pengaturan
+            </button>
           </div>
 
-          {/* DAFTAR BUTIR SOAL */}
-          <div className="space-y-4">
-            {filteredQuestions.map((q, idx) => (
-              <div key={q.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 font-bold flex items-center justify-center text-xs">
-                      #{q.number}
+          {/* 2. MENU DAFTAR BERKAS & DOKUMEN NASKAH SOAL (TERPISAH / TIDAK GABUNG) */}
+          <div className="bg-slate-900/95 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+            {/* Header Daftar Berkas */}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
+                  <Icons.Folder />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="text-base font-extrabold text-white tracking-tight">
+                      Daftar Berkas & Dokumen Naskah Soal ({questionFiles.length} Berkas)
+                    </h2>
+                    <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 text-[10px] font-bold">
+                      Terpisah / Tidak Gabung
                     </span>
-                    <span className="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-[11px] font-semibold">
-                      {q.category}
-                    </span>
-                    {q.type === "AUDIO_LISTENING" && (
-                      <span className="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[11px] font-semibold flex items-center gap-1">
-                        <Icons.Volume2 /> Audio Listening
+                  </div>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Setiap naskah ujian tersimpan dalam berkas tersendiri. Pilih berkas di bawah untuk melihat, mengunggah, atau menjadikannya ujian aktif siswa.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUploadImportMode("new_file");
+                    setShowUploadModal(true);
+                  }}
+                  className="px-3.5 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 font-bold rounded-xl text-xs flex items-center gap-1.5 transition"
+                  title="Upload file Word/PDF/Excel/TXT otomatis menjadi berkas naskah baru tersendiri"
+                >
+                  <Icons.Upload />
+                  <span>Upload Berkas Soal</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowCreateFileModal(true)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg shadow-blue-600/25"
+                >
+                  <Icons.FolderPlus />
+                  <span>+ Buat Berkas Baru</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Grid Kartu Berkas Soal (4 Kolom seperti Gambar 2) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+              {questionFiles.map((file) => {
+                const qCount = fileQuestionCounts[file.id] || 0;
+                const isSelected = selectedFileId === file.id;
+                const isActiveExam = activeExamFileId === file.id;
+                const targetClassesLabel = (!file.targetClasses || file.targetClasses.includes("ALL"))
+                  ? "Semua Kelas"
+                  : `${file.targetClasses.length} Kelas`;
+
+                return (
+                  <div
+                    key={file.id}
+                    onClick={() => setSelectedFileId(file.id)}
+                    className={`rounded-2xl p-4 border transition cursor-pointer flex flex-col justify-between space-y-3 relative group ${
+                      isSelected
+                        ? "bg-slate-900 border-cyan-400 shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-400/50"
+                        : isActiveExam
+                        ? "bg-slate-950/90 border-emerald-500/60 hover:border-emerald-400"
+                        : "bg-slate-950/80 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60"
+                    }`}
+                  >
+                    {/* Bagian Atas: Ikon Dokumen + Nama Berkas + Mapel */}
+                    <div className="space-y-2.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start gap-2.5 min-w-0">
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border ${
+                            isActiveExam
+                              ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-400"
+                              : isSelected
+                              ? "bg-cyan-500/15 border-cyan-500/40 text-cyan-400"
+                              : "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                          }`}>
+                            <Icons.FileText />
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="text-xs font-extrabold text-white truncate" title={file.name}>
+                              {file.name}
+                            </h4>
+                            <p className="text-[11px] text-slate-400 truncate" title={file.subject || "Umum"}>
+                              {file.subject || "Umum"}
+                            </p>
+                          </div>
+                        </div>
+
+                        {isActiveExam && (
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-extrabold shrink-0">
+                            ★ Ujian Aktif
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Baris Badge 1: Jumlah Soal, Tingkat Kelas, Durasi */}
+                      <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                        <span className="px-2 py-0.5 rounded-md bg-slate-900 border border-slate-700/80 text-white text-[10px] font-bold">
+                          {qCount} Butir Soal
+                        </span>
+                        <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${
+                          file.gradeLevel && file.gradeLevel !== "Semua Kelas"
+                            ? "bg-purple-500/20 text-purple-300 border-purple-500/30"
+                            : "bg-slate-800 text-slate-300 border-slate-700"
+                        }`}>
+                          {file.gradeLevel || "Semua Kelas"}
+                        </span>
+                        <span className="px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] font-bold flex items-center gap-1">
+                          ⏱ {file.durationMinutes || 60}m
+                        </span>
+                      </div>
+
+                      {/* Baris Badge 2: Target Rombel & Hari Jadwal */}
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="px-2 py-0.5 rounded-md bg-blue-500/15 border border-blue-500/30 text-blue-300 text-[10px] font-semibold flex items-center gap-1">
+                          👥 {targetClassesLabel}
+                        </span>
+                        {file.scheduleDay && (
+                          <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-semibold flex items-center gap-1">
+                            📅 {file.scheduleDay}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Baris Bawah: Tombol Jadikan Ujian & Ikon Aksi (Pengaturan, Rename, Hapus) */}
+                    <div className="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2" onClick={(e) => e.stopPropagation()}>
+                      {isActiveExam ? (
+                        <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold flex items-center gap-1">
+                          ✓ Dipakai Ujian
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleSetAsActiveExam(file.id)}
+                          className="px-2.5 py-1 rounded-lg bg-indigo-600/25 hover:bg-indigo-600/40 text-indigo-200 border border-indigo-500/40 text-[10px] font-bold transition"
+                          title="Jadikan berkas naskah ini sebagai ujian aktif untuk siswa"
+                        >
+                          Jadikan Ujian
+                        </button>
+                      )}
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingFileSettings({
+                              id: file.id,
+                              name: file.name,
+                              gradeLevel: file.gradeLevel || "Semua Kelas",
+                              targetClasses: file.targetClasses || ["ALL"],
+                              durationMinutes: file.durationMinutes || 60,
+                              scheduleDay: file.scheduleDay || ""
+                            });
+                            setShowFileSettingsModal(true);
+                          }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-slate-800 transition"
+                          title="Atur Kelas Target, Durasi & Hari Ujian"
+                        >
+                          <Icons.Sliders />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setRenamingFile({
+                              id: file.id,
+                              name: file.name,
+                              subject: file.subject || "Umum"
+                            });
+                            setShowRenameFileModal(true);
+                          }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800 transition"
+                          title="Ubah Nama Berkas & Mata Pelajaran"
+                        >
+                          <Icons.Edit />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDeletingFile(file);
+                            setShowDeleteFileModal(true);
+                          }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 transition"
+                          title="Hapus Berkas Soal Ini"
+                        >
+                          <Icons.Trash />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Kartu Spesial: Semua Berkas (Gabungan) */}
+              <div
+                onClick={() => setSelectedFileId("ALL")}
+                className={`rounded-2xl p-4 border transition cursor-pointer flex flex-col justify-between space-y-3 ${
+                  selectedFileId === "ALL"
+                    ? "bg-slate-900 border-teal-400 shadow-lg shadow-teal-500/10 ring-1 ring-teal-400/50"
+                    : activeExamFileId === "ALL"
+                    ? "bg-slate-950/90 border-emerald-500/60"
+                    : "bg-slate-950/80 border-slate-800/90 hover:border-slate-700"
+                }`}
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start gap-2.5">
+                      <div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0">
+                        <Icons.Layers />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-extrabold text-white">
+                          Semua Berkas (Gabungan)
+                        </h4>
+                        <p className="text-[11px] text-slate-400">
+                          Tampilkan keseluruhan soal
+                        </p>
+                      </div>
+                    </div>
+
+                    {activeExamFileId === "ALL" && (
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-extrabold shrink-0">
+                        ★ Ujian Aktif
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="text-slate-400">Bobot: <strong className="text-cyan-400">{q.points} Poin</strong></span>
+
+                  <div className="pt-0.5">
+                    <span className="px-2.5 py-0.5 rounded-md bg-slate-900 border border-slate-700 text-white text-[10px] font-bold">
+                      {questions.length} Butir Soal Total
+                    </span>
                   </div>
                 </div>
 
-                {/* Question Text with KaTeX */}
-                <div className="text-sm text-slate-200 font-medium">
-                  <KatexMath text={q.question} />
+                <div className="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2" onClick={(e) => e.stopPropagation()}>
+                  {activeExamFileId === "ALL" ? (
+                    <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+                      ✓ Semua Soal Dipakai Siswa
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleSetAsActiveExam("ALL")}
+                      className="px-2.5 py-1 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold transition"
+                    >
+                      Jadikan Ujian Gabungan
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedFileId("ALL")}
+                    className="text-[11px] font-bold text-teal-400 hover:text-teal-300"
+                  >
+                    Pilih →
+                  </button>
                 </div>
+              </div>
+            </div>
+          </div>
 
-                {/* Audio Listening Player Simulation */}
-                {q.audioUrl && (
-                  <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center gap-3 text-xs">
-                    <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
-                      <Icons.Volume2 />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-white">Audio Rekaman Listening</p>
-                      <p className="text-[11px] text-slate-400">Batas putar: Maksimal {q.audioMaxPlays || 2} kali per peserta</p>
-                    </div>
-                  </div>
+          {/* 3. TOOLBAR BERKAS SOAL YANG SEDANG DIPILIH */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+            {/* Info Berkas yang Sedang Dilihat */}
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800/80">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-bold flex items-center gap-1.5">
+                  <Icons.FileText />
+                  <span>Berkas Dibuka: {currentSelectedFileObj?.name}</span>
+                </span>
+                <span className="text-xs text-slate-400">
+                  ({filteredQuestions.length} Butir Soal Ditampilkan)
+                </span>
+                {activeExamFileId === selectedFileId ? (
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold">
+                    ★ Sedang Dijadikan Ujian Aktif Siswa
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleSetAsActiveExam(selectedFileId)}
+                    className="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow"
+                  >
+                    Jadikan Berkas Ini Ujian Aktif
+                  </button>
                 )}
+              </div>
 
-                {/* Multiple Choice Options */}
-                {q.options && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs pt-1">
-                    {q.options.map(opt => {
-                      const isCorrect = Array.isArray(q.correctAnswer)
-                        ? q.correctAnswer.includes(opt.key)
-                        : q.correctAnswer === opt.key;
-                      return (
-                        <div
-                          key={opt.key}
-                          className={`p-2.5 rounded-xl border flex items-start gap-2.5 ${
-                            isCorrect
-                              ? "bg-emerald-950/40 border-emerald-500/50 text-emerald-200"
-                              : "bg-slate-950/60 border-slate-800 text-slate-300"
-                          }`}
-                        >
-                          <span className={`w-5 h-5 rounded flex items-center justify-center font-bold text-[11px] ${
-                            isCorrect ? "bg-emerald-500 text-slate-950" : "bg-slate-800 text-slate-400"
-                          }`}>
-                            {opt.key}
-                          </span>
-                          <span className="flex-1 mt-0.5">{opt.text}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
+              <div className="text-[11px] text-slate-400">
+                Mapel: <strong className="text-slate-200">{currentSelectedFileObj?.subject || "Umum"}</strong>
+              </div>
+            </div>
 
-                {/* Matching Pairs */}
-                {q.pairs && (
-                  <div className="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs space-y-1.5">
-                    <p className="font-semibold text-slate-400 text-[11px] uppercase tracking-wider mb-2">Kunci Pasangan Menjodohkan:</p>
-                    {q.pairs.map((p, pIdx) => (
-                      <div key={pIdx} className="flex items-center justify-between p-2 rounded-lg bg-slate-900 border border-slate-800/80">
-                        <span className="font-mono text-cyan-300">{p.premise}</span>
-                        <span className="text-slate-500 font-bold mx-2">➔</span>
-                        <span className="text-emerald-300 font-semibold">{p.correctTarget}</span>
-                      </div>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              {/* Filter Kategori Dropdown / Button */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                  className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/40 rounded-xl text-xs font-bold flex items-center gap-2 transition"
+                >
+                  <Icons.Filter />
+                  <span>Filter Kategori: [{filterCategory}]</span>
+                </button>
+
+                {showCategoryDropdown && (
+                  <div className="absolute left-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-30 p-1 space-y-0.5 text-xs">
+                    {["SEMUA", "Pilihan Ganda", "Pilihan Ganda Kompleks", "Menjodohkan", "Benar / Salah", "Essay"].map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => { setFilterCategory(cat); setShowCategoryDropdown(false); }}
+                        className={`w-full text-left px-3 py-2 rounded-lg font-medium transition ${
+                          filterCategory === cat ? "bg-cyan-500 text-slate-950 font-bold" : "text-slate-300 hover:bg-slate-800"
+                        }`}
+                      >
+                        {cat}
+                      </button>
                     ))}
                   </div>
                 )}
-
-                {/* Essay AI Rubric Info */}
-                {q.rubric && (
-                  <div className="p-3 bg-cyan-950/30 border border-cyan-800/40 rounded-xl text-xs space-y-1">
-                    <p className="font-bold text-cyan-300 flex items-center gap-1.5">
-                      <Icons.Brain /> Rubrik Evaluasi AI untuk Koreksi Esai:
-                    </p>
-                    <p className="text-slate-300 text-[11px]">
-                      Kata Kunci Wajib: {q.rubric.keywords.map(kw => (
-                        <span key={kw} className="inline-block px-1.5 py-0.5 bg-slate-800 text-cyan-300 rounded mx-1 font-mono text-[10px]">
-                          {kw}
-                        </span>
-                      ))}
-                    </p>
-                  </div>
-                )}
               </div>
-            ))}
+
+              {/* Tombol Aksi & Ekspor Options */}
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={() => setShowAddQuestionModal(true)}
+                  className="px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-cyan-500/20"
+                >
+                  <Icons.Plus />
+                  <span>Tambah Soal Manual</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setUploadImportMode("new_file");
+                    setShowUploadModal(true);
+                  }}
+                  className="px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-emerald-500/20"
+                  title="Unggah berkas soal dari Word (.doc/.docx), PDF (.pdf), Excel (.xlsx/.xls), atau Plain Text (.txt) sebagai berkas tersendiri"
+                >
+                  <Icons.Upload />
+                  <span>Upload Soal (Word / PDF / Excel / Text)</span>
+                </button>
+
+                <button
+                  onClick={() => handleSaveBankSoalToGAS()}
+                  className="px-3 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                  title="Simpan seluruh butir soal ke Google Spreadsheet sheet Bank_Soal"
+                >
+                  <Icons.Cloud />
+                  <span>Simpan ke Spreadsheet</span>
+                </button>
+
+                <button
+                  onClick={() => setShowRevisionModal(true)}
+                  className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                >
+                  <Icons.Clock />
+                  <span>Riwayat Revisi ({revisions.length})</span>
+                </button>
+
+                <button
+                  onClick={() => exportToWord(false)}
+                  className="px-3 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                >
+                  <Icons.FileText />
+                  <span>Ekspor Word (.doc)</span>
+                </button>
+
+                <button
+                  onClick={() => exportToWord(true)}
+                  className="px-3 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                >
+                  <Icons.CheckCircle />
+                  <span>Word + Kunci</span>
+                </button>
+
+                <button
+                  onClick={exportQuestionsToExcel}
+                  className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                >
+                  <Icons.Download />
+                  <span>Ekspor Excel (.xlsx)</span>
+                </button>
+              </div>
+            </div>
           </div>
+
+          {/* 4. DAFTAR BUTIR SOAL DALAM BERKAS YANG DIPILIH */}
+          {filteredQuestions.length === 0 ? (
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-10 text-center space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-slate-800 text-slate-400 flex items-center justify-center mx-auto">
+                <Icons.FileText />
+              </div>
+              <h4 className="text-sm font-bold text-white">
+                Belum Ada Butir Soal pada Berkas "{currentSelectedFileObj?.name}"
+              </h4>
+              <p className="text-xs text-slate-400 max-w-md mx-auto">
+                Silakan klik tombol <strong>Tambah Soal Manual</strong> atau <strong>Upload Soal (Word / PDF / Excel / Text)</strong> untuk mengisi soal ke berkas ini.
+              </p>
+              <div className="flex justify-center gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddQuestionModal(true)}
+                  className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs transition"
+                >
+                  + Tambah Soal Manual
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUploadImportMode("append");
+                    setShowUploadModal(true);
+                  }}
+                  className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition"
+                >
+                  Upload File ke Berkas Ini
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {filteredQuestions.map((q, idx) => (
+                <div key={q.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 font-bold flex items-center justify-center text-xs">
+                        #{q.displayNumber || q.number || (idx + 1)}
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-300 text-[11px] font-semibold">
+                        📁 {q.fileName || currentSelectedFileObj?.name}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-[11px] font-semibold">
+                        {q.category}
+                      </span>
+                      {q.type === "AUDIO_LISTENING" && (
+                        <span className="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[11px] font-semibold flex items-center gap-1">
+                          <Icons.Volume2 /> Audio Listening
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3 text-xs">
+                      <span className="text-slate-400">Bobot: <strong className="text-cyan-400">{q.points} Poin</strong></span>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteSingleQuestion(q.id)}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 transition"
+                        title="Hapus butir soal ini"
+                      >
+                        <Icons.Trash />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Question Text with KaTeX */}
+                  <div className="text-sm text-slate-200 font-medium">
+                    <KatexMath text={q.question} />
+                  </div>
+
+                  {/* Audio Listening Player Simulation */}
+                  {q.audioUrl && (
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center gap-3 text-xs">
+                      <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
+                        <Icons.Volume2 />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-white">Audio Rekaman Listening</p>
+                        <p className="text-[11px] text-slate-400">Batas putar: Maksimal {q.audioMaxPlays || 2} kali per peserta</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Multiple Choice Options */}
+                  {q.options && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs pt-1">
+                      {q.options.map(opt => {
+                        const isCorrect = Array.isArray(q.correctAnswer)
+                          ? q.correctAnswer.includes(opt.key)
+                          : q.correctAnswer === opt.key;
+                        return (
+                          <div
+                            key={opt.key}
+                            className={`p-2.5 rounded-xl border flex items-start gap-2.5 ${
+                              isCorrect
+                                ? "bg-emerald-950/40 border-emerald-500/50 text-emerald-200"
+                                : "bg-slate-950/60 border-slate-800 text-slate-300"
+                            }`}
+                          >
+                            <span className={`w-5 h-5 rounded flex items-center justify-center font-bold text-[11px] ${
+                              isCorrect ? "bg-emerald-500 text-slate-950" : "bg-slate-800 text-slate-400"
+                            }`}>
+                              {opt.key}
+                            </span>
+                            <span className="flex-1 mt-0.5">{opt.text}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Matching Pairs */}
+                  {q.pairs && (
+                    <div className="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs space-y-1.5">
+                      <p className="font-semibold text-slate-400 text-[11px] uppercase tracking-wider mb-2">Kunci Pasangan Menjodohkan:</p>
+                      {q.pairs.map((p, pIdx) => (
+                        <div key={pIdx} className="flex items-center justify-between p-2 rounded-lg bg-slate-900 border border-slate-800/80">
+                          <span className="font-mono text-cyan-300">{p.premise}</span>
+                          <span className="text-slate-500 font-bold mx-2">➔</span>
+                          <span className="text-emerald-300 font-semibold">{p.correctTarget}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Essay AI Rubric Info */}
+                  {q.rubric && (
+                    <div className="p-3 bg-cyan-950/30 border border-cyan-800/40 rounded-xl text-xs space-y-1">
+                      <p className="font-bold text-cyan-300 flex items-center gap-1.5">
+                        <Icons.Brain /> Rubrik Evaluasi AI untuk Koreksi Esai:
+                      </p>
+                      <p className="text-slate-300 text-[11px]">
+                        Kata Kunci Wajib: {q.rubric.keywords.map(kw => (
+                          <span key={kw} className="inline-block px-1.5 py-0.5 bg-slate-800 text-cyan-300 rounded mx-1 font-mono text-[10px]">
+                            {kw}
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* MODAL BUAT BERKAS NASKAH SOAL BARU */}
+          {showCreateFileModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Icons.FolderPlus /> Buat Berkas Naskah Soal Baru
+                  </h3>
+                  <button onClick={() => setShowCreateFileModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+
+                <form onSubmit={handleCreateNewFileSubmit} className="space-y-3 text-xs">
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Nama Berkas / Judul Naskah Soal</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Contoh: XII TKA.docx atau Soal Part 3"
+                      value={newFileForm.name}
+                      onChange={(e) => setNewFileForm({ ...newFileForm, name: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Mata Pelajaran / Kategori</label>
+                    <input
+                      type="text"
+                      placeholder="Contoh: Bahasa Inggris / BIL / Matematika"
+                      value={newFileForm.subject}
+                      onChange={(e) => setNewFileForm({ ...newFileForm, subject: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-slate-400 font-semibold mb-1">Tingkat Kelas</label>
+                      <select
+                        value={newFileForm.gradeLevel}
+                        onChange={(e) => setNewFileForm({ ...newFileForm, gradeLevel: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                      >
+                        <option value="Semua Kelas">Semua Kelas</option>
+                        <option value="Kelas X">Kelas X</option>
+                        <option value="Kelas XI">Kelas XI</option>
+                        <option value="Kelas XII">Kelas XII</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-slate-400 font-semibold mb-1">Durasi Ujian (Menit)</label>
+                      <input
+                        type="number"
+                        min="5"
+                        max="300"
+                        value={newFileForm.durationMinutes}
+                        onChange={(e) => setNewFileForm({ ...newFileForm, durationMinutes: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Hari Jadwal Ujian (Opsional)</label>
+                    <select
+                      value={newFileForm.scheduleDay}
+                      onChange={(e) => setNewFileForm({ ...newFileForm, scheduleDay: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    >
+                      <option value="">-- Semua Hari / Fleksibel --</option>
+                      <option value="Senin">Senin</option>
+                      <option value="Selasa">Selasa</option>
+                      <option value="Rabu">Rabu</option>
+                      <option value="Kamis">Kamis</option>
+                      <option value="Jumat">Jumat</option>
+                      <option value="Sabtu">Sabtu</option>
+                    </select>
+                  </div>
+
+                  <div className="flex gap-2 pt-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowCreateFileModal(false)}
+                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/25"
+                    >
+                      Buat Berkas
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL PENGATURAN BERKAS (KELAS, DURASI, HARI) */}
+          {showFileSettingsModal && editingFileSettings && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Icons.Sliders /> Pengaturan Berkas: {editingFileSettings.name}
+                  </h3>
+                  <button onClick={() => setShowFileSettingsModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+
+                <form onSubmit={handleSaveFileSettings} className="space-y-3 text-xs">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-slate-400 font-semibold mb-1">Tingkat Kelas</label>
+                      <select
+                        value={editingFileSettings.gradeLevel}
+                        onChange={(e) => setEditingFileSettings({ ...editingFileSettings, gradeLevel: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white"
+                      >
+                        <option value="Semua Kelas">Semua Kelas</option>
+                        <option value="Kelas X">Kelas X</option>
+                        <option value="Kelas XI">Kelas XI</option>
+                        <option value="Kelas XII">Kelas XII</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-slate-400 font-semibold mb-1">Durasi Ujian (Menit)</label>
+                      <input
+                        type="number"
+                        min="5"
+                        max="300"
+                        value={editingFileSettings.durationMinutes}
+                        onChange={(e) => setEditingFileSettings({ ...editingFileSettings, durationMinutes: e.target.value })}
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Hari Pelaksanaan Ujian</label>
+                    <select
+                      value={editingFileSettings.scheduleDay}
+                      onChange={(e) => setEditingFileSettings({ ...editingFileSettings, scheduleDay: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white"
+                    >
+                      <option value="">-- Semua Hari / Fleksibel --</option>
+                      <option value="Senin">Senin</option>
+                      <option value="Selasa">Selasa</option>
+                      <option value="Rabu">Rabu</option>
+                      <option value="Kamis">Kamis</option>
+                      <option value="Jumat">Jumat</option>
+                      <option value="Sabtu">Sabtu</option>
+                    </select>
+                  </div>
+
+                  <div className="flex gap-2 pt-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowFileSettingsModal(false)}
+                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl"
+                    >
+                      Simpan Pengaturan
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL RENAME BERKAS & MATA PELAJARAN */}
+          {showRenameFileModal && renamingFile && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Icons.Edit /> Ubah Nama Berkas & Mapel
+                  </h3>
+                  <button onClick={() => setShowRenameFileModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+
+                <form onSubmit={handleSaveRenameFile} className="space-y-3 text-xs">
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Nama Berkas Soal</label>
+                    <input
+                      type="text"
+                      required
+                      value={renamingFile.name}
+                      onChange={(e) => setRenamingFile({ ...renamingFile, name: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">Mata Pelajaran</label>
+                    <input
+                      type="text"
+                      value={renamingFile.subject}
+                      onChange={(e) => setRenamingFile({ ...renamingFile, subject: e.target.value })}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white"
+                    />
+                  </div>
+                  <div className="flex gap-2 pt-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowRenameFileModal(false)}
+                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl"
+                    >
+                      Simpan Perubahan
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL KONFIRMASI HAPUS BERKAS SOAL */}
+          {showDeleteFileModal && deletingFile && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-rose-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-rose-400 flex items-center gap-2">
+                    <Icons.Trash /> Hapus Berkas Naskah Soal?
+                  </h3>
+                  <button onClick={() => setShowDeleteFileModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Apakah Anda yakin ingin menghapus berkas <strong className="text-white">"{deletingFile.name}"</strong> beserta <strong className="text-rose-400">{fileQuestionCounts[deletingFile.id] || 0} butir soal</strong> di dalamnya? Berkas soal lainnya tidak akan terpengaruh.
+                </p>
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowDeleteFileModal(false)}
+                    className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleConfirmDeleteFile}
+                    className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs"
+                  >
+                    Ya, Hapus Berkas Ini
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL PENGATURAN PROTEKSI ANTI-NYONTEK (ACAK SOAL) */}
+          {showAntiCheatModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-purple-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Icons.Shuffle /> Pengaturan Acak Soal Anti-Nyontek
+                  </h3>
+                  <button onClick={() => setShowAntiCheatModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+
+                <div className="space-y-3 text-xs">
+                  <p className="text-slate-300 leading-relaxed">
+                    Dengan mengaktifkan fitur ini, urutan nomor soal yang tampil di layar siswa akan diacak secara unik berdasarkan NISN masing-masing peserta.
+                  </p>
+                  <label className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer">
+                    <span className="font-bold text-white">Acak Urutan Soal Otomatis (Seed NISN)</span>
+                    <input
+                      type="checkbox"
+                      checked={appConfig?.exam?.shuffleQuestions !== false}
+                      onChange={(e) => {
+                        if (typeof setAppConfig === "function" && appConfig) {
+                          setAppConfig({
+                            ...appConfig,
+                            exam: {
+                              ...appConfig.exam,
+                              shuffleQuestions: e.target.checked
+                            }
+                          });
+                        }
+                      }}
+                      className="w-4 h-4 accent-purple-500"
+                    />
+                  </label>
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowAntiCheatModal(false);
+                      showToast("Pengaturan proteksi acak soal disimpan!", "success");
+                    }}
+                    className="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs"
+                  >
+                    Selesai
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* MODAL RIWAYAT REVISI & AUDIT LOG */}
           {showRevisionModal && (
@@ -4498,9 +5682,11 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
               <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <Icons.Plus /> Tambah Butir Soal Baru ke Bank Soal
-                  </h3>
+                  <div>
+                    <h3 className="text-base font-bold text-white flex items-center gap-2">
+                      <Icons.Plus /> Tambah Butir Soal ke Berkas "{currentSelectedFileObj?.name}"
+                    </h3>
+                  </div>
                   <button onClick={() => setShowAddQuestionModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
                 </div>
 
@@ -4617,7 +5803,7 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                       type="submit"
                       className="flex-1 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl shadow-lg shadow-cyan-500/20"
                     >
-                      Simpan ke Bank Soal
+                      Simpan ke Berkas
                     </button>
                   </div>
                 </form>
@@ -4625,25 +5811,31 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
             </div>
           )}
 
-          {/* MODAL UPLOAD SOAL MULTI-FORMAT (WORD, PDF, EXCEL, TXT) */}
+          {/* MODAL UPLOAD SOAL MULTI-FORMAT (OTOMATIS JADI BERKAS TERSENDIRI / TERPISAH) */}
           {showUploadModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
               <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl max-h-[92vh] flex flex-col">
                 {/* Header Modal */}
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
                   <div>
-                    <h3 className="text-base font-bold text-white flex items-center gap-2">
-                      <Icons.Upload />
-                      <span>Upload & Import Naskah Soal</span>
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-bold text-white flex items-center gap-2">
+                        <Icons.Upload />
+                        <span>Upload & Buat Berkas Naskah Soal</span>
+                      </h3>
+                      <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 text-[10px] font-bold">
+                        Terpisah per File
+                      </span>
+                    </div>
                     <p className="text-slate-400 text-xs mt-0.5">
-                      Support: Word (<code className="text-cyan-400 font-mono">.doc/.docx</code>), PDF (<code className="text-rose-400 font-mono">.pdf</code>), Excel (<code className="text-emerald-400 font-mono">.xlsx/.xls</code>), Plain Text (<code className="text-amber-400 font-mono">.txt</code>)
+                      Setiap file Word (<code className="text-cyan-400 font-mono">.doc/.docx</code>), PDF (<code className="text-rose-400 font-mono">.pdf</code>), Excel (<code className="text-emerald-400 font-mono">.xlsx/.xls</code>), atau Text (<code className="text-amber-400 font-mono">.txt</code>) otomatis menjadi berkas sendiri.
                     </p>
                   </div>
                   <button
                     onClick={() => {
                       setShowUploadModal(false);
                       setPreviewQuestions([]);
+                      setUploadedFilesBatch([]);
                       setUploadedFileName("");
                     }}
                     className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
@@ -4653,7 +5845,7 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                 </div>
 
                 {/* Sub-Tab Switcher */}
-                <div className="grid grid-cols-3 gap-2 p-1 bg-slate-950 border border-slate-800 rounded-xl mb-4 text-xs font-semibold">
+                <div className="grid grid-cols-3 gap-2 p-1 bg-slate-950 border border-slate-800 rounded-xl mb-3 text-xs font-semibold">
                   <button
                     type="button"
                     onClick={() => setUploadTab("file")}
@@ -4662,7 +5854,7 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                     }`}
                   >
                     <Icons.Upload />
-                    <span>Upload File</span>
+                    <span>Upload File (Bisa Banyak)</span>
                   </button>
                   <button
                     type="button"
@@ -4686,31 +5878,32 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                   </button>
                 </div>
 
-                {/* TAB 1: UPLOAD FILE DRAG & DROP */}
+                {/* TAB 1: UPLOAD FILE DRAG & DROP (MENDUKUNG MULTI-FILE) */}
                 {uploadTab === "file" && (
                   <div className="space-y-3">
-                    <label className={`block border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition ${
+                    <label className={`block border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition ${
                       uploadFileLoading 
                         ? "border-cyan-500 bg-cyan-950/20" 
                         : "border-slate-700 hover:border-emerald-500 bg-slate-950/60 hover:bg-slate-950"
                     }`}>
                       <input
                         type="file"
+                        multiple
                         accept=".doc, .docx, .pdf, .xlsx, .xls, .txt"
                         onChange={handleQuestionFileUpload}
                         className="hidden"
                       />
-                      <div className="flex flex-col items-center justify-center space-y-2">
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-1">
+                      <div className="flex flex-col items-center justify-center space-y-1.5">
+                        <div className="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-0.5">
                           <Icons.Upload />
                         </div>
                         <p className="font-bold text-sm text-white">
-                          {uploadedFileName ? uploadedFileName : "Klik untuk Pilih File atau Seret ke Sini"}
+                          {uploadedFileName ? uploadedFileName : "Klik untuk Pilih File Soal (Bisa Pilih Banyak Sekaligus)"}
                         </p>
                         <p className="text-xs text-slate-400">
-                          Pilih file naskah soal dari perangkat Anda
+                          Setiap file yang diunggah akan memiliki kartu berkas masing-masing (tidak tercampur)
                         </p>
-                        <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
+                        <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1">
                           <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 text-[10px] font-bold">Word (.doc, .docx)</span>
                           <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold">PDF (.pdf)</span>
                           <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold">Excel (.xlsx, .xls)</span>
@@ -4720,9 +5913,9 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                     </label>
 
                     {uploadFileLoading && (
-                      <div className="p-3 rounded-xl bg-slate-950 border border-cyan-500/30 text-center text-xs text-cyan-300 animate-pulse flex items-center justify-center gap-2">
+                      <div className="p-2.5 rounded-xl bg-slate-950 border border-cyan-500/30 text-center text-xs text-cyan-300 animate-pulse flex items-center justify-center gap-2">
                         <Icons.RefreshCw />
-                        <span>Sedang membaca dan mengekstrak butir soal...</span>
+                        <span>Sedang membaca dan mengekstrak butir soal dari dokumen...</span>
                       </div>
                     )}
                   </div>
@@ -4730,22 +5923,22 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
 
                 {/* TAB 2: MANUAL PASTE */}
                 {uploadTab === "paste" && (
-                  <div className="space-y-3">
-                    <div className="p-2.5 bg-cyan-950/40 border border-cyan-500/30 rounded-xl text-cyan-200 text-[11px] leading-relaxed">
+                  <div className="space-y-2.5">
+                    <div className="p-2 bg-cyan-950/40 border border-cyan-500/30 rounded-xl text-cyan-200 text-[11px] leading-relaxed">
                       💡 <strong>Salin & Tempel Langsung:</strong> Buka file Word atau catatan soal Anda, tekan <kbd className="bg-slate-800 px-1 rounded">Ctrl+A</kbd> lalu <kbd className="bg-slate-800 px-1 rounded">Ctrl+C</kbd>, kemudian tempelkan teksnya di bawah ini.
                     </div>
                     <textarea
-                      rows="7"
+                      rows="6"
                       value={manualPasteText}
                       onChange={(e) => setManualPasteText(e.target.value)}
-                      placeholder={`1. Apa fungsi utama organel mitokondria?\nA. Respirasi sel dan penghasil energi ATP\nB. Sintesis protein\nC. Fotosintesis\nD. Pencernaan sel\nKunci: A\nPembahasan: Mitokondria adalah tempat berlangsungnya metabolisme energi sel.\n\n2. Lambang negara Indonesia adalah ...\nA. Garuda Pancasila\nB. Harimau Sumatera\nC. Burung Merpati\nD. Komodo\nKunci: A`}
+                      placeholder={`1. Apa fungsi utama organel mitokondria?\nA. Respirasi sel dan penghasil energi ATP\nB. Sintesis protein\nC. Fotosintesis\nD. Pencernaan sel\nKunci: A\n\n2. Lambang negara Indonesia adalah ...\nA. Garuda Pancasila\nB. Harimau Sumatera\nC. Burung Merpati\nD. Komodo\nKunci: A`}
                       className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono text-xs focus:outline-none focus:border-cyan-500 leading-relaxed"
                     ></textarea>
                     <div className="flex justify-end">
                       <button
                         type="button"
                         onClick={handleProcessManualPaste}
-                        className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs transition"
+                        className="px-4 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs transition"
                       >
                         Proses Teks Soal
                       </button>
@@ -4799,32 +5992,72 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                   </div>
                 )}
 
-                {/* KONFIGURASI IMPORT DEFAULT (KATEGORI & BOBOT) */}
-                <div className="mt-4 pt-3 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div>
-                    <label className="block text-slate-400 font-semibold mb-1">Kategori / Mata Pelajaran</label>
-                    <input
-                      type="text"
-                      value={uploadDefaultCategory}
-                      onChange={(e) => setUploadDefaultCategory(e.target.value)}
-                      placeholder="misal: Matematika / Umum"
-                      className="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
-                    />
+                {/* KONFIGURASI BERKAS NASKAH SOAL BARU */}
+                <div className="mt-3 pt-3 border-t border-slate-800/80 space-y-2.5 text-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <div>
+                      <label className="block text-slate-400 font-semibold mb-1">Nama Berkas Soal</label>
+                      <input
+                        type="text"
+                        value={uploadTargetFileName}
+                        onChange={(e) => setUploadTargetFileName(e.target.value)}
+                        placeholder={uploadedFileName || "Contoh: XII TKA.docx"}
+                        className="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-slate-400 font-semibold mb-1">Mata Pelajaran</label>
+                      <input
+                        type="text"
+                        value={uploadDefaultCategory}
+                        onChange={(e) => setUploadDefaultCategory(e.target.value)}
+                        placeholder="Contoh: Bahasa Inggris / BIL"
+                        className="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-slate-400 font-semibold mb-1">Tingkat Kelas</label>
+                        <select
+                          value={uploadGradeLevel}
+                          onChange={(e) => setUploadGradeLevel(e.target.value)}
+                          className="w-full px-2 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs"
+                        >
+                          <option value="Semua Kelas">Semua Kelas</option>
+                          <option value="Kelas X">Kelas X</option>
+                          <option value="Kelas XI">Kelas XI</option>
+                          <option value="Kelas XII">Kelas XII</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-slate-400 font-semibold mb-1">Durasi (m)</label>
+                        <input
+                          type="number"
+                          min="5"
+                          max="300"
+                          value={uploadDurationMinutes}
+                          onChange={(e) => setUploadDurationMinutes(e.target.value)}
+                          className="w-full px-2 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-slate-400 font-semibold mb-1">Bobot Poin Default per Soal</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="100"
-                      value={uploadDefaultPoints}
-                      onChange={(e) => setUploadDefaultPoints(e.target.value)}
-                      className="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-slate-400 font-semibold mb-1">Metode Impor</label>
-                    <div className="flex items-center gap-3 pt-1 text-[11px]">
+
+                  {/* Pilihan Mode Penyimpanan Berkas */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-950 border border-slate-800/90">
+                    <span className="text-[11px] font-bold text-slate-300">Mode Penyimpanan:</span>
+                    <div className="flex flex-wrap items-center gap-3 text-[11px]">
+                      <label className="flex items-center gap-1.5 cursor-pointer text-emerald-300 font-bold">
+                        <input
+                          type="radio"
+                          name="uploadImportMode"
+                          value="new_file"
+                          checked={uploadImportMode === "new_file"}
+                          onChange={(e) => setUploadImportMode(e.target.value)}
+                          className="accent-emerald-500"
+                        />
+                        <span>Buat Berkas Baru Terpisah (Rekomendasi)</span>
+                      </label>
                       <label className="flex items-center gap-1.5 cursor-pointer text-slate-300">
                         <input
                           type="radio"
@@ -4832,9 +6065,9 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                           value="append"
                           checked={uploadImportMode === "append"}
                           onChange={(e) => setUploadImportMode(e.target.value)}
-                          className="text-emerald-500 focus:ring-0"
+                          className="accent-cyan-500"
                         />
-                        <span>Tambahkan (Append)</span>
+                        <span>Tambahkan ke "{currentSelectedFileObj?.name}"</span>
                       </label>
                       <label className="flex items-center gap-1.5 cursor-pointer text-slate-300">
                         <input
@@ -4843,9 +6076,9 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                           value="replace"
                           checked={uploadImportMode === "replace"}
                           onChange={(e) => setUploadImportMode(e.target.value)}
-                          className="text-rose-500 focus:ring-0"
+                          className="accent-rose-500"
                         />
-                        <span>Gantikan Semua</span>
+                        <span>Ganti Isi "{currentSelectedFileObj?.name}"</span>
                       </label>
                     </div>
                   </div>
@@ -4853,13 +6086,16 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
 
                 {/* PREVIEW HASIL PARSING BUTIR SOAL */}
                 {previewQuestions.length > 0 && (
-                  <div className="mt-3 flex-1 overflow-y-auto space-y-2 border border-slate-800 rounded-xl p-3 bg-slate-950/70 max-h-56">
+                  <div className="mt-3 flex-1 overflow-y-auto space-y-2 border border-slate-800 rounded-xl p-3 bg-slate-950/70 max-h-48">
                     <div className="flex items-center justify-between text-xs pb-1 border-b border-slate-800">
                       <span className="font-bold text-emerald-400 flex items-center gap-1.5">
                         <Icons.CheckCircle />
-                        <span>{previewQuestions.length} Butir Soal Terdeteksi ({uploadedFileName || "Input Manual"})</span>
+                        <span>
+                          {previewQuestions.length} Butir Soal Terdeteksi
+                          {uploadedFilesBatch.length > 1 ? ` dari ${uploadedFilesBatch.length} Berkas` : ` (${uploadTargetFileName || uploadedFileName || "Berkas Baru"})`}
+                        </span>
                       </span>
-                      <span className="text-[11px] text-slate-500">Pratinjau sebelum disimpan ke Bank Soal</span>
+                      <span className="text-[11px] text-slate-400">Pratinjau sebelum disimpan</span>
                     </div>
 
                     <div className="space-y-2">
@@ -4904,6 +6140,7 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                     onClick={() => {
                       setShowUploadModal(false);
                       setPreviewQuestions([]);
+                      setUploadedFilesBatch([]);
                       setUploadedFileName("");
                     }}
                     className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition"
@@ -4921,7 +6158,11 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                     }`}
                   >
                     <Icons.CheckCircle />
-                    <span>Impor {previewQuestions.length > 0 ? `${previewQuestions.length} Butir Soal` : "Soal"} ke Bank Soal</span>
+                    <span>
+                      {uploadImportMode === "new_file"
+                        ? `Simpan sebagai ${uploadedFilesBatch.length > 1 ? uploadedFilesBatch.length + " Berkas Baru" : "Berkas Baru"} (${previewQuestions.length} Soal)`
+                        : `Impor ${previewQuestions.length} Butir Soal`}
+                    </span>
                   </button>
                 </div>
               </div>

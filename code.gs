@@ -102,7 +102,7 @@ function setupDatabase() {
   var sheetSoal = ss.getSheetByName("Bank_Soal");
   if (!sheetSoal) {
     sheetSoal = ss.insertSheet("Bank_Soal");
-    var headersSoal = ["ID_Soal", "Tipe_Soal", "Kategori", "Pertanyaan", "Opsi_JSON", "Kunci_Jawaban", "Bobot"];
+    var headersSoal = ["ID_Soal", "Tipe_Soal", "Kategori", "Pertanyaan", "Opsi_JSON", "Kunci_Jawaban", "Bobot", "ID_Berkas", "Nama_Berkas"];
     sheetSoal.appendRow(headersSoal);
     var hrSoal = sheetSoal.getRange(1, 1, 1, headersSoal.length);
     hrSoal.setBackground("#1e1b4b"); // Dark Indigo
@@ -392,7 +392,9 @@ function simpanBankSoal(payload) {
         q.question || q.Pertanyaan || "",
         opsiStr,
         kunciStr,
-        Number(q.points || q.Bobot || 10)
+        Number(q.points || q.Bobot || 10),
+        q.fileId || "FILE_MAIN",
+        q.fileName || "Naskah Soal Utama CBT"
       ];
     });
 
@@ -403,10 +405,10 @@ function simpanBankSoal(payload) {
     } else {
       var lastRow = sheet.getLastRow();
       if (lastRow > 1) {
-        sheet.getRange(2, 1, lastRow - 1, 7).clearContent();
+        sheet.getRange(2, 1, lastRow - 1, 9).clearContent();
       }
       if (rows.length > 0) {
-        sheet.getRange(2, 1, rows.length, 7).setValues(rows);
+        sheet.getRange(2, 1, rows.length, 9).setValues(rows);
       }
     }
 
@@ -477,7 +479,8 @@ function ambilDataDariSheet() {
     var sheetSoal = ss.getSheetByName("Bank_Soal");
     var questions = [];
     if (sheetSoal && sheetSoal.getLastRow() > 1) {
-      var valsSoal = sheetSoal.getRange(2, 1, sheetSoal.getLastRow() - 1, 7).getValues();
+      var colCount = Math.max(7, sheetSoal.getLastColumn());
+      var valsSoal = sheetSoal.getRange(2, 1, sheetSoal.getLastRow() - 1, colCount).getValues();
       for (var j = 0; j < valsSoal.length; j++) {
         var qRow = valsSoal[j];
         var qId = String(qRow[0] || ("Q" + (j + 1)));
@@ -487,6 +490,8 @@ function ambilDataDariSheet() {
         var qOpsiRaw = String(qRow[4] || "[]");
         var qKunci = String(qRow[5] || "");
         var qBobot = Number(qRow[6]) || 10;
+        var qFileId = String(qRow[7] || "FILE_MAIN");
+        var qFileName = String(qRow[8] || "Naskah Soal Utama CBT");
 
         var parsedOptions = null;
         var parsedPairs = null;
@@ -508,6 +513,8 @@ function ambilDataDariSheet() {
 
         questions.push({
           id: qId,
+          fileId: qFileId,
+          fileName: qFileName,
           number: j + 1,
           type: qType,
           category: qCat,

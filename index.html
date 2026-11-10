@@ -487,11 +487,20 @@
       const [changePasswordForm, setChangePasswordForm] = useState({ oldPassword: "", newPassword: "", confirmPassword: "" });
       const [passwordVisibilities, setPasswordVisibilities] = useState({ auth: false, old: false, next: false, confirm: false });
 
-      // Master State Data (dengan persistensi otomatis localStorage)
-      const [classes, setClasses] = useState(INITIAL_CLASSES);
+      // Master State Data (dengan persistensi otomatis DUAL-KEY localStorage & Safe Merge)
+      const [classes, setClasses] = useState(() => {
+        try {
+          const saved = localStorage.getItem("GPP_CLASSES_BACKUP");
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          }
+        } catch (e) {}
+        return INITIAL_CLASSES;
+      });
       const [students, setStudents] = useState(() => {
         try {
-          const saved = localStorage.getItem("GPP_STUDENTS_BACKUP");
+          const saved = localStorage.getItem("GPP_STUDENTS_BACKUP") || localStorage.getItem("GPP_MASTER_STUDENTS_V3");
           if (saved) {
             const parsed = JSON.parse(saved);
             if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -501,7 +510,7 @@
       });
       const [questions, setQuestions] = useState(() => {
         try {
-          const saved = localStorage.getItem("GPP_QUESTIONS_BACKUP");
+          const saved = localStorage.getItem("GPP_QUESTIONS_BACKUP") || localStorage.getItem("GPP_MASTER_QUESTIONS_V3");
           if (saved) {
             const parsed = JSON.parse(saved);
             if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -511,7 +520,7 @@
       });
       const [questionFiles, setQuestionFiles] = useState(() => {
         try {
-          const saved = localStorage.getItem("GPP_QUESTION_FILES_V2");
+          const saved = localStorage.getItem("GPP_QUESTION_FILES_V2") || localStorage.getItem("GPP_MASTER_FILES_V3");
           if (saved) {
             const parsed = JSON.parse(saved);
             if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -527,22 +536,68 @@
         return "FILE_MAIN";
       });
 
-      // Persistensi otomatis ke localStorage setiap kali state berubah
+      // Persistensi otomatis ke localStorage setiap kali state berubah (Dual Key Backup)
       useEffect(() => {
-        try { localStorage.setItem("GPP_STUDENTS_BACKUP", JSON.stringify(students)); } catch (e) {}
+        try {
+          localStorage.setItem("GPP_CLASSES_BACKUP", JSON.stringify(classes));
+        } catch (e) {}
+      }, [classes]);
+
+      useEffect(() => {
+        try {
+          localStorage.setItem("GPP_STUDENTS_BACKUP", JSON.stringify(students));
+          localStorage.setItem("GPP_MASTER_STUDENTS_V3", JSON.stringify(students));
+        } catch (e) {}
       }, [students]);
 
       useEffect(() => {
-        try { localStorage.setItem("GPP_QUESTIONS_BACKUP", JSON.stringify(questions)); } catch (e) {}
+        try {
+          localStorage.setItem("GPP_QUESTIONS_BACKUP", JSON.stringify(questions));
+          localStorage.setItem("GPP_MASTER_QUESTIONS_V3", JSON.stringify(questions));
+        } catch (e) {}
       }, [questions]);
 
       useEffect(() => {
-        try { localStorage.setItem("GPP_QUESTION_FILES_V2", JSON.stringify(questionFiles)); } catch (e) {}
+        try {
+          localStorage.setItem("GPP_QUESTION_FILES_V2", JSON.stringify(questionFiles));
+          localStorage.setItem("GPP_MASTER_FILES_V3", JSON.stringify(questionFiles));
+        } catch (e) {}
       }, [questionFiles]);
 
       useEffect(() => {
         try { localStorage.setItem("GPP_ACTIVE_EXAM_FILE_V2", activeExamFileId); } catch (e) {}
       }, [activeExamFileId]);
+
+      // Safe Merge Helpers: JANGAN PERNAH menimpa atau menghapus data lokal yang diinput admin
+      const mergeStudentListsSafely = (currentList, incomingList) => {
+        if (!incomingList || !Array.isArray(incomingList) || incomingList.length === 0) return currentList || [];
+        if (!currentList || currentList.length === 0) return incomingList;
+        const currentNisns = new Set(currentList.map(s => String(s.nisn || s.id || '').trim()));
+        const merged = [...currentList];
+        incomingList.forEach(inc => {
+          const key = String(inc.nisn || inc.id || '').trim();
+          if (key && !currentNisns.has(key)) {
+            merged.push(inc);
+            currentNisns.add(key);
+          }
+        });
+        return merged;
+      };
+
+      const mergeQuestionsSafely = (currentQuestions, incomingQuestions) => {
+        if (!incomingQuestions || !Array.isArray(incomingQuestions) || incomingQuestions.length === 0) return currentQuestions || [];
+        if (!currentQuestions || currentQuestions.length === 0) return incomingQuestions;
+        const currentIds = new Set(currentQuestions.map(q => String(q.id || q.questionText || '').trim()));
+        const merged = [...currentQuestions];
+        incomingQuestions.forEach(inc => {
+          const key = String(inc.id || inc.questionText || '').trim();
+          if (key && !currentIds.has(key)) {
+            merged.push(inc);
+            currentIds.add(key);
+          }
+        });
+        return merged;
+      };
 
       // Pastikan setiap soal memiliki berkas yang terdaftar di questionFiles
       useEffect(() => {
@@ -581,23 +636,23 @@
         setGasUrl(appConfig.sync.gasUrl || DEFAULT_GAS_URL);
       }, [appConfig.sync]);
 
-      // Auto-tarik data dari Google Spreadsheet saat web pertama dibuka (ambilDataDariSheet)
+      // Auto-tarik data dari Google Spreadsheet saat web pertama dibuka (ambilDataDariSheet) dengan Safe Merge
       useEffect(() => {
         if (typeof google !== 'undefined' && google.script && google.script.run) {
           google.script.run
             .withSuccessHandler((res) => {
               if (res && res.status === "success") {
                 if (res.students && res.students.length > 0) {
-                  setStudents(res.students);
+                  setStudents(prev => mergeStudentListsSafely(prev, res.students));
                 }
                 if (res.questions && res.questions.length > 0) {
-                  setQuestions(res.questions);
+                  setQuestions(prev => mergeQuestionsSafely(prev, res.questions));
                 }
                 setGasSyncStatus({
                   connected: true,
                   message: `Terhubung Real-Time ke Spreadsheet: ${res.studentsCount || 0} siswa, ${res.questionsCount || 0} soal`
                 });
-                showToast("Data soal & siswa berhasil dimuat dari Google Spreadsheet!", "success");
+                showToast("Data soal & siswa berhasil dimuat dan disinkronkan aman dari Google Spreadsheet!", "success");
               }
             })
             .withFailureHandler((err) => {
@@ -825,7 +880,7 @@
         }
       };
 
-      // Tarik Data Terkini dari Google Spreadsheet (ambilDataDariSheet)
+      // Tarik Data Terkini dari Google Spreadsheet (ambilDataDariSheet) dengan Safe Merge Anti-Hapus
       const handlePullDataFromSpreadsheet = () => {
         setIsSyncingGas(true);
         if (typeof google !== 'undefined' && google.script && google.script.run) {
@@ -833,9 +888,13 @@
             .withSuccessHandler((res) => {
               setIsSyncingGas(false);
               if (res && res.status === "success") {
-                if (res.students && res.students.length > 0) setStudents(res.students);
-                if (res.questions && res.questions.length > 0) setQuestions(res.questions);
-                showToast(`Data berhasil ditarik! (${res.studentsCount || 0} siswa, ${res.questionsCount || 0} butir soal)`, "success");
+                if (res.students && res.students.length > 0) {
+                  setStudents(prev => mergeStudentListsSafely(prev, res.students));
+                }
+                if (res.questions && res.questions.length > 0) {
+                  setQuestions(prev => mergeQuestionsSafely(prev, res.questions));
+                }
+                showToast(`Data berhasil ditarik dan digabungkan aman! (${res.studentsCount || 0} siswa, ${res.questionsCount || 0} butir soal)`, "success");
               } else {
                 showToast(res.message || "Spreadsheet masih kosong", "error");
               }
@@ -879,11 +938,14 @@
             .simpanDataSiswa(students);
         } else {
           try {
+            localStorage.setItem("GPP_CLASSES_BACKUP", JSON.stringify(classes));
             localStorage.setItem("GPP_STUDENTS_BACKUP", JSON.stringify(students));
+            localStorage.setItem("GPP_MASTER_STUDENTS_V3", JSON.stringify(students));
             localStorage.setItem("GPP_QUESTIONS_BACKUP", JSON.stringify(questions));
+            localStorage.setItem("GPP_MASTER_QUESTIONS_V3", JSON.stringify(questions));
           } catch(e) {}
           setIsSyncingGas(false);
-          showToast("Data siswa & soal tersimpan aman di penyimpanan lokal browser.", "success");
+          showToast("Data master siswa, kelas & soal tersimpan aman di penyimpanan lokal browser.", "success");
         }
       };
 
@@ -1648,10 +1710,17 @@
       const [bulkAddClassId, setBulkAddClassId] = useState(classes[0]?.id || "X-1");
       const [bulkAddNamesText, setBulkAddNamesText] = useState("");
 
+      // State Pindah Kelas Massal & Kelola Rombel
+      const [bulkMoveTargetClass, setBulkMoveTargetClass] = useState(classes[0]?.id || "X-1");
+      const [showManageClassesModal, setShowManageClassesModal] = useState(false);
+      const [newClassNameInput, setNewClassNameInput] = useState("");
+      const [bulkMoveSourceClass, setBulkMoveSourceClass] = useState(classes[0]?.id || "X-1");
+      const [bulkMoveDestClass, setBulkMoveDestClass] = useState(classes[1]?.id || classes[0]?.id || "X-2");
+
       // Modal Edit Massal
       const [showBulkEditModal, setShowBulkEditModal] = useState(false);
       const [bulkEditClassFilter, setBulkEditClassFilter] = useState("ALL");
-      const [bulkEditMode, setBulkEditMode] = useState("text"); // "text" | "table"
+      const [bulkEditMode, setBulkEditMode] = useState("text"); // "text" | "move_class" | "table"
       const [bulkEditStudentsList, setBulkEditStudentsList] = useState([]);
       const [bulkEditTextNames, setBulkEditTextNames] = useState("");
       const [bulkChangeClassTarget, setBulkChangeClassTarget] = useState(classes[0]?.id || "X-1");
@@ -1669,6 +1738,10 @@
       // Helper Sinkronisasi ke Google Spreadsheet sheet Data_Siswa
       const syncStudentsWithGAS = (updatedList, toastMsg) => {
         setStudents(updatedList);
+        try {
+          localStorage.setItem("GPP_STUDENTS_BACKUP", JSON.stringify(updatedList));
+          localStorage.setItem("GPP_MASTER_STUDENTS_V3", JSON.stringify(updatedList));
+        } catch(e) {}
         if (typeof google !== 'undefined' && google.script && google.script.run) {
           google.script.run
             .withSuccessHandler((res) => {
@@ -1747,20 +1820,29 @@
         setSelectedStudentIds([]);
       };
 
-      // Tambah Siswa Tunggal
+      // Tambah Siswa Tunggal (Dukungan HANYA NAMA - NISN otomatis jika dikosongkan)
       const handleAddStudentSubmit = (e) => {
         e.preventDefault();
-        if (!newStudentForm.name || !newStudentForm.nisn) {
-          showToast("Nama dan NISN wajib diisi!", "error");
+        if (!newStudentForm.name || !newStudentForm.name.trim()) {
+          showToast("Nama siswa wajib diisi!", "error");
           return;
         }
+        const existingNisns = new Set(students.map(s => String(s.nisn)));
+        let finalNisn = (newStudentForm.nisn || "").trim();
+        if (!finalNisn) {
+          finalNisn = generateUniqueNisn(existingNisns);
+        } else {
+          existingNisns.add(finalNisn);
+        }
+        const chosenClass = newStudentForm.classId || classes[0]?.id || "X-1";
+        const cleanName = newStudentForm.name.trim();
         const newEntry = {
           id: "S" + (Date.now().toString().slice(-4)),
-          nisn: newStudentForm.nisn.trim(),
-          name: newStudentForm.name.trim(),
-          classId: newStudentForm.classId,
-          username: newStudentForm.name.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8) || "siswa" + newStudentForm.nisn.slice(-3),
-          token: `GPP-${newStudentForm.classId}-${newStudentForm.nisn.trim().slice(-3)}`,
+          nisn: finalNisn,
+          name: cleanName,
+          classId: chosenClass,
+          username: cleanName.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8) || "siswa" + finalNisn.slice(-3),
+          token: `GPP-${chosenClass}-${finalNisn.slice(-3)}`,
           isLocked: false,
           examStatus: "Belum Mulai",
           score: 0,
@@ -1769,7 +1851,7 @@
           lastActivity: "-"
         };
         const updated = [newEntry, ...students];
-        syncStudentsWithGAS(updated, "Siswa baru berhasil ditambahkan!");
+        syncStudentsWithGAS(updated, `Siswa baru ${cleanName} berhasil ditambahkan ke kelas ${chosenClass}!`);
         setShowAddStudentModal(false);
         setNewStudentForm({ name: "", nisn: "", classId: classes[0]?.id || "X-1" });
       };
@@ -1779,7 +1861,7 @@
         if (e) e.preventDefault();
         const rawLines = bulkAddNamesText
           .split(/\r?\n/)
-          .map(line => line.trim().replace(/^[\d\.\-\)\*]+\s*/, "")) // Bersihkan nomor urut (1. Nama, 2) Nama, - Nama)
+          .map(line => line.trim().replace(/^[\d\.\-\)\*]+\s*/, "")) // Bersihkan nomor urut
           .filter(line => line.length > 0);
 
         if (rawLines.length === 0) {
@@ -1811,9 +1893,182 @@
         });
 
         const merged = [...newEntries, ...students];
-        syncStudentsWithGAS(merged, `Berhasil menambahkan ${newEntries.length} siswa baru ke rombel ${targetClass}!`);
+        syncStudentsWithGAS(merged, `Berhasil menambahkan ${newEntries.length} siswa baru ke data master (Rombel ${targetClass})!`);
         setBulkAddNamesText("");
         setShowAddStudentModal(false);
+      };
+
+      // Inline Edit Kelas (Ubah Kelas Siswa Langsung dari Baris Tabel)
+      const handleQuickChangeStudentClass = (studentId, newClassId) => {
+        const updated = students.map(s => {
+          if (s.id === studentId) {
+            const cleanNisn = String(s.nisn).trim();
+            return {
+              ...s,
+              classId: newClassId,
+              token: `GPP-${newClassId}-${cleanNisn.slice(-3)}`
+            };
+          }
+          return s;
+        });
+        syncStudentsWithGAS(updated, `Kelas siswa berhasil dipindahkan ke ${newClassId}! Barcode & token ujian otomatis diperbarui.`);
+      };
+
+      // Pindah Rombel Massal untuk Siswa Terpilih (Checkbox)
+      const handleExecuteBulkMoveClass = () => {
+        if (selectedStudentIds.length === 0) {
+          showToast("Pilih minimal 1 siswa untuk dipindahkan rombel!", "error");
+          return;
+        }
+        const targetClass = bulkMoveTargetClass || classes[0]?.id || "X-1";
+        const updated = students.map(s => {
+          if (selectedStudentIds.includes(s.id)) {
+            const cleanNisn = String(s.nisn).trim();
+            return {
+              ...s,
+              classId: targetClass,
+              token: `GPP-${targetClass}-${cleanNisn.slice(-3)}`
+            };
+          }
+          return s;
+        });
+        syncStudentsWithGAS(updated, `Berhasil memindahkan ${selectedStudentIds.length} siswa ke rombel ${targetClass}!`);
+        setSelectedStudentIds([]);
+      };
+
+      // Pindah Seluruh Siswa Rombel Tertentu ke Rombel Lain
+      const handleMoveEntireClass = (fromClassId, toClassId) => {
+        if (fromClassId === toClassId) {
+          showToast("Rombel asal dan rombel tujuan tidak boleh sama!", "error");
+          return;
+        }
+        const countInClass = students.filter(s => s.classId === fromClassId).length;
+        if (countInClass === 0) {
+          showToast(`Tidak ada siswa di rombel ${fromClassId}`, "error");
+          return;
+        }
+        if (!confirm(`Pindahkan seluruh ${countInClass} siswa dari rombel ${fromClassId} ke ${toClassId}?`)) return;
+
+        const updated = students.map(s => {
+          if (s.classId === fromClassId) {
+            const cleanNisn = String(s.nisn).trim();
+            return {
+              ...s,
+              classId: toClassId,
+              token: `GPP-${toClassId}-${cleanNisn.slice(-3)}`
+            };
+          }
+          return s;
+        });
+        syncStudentsWithGAS(updated, `Sukses! Seluruh ${countInClass} siswa dari rombel ${fromClassId} berhasil dipindahkan ke ${toClassId}.`);
+        setShowBulkEditModal(false);
+      };
+
+      // Tambah Rombel Baru
+      const handleAddNewClass = (e) => {
+        if (e) e.preventDefault();
+        const trimmed = newClassNameInput.trim().toUpperCase();
+        if (!trimmed) {
+          showToast("Nama rombel tidak boleh kosong!", "error");
+          return;
+        }
+        if (classes.some(c => c.id.toUpperCase() === trimmed)) {
+          showToast(`Rombel ${trimmed} sudah terdaftar!`, "error");
+          return;
+        }
+        const newClass = { id: trimmed, name: trimmed, active: true };
+        const updated = [...classes, newClass];
+        setClasses(updated);
+        try { localStorage.setItem("GPP_CLASSES_BACKUP", JSON.stringify(updated)); } catch(e) {}
+        setNewClassNameInput("");
+        showToast(`Rombel ${trimmed} berhasil ditambahkan ke database master!`, "success");
+      };
+
+      // Toggle status aktif ujian rombel
+      const handleToggleClassActive = (classId) => {
+        const updated = classes.map(c => c.id === classId ? { ...c, active: !c.active } : c);
+        setClasses(updated);
+        try { localStorage.setItem("GPP_CLASSES_BACKUP", JSON.stringify(updated)); } catch(e) {}
+        showToast("Status rombel diperbarui", "success");
+      };
+
+      // Hapus rombel kosong
+      const handleDeleteClass = (classId) => {
+        const studentCount = students.filter(s => s.classId === classId).length;
+        if (studentCount > 0) {
+          showToast(`Tidak dapat menghapus rombel ${classId} karena masih ada ${studentCount} siswa! Pindahkan siswa terlebih dahulu.`, "error");
+          return;
+        }
+        if (!confirm(`Hapus rombel ${classId}?`)) return;
+        const updated = classes.filter(c => c.id !== classId);
+        setClasses(updated);
+        try { localStorage.setItem("GPP_CLASSES_BACKUP", JSON.stringify(updated)); } catch(e) {}
+        showToast(`Rombel ${classId} telah dihapus.`, "success");
+      };
+
+      // Cadangkan Data Master Siswa & Soal ke File JSON
+      const handleExportMasterBackupJson = () => {
+        const payload = {
+          appName: "GusthyPalinPatandaExam",
+          version: "2.6 PRO",
+          exportDate: new Date().toISOString(),
+          totalStudents: students.length,
+          classes: classes,
+          students: students,
+          questions: questions,
+          questionFiles: questionFiles
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+        const dlElem = document.createElement("a");
+        const dateStr = new Date().toISOString().slice(0, 10);
+        dlElem.setAttribute("href", dataStr);
+        dlElem.setAttribute("download", `Cadangan_Data_Master_GPP_Exam_${dateStr}.json`);
+        dlElem.click();
+        showToast(`Cadangan Data Master (${students.length} siswa, ${classes.length} rombel) berhasil diunduh!`, "success");
+      };
+
+      // Pulihkan Cadangan Data Master dari File JSON
+      const handleImportMasterBackupJson = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          try {
+            const data = JSON.parse(evt.target.result);
+            if (data.classes && Array.isArray(data.classes)) {
+              setClasses(prev => {
+                const existingIds = new Set(prev.map(c => c.id));
+                const additions = data.classes.filter(c => !existingIds.has(c.id));
+                const merged = [...prev, ...additions];
+                try { localStorage.setItem("GPP_CLASSES_BACKUP", JSON.stringify(merged)); } catch(e) {}
+                return merged;
+              });
+            }
+            if (data.students && Array.isArray(data.students)) {
+              const currentNisns = new Set(students.map(s => String(s.nisn || s.id)));
+              const additions = data.students.filter(s => !currentNisns.has(String(s.nisn || s.id)));
+              const merged = [...additions, ...students];
+              syncStudentsWithGAS(merged, `Cadangan berhasil dipulihkan! ${additions.length} siswa baru digabungkan aman.`);
+            }
+            if (data.questions && Array.isArray(data.questions)) {
+              setQuestions(prev => {
+                const currentIds = new Set(prev.map(q => q.id));
+                const additions = data.questions.filter(q => !currentIds.has(q.id));
+                const merged = [...prev, ...additions];
+                try {
+                  localStorage.setItem("GPP_QUESTIONS_BACKUP", JSON.stringify(merged));
+                  localStorage.setItem("GPP_MASTER_QUESTIONS_V3", JSON.stringify(merged));
+                } catch(e) {}
+                return merged;
+              });
+            }
+            showToast("Pemulihan data master JSON berhasil!", "success");
+          } catch(err) {
+            showToast("Format berkas JSON tidak valid: " + err.message, "error");
+          }
+        };
+        reader.readAsText(file);
+        e.target.value = "";
       };
 
       // Buka Modal Edit Massal
@@ -2044,7 +2299,7 @@
         showToast("Template Excel resmi berhasil diunduh!", "success");
       };
 
-      // Import Excel Siswa
+      // Import Excel Siswa (Mendukung Format Lengkap NISN+Nama+Kelas atau HANYA NAMA)
       const handleExcelImport = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -2058,52 +2313,143 @@
             const worksheet = workbook.Sheets[sheetName];
             const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-            if (rows.length <= 1) {
-              showToast("File Excel tidak memiliki data baris!", "error");
+            if (rows.length === 0) {
+              showToast("File Excel kosong!", "error");
               return;
             }
 
-            const importedStudents = [];
-            for (let i = 1; i < rows.length; i++) {
-              const [nisn, name, classId] = rows[i];
-              if (nisn && name) {
-                importedStudents.push({
-                  id: "IMP-" + (Date.now().toString().slice(-4)) + i,
-                  nisn: String(nisn),
-                  name: String(name),
-                  classId: String(classId || "X-1"),
-                  username: String(name).toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 8),
-                  token: `GPP-${classId || 'X'}-${String(nisn).slice(-3)}`,
-                  isLocked: false,
-                  examStatus: "Belum Mulai",
-                  score: 0,
-                  violations: 0,
-                  violationsList: [],
-                  lastActivity: "-"
-                });
+            // Deteksi baris header
+            let headerRowIndex = -1;
+            let nisnCol = -1;
+            let nameCol = -1;
+            let classCol = -1;
+
+            for (let r = 0; r < Math.min(5, rows.length); r++) {
+              const row = rows[r];
+              if (!Array.isArray(row)) continue;
+              row.forEach((cell, cIdx) => {
+                const str = String(cell || "").toLowerCase().trim();
+                if (str.includes("nisn") || str === "no induk" || str === "nis") nisnCol = cIdx;
+                if (str.includes("nama") || str.includes("name") || str.includes("siswa")) nameCol = cIdx;
+                if (str.includes("kelas") || str.includes("rombel") || str.includes("jurusan")) classCol = cIdx;
+              });
+              if (nameCol !== -1 || nisnCol !== -1) {
+                headerRowIndex = r;
+                break;
               }
             }
 
-            const mergedStudents = [...importedStudents, ...students];
-            setStudents(mergedStudents);
-            showToast(`Berhasil mengimpor ${importedStudents.length} data siswa dari Excel!`, "success");
+            const startIdx = headerRowIndex !== -1 ? headerRowIndex + 1 : 0;
+            const existingNisns = new Set(students.map(s => String(s.nisn)));
+            const fallbackClass = selectedClassFilter !== "ALL" ? selectedClassFilter : (classes[0]?.id || "X-1");
+            const newDetectedClasses = new Set();
+            const importedStudents = [];
 
-            // Otomatis sinkronkan ke Google Spreadsheet sheet Data_Siswa
-            if (typeof google !== 'undefined' && google.script && google.script.run) {
-              google.script.run
-                .withSuccessHandler((res) => {
-                  showToast(`Sukses! ${importedStudents.length} data siswa tersimpan di Google Spreadsheet.`, "success");
-                })
-                .withFailureHandler((err) => {
-                  showToast("Gagal menyimpan ke Spreadsheet: " + (err.message || err), "error");
-                })
-                .simpanDataSiswa(mergedStudents);
+            for (let i = startIdx; i < rows.length; i++) {
+              const row = rows[i];
+              if (!Array.isArray(row) || row.length === 0) continue;
+
+              let studentName = "";
+              let studentNisn = "";
+              let studentClass = fallbackClass;
+
+              if (nameCol !== -1 && row[nameCol]) {
+                studentName = String(row[nameCol]).trim();
+                if (nisnCol !== -1 && row[nisnCol]) studentNisn = String(row[nisnCol]).trim();
+                if (classCol !== -1 && row[classCol]) studentClass = String(row[classCol]).trim().toUpperCase();
+              } else if (row.length === 1 && row[0]) {
+                // Hanya 1 kolom: Seluruhnya adalah NAMA SISWA!
+                studentName = String(row[0]).trim().replace(/^[\d\.\-\)\*]+\s*/, "");
+              } else if (row.length >= 2) {
+                // 2 Kolom tanpa header: Kolom 0 = NISN/Nama, Kolom 1 = Nama/Kelas
+                const col0 = String(row[0]).trim();
+                const col1 = String(row[1]).trim();
+                if (/^\d{8,12}$/.test(col0)) {
+                  studentNisn = col0;
+                  studentName = col1;
+                  if (row[2]) studentClass = String(row[2]).trim().toUpperCase();
+                } else {
+                  studentName = col0;
+                  studentClass = col1 || fallbackClass;
+                }
+              }
+
+              if (!studentName || studentName.length < 2) continue;
+
+              if (!studentNisn) {
+                studentNisn = generateUniqueNisn(existingNisns);
+              } else {
+                existingNisns.add(studentNisn);
+              }
+
+              if (studentClass) {
+                newDetectedClasses.add(studentClass);
+              }
+
+              const cleanUser = studentName.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 10) || ("siswa" + studentNisn.slice(-4));
+              importedStudents.push({
+                id: "IMP-" + (Date.now().toString().slice(-4)) + "_" + (i + 1),
+                nisn: studentNisn,
+                name: studentName,
+                classId: studentClass || fallbackClass,
+                username: cleanUser,
+                token: `GPP-${studentClass || fallbackClass}-${studentNisn.slice(-3)}`,
+                isLocked: false,
+                examStatus: "Belum Mulai",
+                score: 0,
+                violations: 0,
+                violationsList: [],
+                lastActivity: "-"
+              });
             }
+
+            if (importedStudents.length === 0) {
+              showToast("Tidak ada data siswa valid yang ditemukan di file Excel!", "error");
+              return;
+            }
+
+            // Daftarkan rombel baru jika terdeteksi di Excel
+            if (newDetectedClasses.size > 0) {
+              setClasses(prev => {
+                const cur = new Set(prev.map(c => c.id));
+                const adds = [];
+                newDetectedClasses.forEach(cls => {
+                  if (!cur.has(cls)) {
+                    adds.push({ id: cls, name: cls, active: true });
+                  }
+                });
+                if (adds.length > 0) {
+                  const updated = [...prev, ...adds];
+                  try { localStorage.setItem("GPP_CLASSES_BACKUP", JSON.stringify(updated)); } catch(e) {}
+                  return updated;
+                }
+                return prev;
+              });
+            }
+
+            // Gabungkan siswa tanpa duplikasi NISN
+            const curNisnMap = new Map(students.map(s => [String(s.nisn), s]));
+            const uniqueAdds = [];
+            importedStudents.forEach(imp => {
+              if (curNisnMap.has(imp.nisn)) {
+                const existing = curNisnMap.get(imp.nisn);
+                existing.name = imp.name;
+                existing.classId = imp.classId;
+                existing.token = imp.token;
+              } else {
+                uniqueAdds.push(imp);
+                curNisnMap.set(imp.nisn, imp);
+              }
+            });
+
+            const mergedStudents = [...uniqueAdds, ...students];
+            syncStudentsWithGAS(mergedStudents, `Berhasil mengimpor ${importedStudents.length} siswa ke Data Master! Tersimpan aman.`);
           } catch (err) {
             showToast("Gagal membaca file Excel: " + err.message, "error");
           }
         };
         reader.readAsArrayBuffer(file);
+        e.target.value = "";
       };
 
       return (
@@ -2113,7 +2459,7 @@
             <div className="flex flex-wrap gap-1.5 text-xs font-semibold">
               {[
                 { id: "dashboard", label: "Dashboard Ringkasan", icon: Icons.Dashboard },
-                { id: "students", label: "Manajemen Siswa", icon: Icons.Users },
+                { id: "students", label: "Data Master Siswa", icon: Icons.Users },
                 { id: "questions", label: "Bank Soal Multi-Tipe", icon: Icons.BookOpen },
                 { id: "rekap", label: "Rekap Nilai & Export", icon: Icons.FileText },
                 { id: "duckrace", label: "Duck Race Live", icon: Icons.Duck },
@@ -2272,9 +2618,63 @@
             </div>
           )}
 
-          {/* TAB 2: MANAJEMEN DATA SISWA LENGKAP */}
+          {/* TAB 2: DATA MASTER SISWA TERPADU & PERMANEN */}
           {adminTab === "students" && (
             <div className="space-y-4">
+              {/* BANNER DATA MASTER SISWA TERPUSAT (ANTI-HAPUS & SINKRON OTOMATIS) */}
+              <div className="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-cyan-500/30 rounded-2xl p-4 shadow-xl">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                        <Icons.Shield /> Database Master Terpusat
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold flex items-center gap-1">
+                        <Icons.CheckCircle /> Anti-Hapus & Sinkron Otomatis
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[10px] font-bold">
+                        {students.length} Siswa Terdaftar • {classes.length} Rombel
+                      </span>
+                    </div>
+                    <h2 className="text-base font-bold text-white flex items-center gap-2">
+                      <span>Data Master Siswa (Multi-Rombel)</span>
+                    </h2>
+                    <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
+                      Data siswa yang diunggah atau ditambahkan tersimpan permanen di database master dan tersinkronisasi otomatis ke Mode Ujian CBT, Duck Race, Kartu Barcode Ujian, Rekapitulasi Nilai, dan Google Spreadsheet.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      onClick={handleExportMasterBackupJson}
+                      className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/40 font-semibold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm"
+                      title="Download file cadangan JSON seluruh data master siswa, kelas, dan soal"
+                    >
+                      <Icons.Download />
+                      <span>Cadangkan Data (JSON)</span>
+                    </button>
+
+                    <label
+                      className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 font-semibold rounded-xl text-xs flex items-center gap-1.5 cursor-pointer transition shadow-sm"
+                      title="Pulihkan data siswa dari file JSON cadangan tanpa menghapus data lokal yang sudah ada"
+                    >
+                      <Icons.Upload />
+                      <span>Pulihkan Data (JSON)</span>
+                      <input type="file" accept=".json" onChange={handleImportMasterBackupJson} className="hidden" />
+                    </label>
+
+                    <button
+                      onClick={() => setShowManageClassesModal(true)}
+                      className="px-3 py-2 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/40 font-semibold rounded-xl text-xs flex items-center gap-1.5 transition"
+                      title="Kelola daftar rombel kelas dan tambah kelas baru"
+                    >
+                      <Icons.Settings />
+                      <span>Kelola Rombel / Kelas</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               {/* TOOLBAR AKSI SISWA & FILTER */}
               <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-3">
@@ -2300,9 +2700,10 @@
                         setShowAddStudentModal(true);
                       }}
                       className="px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-cyan-500/20"
+                      title="Tambah satu siswa baru (Nama saja atau lengkap NISN)"
                     >
                       <Icons.Plus />
-                      <span>Tambah Siswa</span>
+                      <span>+ Tambah Siswa</span>
                     </button>
 
                     <button
@@ -2311,7 +2712,7 @@
                         setShowAddStudentModal(true);
                       }}
                       className="px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-sm shadow-emerald-500/20"
-                      title="Input nama-nama siswa sekaligus tanpa perlu mengisi NISN satu per satu"
+                      title="Input daftar nama siswa sekaligus tanpa perlu mengisi NISN satu per satu"
                     >
                       <Icons.Users />
                       <span>+ Tambah Massal (Hanya Nama)</span>
@@ -2320,7 +2721,7 @@
                     <button
                       onClick={handleOpenBulkEdit}
                       className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-                      title="Edit nama dan data siswa secara massal"
+                      title="Edit nama, pindah rombel, dan edit data siswa secara massal"
                     >
                       <Icons.Edit />
                       <span>Edit Massal</span>
@@ -2383,9 +2784,18 @@
                         }`}
                       >
                         <span>{c.name}</span>
+                        <span className="text-[10px] opacity-75">({students.filter(s => s.classId === c.id).length})</span>
                         {c.active && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>}
                       </button>
                     ))}
+                    <button
+                      onClick={() => setShowManageClassesModal(true)}
+                      className="px-2 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-cyan-400 border border-cyan-500/30 text-[11px] font-semibold transition flex items-center gap-1"
+                      title="Tambah atau kelola rombel kelas"
+                    >
+                      <Icons.Plus />
+                      <span>Tambah Rombel</span>
+                    </button>
                   </div>
 
                   <label className="flex items-center gap-2 cursor-pointer select-none text-slate-300">
@@ -2408,6 +2818,27 @@
                     {selectedStudentIds.length} Siswa Terpilih
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
+                    {/* FITUR PINDAH KELAS MASSAL */}
+                    <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1">
+                      <span className="text-slate-400 text-[11px]">Pindah Rombel:</span>
+                      <select
+                        value={bulkMoveTargetClass}
+                        onChange={(e) => setBulkMoveTargetClass(e.target.value)}
+                        className="bg-transparent text-cyan-300 font-semibold text-xs focus:outline-none cursor-pointer"
+                      >
+                        {classes.map(c => (
+                          <option key={c.id} value={c.id} className="bg-slate-900 text-white">{c.name}</option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={handleExecuteBulkMoveClass}
+                        className="px-2.5 py-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded text-[11px] transition shadow-sm"
+                        title="Pindahkan seluruh siswa terpilih ke rombel yang dipilih"
+                      >
+                        Terapkan
+                      </button>
+                    </div>
+
                     <button
                       onClick={handleOpenBulkEdit}
                       className="px-3 py-1.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold rounded-lg hover:bg-amber-500/30 transition flex items-center gap-1"
@@ -2453,7 +2884,7 @@
                           />
                         </th>
                         <th className="p-3 font-semibold">NISN & Nama Siswa</th>
-                        <th className="p-3 font-semibold">Kelas</th>
+                        <th className="p-3 font-semibold">Kelas / Edit Rombel</th>
                         <th className="p-3 font-semibold">Token Barcode</th>
                         <th className="p-3 font-semibold text-center">Status Login</th>
                         <th className="p-3 font-semibold text-center">Status Ujian</th>
@@ -2489,10 +2920,18 @@
                                 <div className="font-bold text-white">{student.name}</div>
                                 <div className="text-[11px] text-slate-400 font-mono">NISN: {student.nisn}</div>
                               </td>
+                              {/* FITUR EDIT KELAS INLINE */}
                               <td className="p-3">
-                                <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[11px]">
-                                  {student.classId}
-                                </span>
+                                <select
+                                  value={student.classId}
+                                  onChange={(e) => handleQuickChangeStudentClass(student.id, e.target.value)}
+                                  className="px-2 py-1 rounded-lg bg-slate-800 border border-slate-700 hover:border-cyan-500 text-cyan-300 font-semibold text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500 transition cursor-pointer"
+                                  title="Klik untuk langsung memindahkan kelas siswa ini"
+                                >
+                                  {classes.map(c => (
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                  ))}
+                                </select>
                               </td>
                               <td className="p-3 font-mono text-cyan-400 text-[11px]">
                                 {student.token}
@@ -2642,15 +3081,19 @@
                           />
                         </div>
                         <div>
-                          <label className="block text-slate-400 font-semibold mb-1">NISN (10 Digit Angka)</label>
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="block text-slate-400 font-semibold">NISN (10 Digit Angka)</label>
+                            <span className="text-[10px] text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/40 font-mono">
+                              Opsional • Otomatis Dibuatkan
+                            </span>
+                          </div>
                           <input
                             type="text"
-                            required
                             maxLength="10"
                             value={newStudentForm.nisn}
                             onChange={(e) => setNewStudentForm({ ...newStudentForm, nisn: e.target.value })}
-                            placeholder="misal: 0061234588"
-                            className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-cyan-500"
+                            placeholder="Kosongkan jika ingin dibuatkan otomatis oleh sistem"
+                            className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-cyan-500 placeholder-slate-600"
                           />
                         </div>
                         <div>
@@ -2803,22 +3246,31 @@
                         </select>
                       </div>
 
-                      {/* Mode Toggle */}
+                      {/* Mode Toggle 3 Pilihan */}
                       <div className="flex p-0.5 bg-slate-950 border border-slate-800 rounded-xl text-xs">
                         <button
                           type="button"
                           onClick={() => setBulkEditMode("text")}
                           className={`px-3 py-1 rounded-lg font-semibold transition ${
-                            bulkEditMode === "text" ? "bg-amber-500 text-slate-950 font-bold" : "text-slate-400 hover:text-white"
+                            bulkEditMode === "text" ? "bg-amber-500 text-slate-950 font-bold shadow" : "text-slate-400 hover:text-white"
                           }`}
                         >
                           Editor Teks (Hanya Nama)
                         </button>
                         <button
                           type="button"
+                          onClick={() => setBulkEditMode("move_class")}
+                          className={`px-3 py-1 rounded-lg font-semibold transition ${
+                            bulkEditMode === "move_class" ? "bg-cyan-500 text-slate-950 font-bold shadow" : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          Pindah Rombel Massal
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => setBulkEditMode("table")}
                           className={`px-3 py-1 rounded-lg font-semibold transition ${
-                            bulkEditMode === "table" ? "bg-amber-500 text-slate-950 font-bold" : "text-slate-400 hover:text-white"
+                            bulkEditMode === "table" ? "bg-amber-500 text-slate-950 font-bold shadow" : "text-slate-400 hover:text-white"
                           }`}
                         >
                           Tabel Form Lengkap
@@ -2863,6 +3315,88 @@
                             className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-lg shadow-amber-500/20"
                           >
                             Simpan Perubahan Nama
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* BODY 2: MODE PINDAH ROMBEL MASSAL */}
+                    {bulkEditMode === "move_class" && (
+                      <div className="space-y-4 flex-1 overflow-y-auto p-1">
+                        <div className="p-3 bg-cyan-950/40 border border-cyan-500/30 rounded-xl text-cyan-200 text-[11px] leading-relaxed">
+                          <strong className="text-cyan-300">💡 Pindah Rombel Serentak:</strong> Fitur ini memindahkan seluruh siswa dari satu rombel ke rombel lain secara instan (misal kenaikan kelas atau pemindahan kelas). Token barcode ujian seluruh siswa akan otomatis diperbarui mengikuti kelas baru.
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-950/60 p-4 border border-slate-800 rounded-xl">
+                          <div>
+                            <label className="block text-slate-300 font-semibold mb-1 text-xs">Rombel Asal (Dipindahkan):</label>
+                            <select
+                              value={bulkMoveSourceClass}
+                              onChange={(e) => setBulkMoveSourceClass(e.target.value)}
+                              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white font-semibold text-xs focus:outline-none focus:border-cyan-500"
+                            >
+                              {classes.map(c => {
+                                const cnt = students.filter(s => s.classId === c.id).length;
+                                return (
+                                  <option key={c.id} value={c.id}>{c.name} ({cnt} Siswa)</option>
+                                );
+                              })}
+                            </select>
+                            <p className="text-[11px] text-slate-400 mt-1">
+                              Jumlah: <strong className="text-white">{students.filter(s => s.classId === bulkMoveSourceClass).length} siswa</strong>
+                            </p>
+                          </div>
+
+                          <div>
+                            <label className="block text-slate-300 font-semibold mb-1 text-xs">Rombel Tujuan (Kelas Baru):</label>
+                            <select
+                              value={bulkMoveDestClass}
+                              onChange={(e) => setBulkMoveDestClass(e.target.value)}
+                              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-cyan-300 font-semibold text-xs focus:outline-none focus:border-cyan-500"
+                            >
+                              {classes.map(c => (
+                                <option key={c.id} value={c.id}>{c.name}</option>
+                              ))}
+                            </select>
+                            <p className="text-[11px] text-cyan-400 mt-1">
+                              Target tujuan siswa baru
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Preview nama siswa yang akan dipindahkan */}
+                        <div className="border border-slate-800 rounded-xl p-3 bg-slate-950/30">
+                          <h5 className="text-xs font-semibold text-slate-300 mb-2">
+                            Daftar Siswa di Rombel {bulkMoveSourceClass} ({students.filter(s => s.classId === bulkMoveSourceClass).length} Siswa):
+                          </h5>
+                          <div className="max-h-44 overflow-y-auto space-y-1 pr-1 text-xs">
+                            {students.filter(s => s.classId === bulkMoveSourceClass).length === 0 ? (
+                              <p className="text-slate-500 italic py-2">Tidak ada siswa di rombel ini.</p>
+                            ) : (
+                              students.filter(s => s.classId === bulkMoveSourceClass).map((st, i) => (
+                                <div key={st.id} className="flex justify-between items-center py-1 px-2 rounded bg-slate-900/60 text-slate-300">
+                                  <span>{i + 1}. {st.name}</span>
+                                  <span className="font-mono text-[10px] text-slate-500">NISN: {st.nisn}</span>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                          <button
+                            type="button"
+                            onClick={() => setShowBulkEditModal(false)}
+                            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition"
+                          >
+                            Batal
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleMoveEntireClass(bulkMoveSourceClass, bulkMoveDestClass)}
+                            className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-lg shadow-cyan-500/20"
+                          >
+                            Pindahkan Seluruh Siswa ke {bulkMoveDestClass}
                           </button>
                         </div>
                       </div>
@@ -3228,6 +3762,113 @@
                           Konfirmasi Hapus
                         </button>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* MODAL KELOLA ROMBEL / KELAS */}
+              {showManageClassesModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+                  <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                      <div>
+                        <h3 className="text-base font-bold text-white flex items-center gap-2">
+                          <Icons.Settings />
+                          <span>Kelola Rombel / Kelas Master</span>
+                        </h3>
+                        <p className="text-slate-400 text-xs mt-0.5">Tambah kelas baru, atur rombel aktif ujian, atau kelola kelas</p>
+                      </div>
+                      <button
+                        onClick={() => setShowManageClassesModal(false)}
+                        className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+                      >
+                        <Icons.X />
+                      </button>
+                    </div>
+
+                    {/* Form Tambah Kelas Baru */}
+                    <form onSubmit={handleAddNewClass} className="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 text-xs">
+                      <label className="block text-slate-300 font-semibold">Tambah Rombel / Kelas Baru</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          required
+                          value={newClassNameInput}
+                          onChange={(e) => setNewClassNameInput(e.target.value)}
+                          placeholder="misal: XII-IPS-1 atau X-3"
+                          className="flex-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white uppercase focus:outline-none focus:border-cyan-500 text-xs"
+                        />
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl transition text-xs whitespace-nowrap shadow-sm"
+                        >
+                          + Tambah Kelas
+                        </button>
+                      </div>
+                    </form>
+
+                    {/* Daftar Rombel Saat Ini */}
+                    <div className="space-y-2 max-h-72 overflow-y-auto pr-1 text-xs">
+                      <div className="flex justify-between text-slate-400 font-semibold px-2 py-1 text-[11px]">
+                        <span>Nama Rombel</span>
+                        <div className="flex items-center gap-4">
+                          <span>Siswa</span>
+                          <span>Status Ujian</span>
+                          <span>Aksi</span>
+                        </div>
+                      </div>
+                      {classes.map(c => {
+                        const count = students.filter(s => s.classId === c.id).length;
+                        return (
+                          <div key={c.id} className="p-2.5 bg-slate-950/70 border border-slate-800 rounded-xl flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-white px-2 py-0.5 bg-slate-800 border border-slate-700 rounded-lg font-mono">
+                                {c.name}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <span className="text-slate-400 font-semibold text-[11px] w-12 text-center">
+                                {count} Siswa
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleClassActive(c.id)}
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition flex items-center gap-1 ${
+                                  c.active
+                                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                                    : "bg-slate-800 text-slate-500 border border-slate-700"
+                                }`}
+                                title="Klik untuk mengaktifkan/menonaktifkan ujian untuk rombel ini"
+                              >
+                                <span className={`w-1.5 h-1.5 rounded-full ${c.active ? "bg-emerald-400" : "bg-slate-500"}`}></span>
+                                {c.active ? "Aktif Ujian" : "Nonaktif"}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteClass(c.id)}
+                                disabled={count > 0}
+                                className={`p-1.5 rounded-lg transition ${
+                                  count > 0 ? "text-slate-700 cursor-not-allowed" : "text-slate-400 hover:text-rose-400 hover:bg-rose-500/20"
+                                }`}
+                                title={count > 0 ? "Pindahkan siswa terlebih dahulu sebelum menghapus kelas" : "Hapus rombel ini"}
+                              >
+                                <Icons.Trash />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="flex justify-end pt-2 border-t border-slate-800">
+                      <button
+                        type="button"
+                        onClick={() => setShowManageClassesModal(false)}
+                        className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition"
+                      >
+                        Selesai
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -9305,10 +9946,27 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
                     Muat Ulang Halaman
                   </button>
                   <button
-                    onClick={() => { localStorage.clear(); window.location.reload(); }}
+                    onClick={() => {
+                      const keysToKeep = [
+                        "GPP_STUDENTS_BACKUP", "GPP_MASTER_STUDENTS_V3",
+                        "GPP_CLASSES_BACKUP",
+                        "GPP_QUESTIONS_BACKUP", "GPP_MASTER_QUESTIONS_V3",
+                        "GPP_QUESTION_FILES_V2", "GPP_MASTER_FILES_V3",
+                        "GPP_APP_CONFIG", "GPP_ACTIVE_EXAM_FILE_V2"
+                      ];
+                      const saved = {};
+                      keysToKeep.forEach(k => {
+                        const v = localStorage.getItem(k);
+                        if (v !== null) saved[k] = v;
+                      });
+                      localStorage.clear();
+                      Object.entries(saved).forEach(([k, v]) => localStorage.setItem(k, v));
+                      window.location.reload();
+                    }}
                     className="px-4 py-2 bg-slate-800 text-slate-300 border border-slate-700 font-semibold rounded-xl text-xs hover:bg-slate-700 transition"
+                    title="Membersihkan cache sementara antarmuka tanpa menghapus data siswa atau soal"
                   >
-                    Reset Cache
+                    Reset Cache (Data Tetap Aman)
                   </button>
                 </div>
               </div>

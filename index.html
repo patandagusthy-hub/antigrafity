@@ -210,16 +210,16 @@
     ];
 
     const INITIAL_STUDENTS = [
-      { id: "S101", nisn: "0061234561", name: "Ahmad Rizky Pratama", classId: "XII-MIPA-1", username: "rizky12", token: "GPP-XII-001", isLocked: false, examStatus: "Selesai", score: 88, violations: 0, violationsList: [], lastActivity: "Baru saja" },
-      { id: "S102", nisn: "0061234562", name: "Beatrix Wulan Patanda", classId: "XII-MIPA-1", username: "beatrix02", token: "GPP-XII-002", isLocked: false, examStatus: "Selesai", score: 94, violations: 0, violationsList: [], lastActivity: "2 menit lalu" },
-      { id: "S103", nisn: "0061234563", name: "Candra Wijaya", classId: "XII-MIPA-1", username: "candra03", token: "GPP-XII-003", isLocked: true, examStatus: "Sedang Mengerjakan", score: 62, violations: 3, violationsList: [{ time: "10:14:02", reason: "Pindah Tab Browser (3 detik)" }, { time: "10:18:25", reason: "Keluar Mode Fullscreen" }, { time: "10:22:11", reason: "Terdeteksi Split Screen" }], lastActivity: "5 menit lalu" },
-      { id: "S104", nisn: "0061234564", name: "Dewi Lestari Gusthy", classId: "XII-MIPA-1", username: "dewilestari", token: "GPP-XII-004", isLocked: false, examStatus: "Sedang Mengerjakan", score: 78, violations: 1, violationsList: [{ time: "10:05:12", reason: "Pindah Tab (1x)" }], lastActivity: "1 menit lalu" },
-      { id: "S105", nisn: "0061234565", name: "Eko Prasetyo", classId: "XII-MIPA-1", username: "ekopras", token: "GPP-XII-005", isLocked: false, examStatus: "Belum Mulai", score: 0, violations: 0, violationsList: [], lastActivity: "-" },
-      { id: "S106", nisn: "0071234571", name: "Fathir Muhammad", classId: "XI-IPA-1", username: "fathir71", token: "GPP-XI-001", isLocked: false, examStatus: "Selesai", score: 82, violations: 0, violationsList: [], lastActivity: "10 menit lalu" },
-      { id: "S107", nisn: "0071234572", name: "Gita Permatasari", classId: "XI-IPA-1", username: "gitap", token: "GPP-XI-002", isLocked: false, examStatus: "Sedang Mengerjakan", score: 70, violations: 0, violationsList: [], lastActivity: "Baru saja" },
-      { id: "S108", nisn: "0071234573", name: "Hafiz Al-Fikri", classId: "XI-IPA-1", username: "hafiz99", token: "GPP-XI-003", isLocked: false, examStatus: "Belum Mulai", score: 0, violations: 0, violationsList: [], lastActivity: "-" },
-      { id: "S109", nisn: "0081234581", name: "Intan Nurhaliza", classId: "X-1", username: "intannh", token: "GPP-X-001", isLocked: false, examStatus: "Selesai", score: 90, violations: 0, violationsList: [], lastActivity: "15 menit lalu" },
-      { id: "S110", nisn: "0081234582", name: "Jonathan Saputra", classId: "X-1", username: "jonathans", token: "GPP-X-002", isLocked: false, examStatus: "Sedang Mengerjakan", score: 68, violations: 1, violationsList: [{ time: "09:45:10", reason: "Keluar Fullscreen" }], lastActivity: "Baru saja" }
+      { id: "S101", nisn: "0061234561", name: "Ahmad Rizky Pratama", classId: "XII-MIPA-1", username: "rizky12", token: "GPP-XII-001", isLocked: false, examStatus: "Selesai", score: 88, mcScore: 70, essayScore: 18, violations: 0, violationsList: [], lastActivity: "Baru saja", submittedAt: "2026-11-10 10:14:22" },
+      { id: "S102", nisn: "0061234562", name: "Beatrix Wulan Patanda", classId: "XII-MIPA-1", username: "beatrix02", token: "GPP-XII-002", isLocked: false, examStatus: "Selesai", score: 94, mcScore: 75, essayScore: 19, violations: 0, violationsList: [], lastActivity: "2 menit lalu", submittedAt: "2026-11-10 10:12:05" },
+      { id: "S103", nisn: "0061234563", name: "Candra Wijaya", classId: "XII-MIPA-1", username: "candra03", token: "GPP-XII-003", isLocked: true, examStatus: "Sedang Mengerjakan", score: 62, mcScore: 50, essayScore: 12, violations: 3, violationsList: [{ time: "10:14:02", reason: "Pindah Tab Browser (3 detik)" }, { time: "10:18:25", reason: "Keluar Mode Fullscreen" }, { time: "10:22:11", reason: "Terdeteksi Split Screen" }], lastActivity: "5 menit lalu" },
+      { id: "S104", nisn: "0061234564", name: "Dewi Lestari Gusthy", classId: "XII-MIPA-1", username: "dewilestari", token: "GPP-XII-004", isLocked: false, examStatus: "Sedang Mengerjakan", score: 78, mcScore: 65, essayScore: 13, violations: 1, violationsList: [{ time: "10:05:12", reason: "Pindah Tab (1x)" }], lastActivity: "1 menit lalu" },
+      { id: "S105", nisn: "0061234565", name: "Eko Prasetyo", classId: "XII-MIPA-1", username: "ekopras", token: "GPP-XII-005", isLocked: false, examStatus: "Belum Mulai", score: 0, mcScore: 0, essayScore: 0, violations: 0, violationsList: [], lastActivity: "-" },
+      { id: "S106", nisn: "0071234571", name: "Fathir Muhammad", classId: "XI-IPA-1", username: "fathir71", token: "GPP-XI-001", isLocked: false, examStatus: "Selesai", score: 82, mcScore: 68, essayScore: 14, violations: 0, violationsList: [], lastActivity: "10 menit lalu", submittedAt: "2026-11-10 09:55:10" },
+      { id: "S107", nisn: "0071234572", name: "Gita Permatasari", classId: "XI-IPA-1", username: "gitap", token: "GPP-XI-002", isLocked: false, examStatus: "Sedang Mengerjakan", score: 70, mcScore: 55, essayScore: 15, violations: 0, violationsList: [], lastActivity: "Baru saja" },
+      { id: "S108", nisn: "0071234573", name: "Hafiz Al-Fikri", classId: "XI-IPA-1", username: "hafiz99", token: "GPP-XI-003", isLocked: false, examStatus: "Belum Mulai", score: 0, mcScore: 0, essayScore: 0, violations: 0, violationsList: [], lastActivity: "-" },
+      { id: "S109", nisn: "0081234581", name: "Intan Nurhaliza", classId: "X-1", username: "intannh", token: "GPP-X-001", isLocked: false, examStatus: "Selesai", score: 90, mcScore: 72, essayScore: 18, violations: 0, violationsList: [], lastActivity: "15 menit lalu", submittedAt: "2026-11-10 09:48:32" },
+      { id: "S110", nisn: "0081234582", name: "Jonathan Saputra", classId: "X-1", username: "jonathans", token: "GPP-X-002", isLocked: false, examStatus: "Sedang Mengerjakan", score: 68, mcScore: 54, essayScore: 14, violations: 1, violationsList: [{ time: "09:45:10", reason: "Keluar Fullscreen" }], lastActivity: "Baru saja" }
     ];
 
     // =========================================================================
@@ -450,7 +450,7 @@
       const [role, setRole] = useState('admin');
       const [adminTab, setAdminTab] = useState(() => {
         const h = (window.location.hash || "").replace("#", "");
-        return ['dashboard', 'students', 'questions', 'duckrace', 'barcodes', 'analytics', 'settings'].includes(h) ? h : 'dashboard';
+        return ['dashboard', 'students', 'questions', 'rekap', 'duckrace', 'barcodes', 'analytics', 'settings'].includes(h) ? h : 'dashboard';
       }); // 'dashboard', 'students', 'questions', 'duckrace', 'barcodes', 'analytics', 'settings'
 
       // State Konfigurasi Sistem & Fitur APK
@@ -1536,6 +1536,8 @@
           <main className="flex-1 max-w-7xl w-full mx-auto p-4">
             {role === 'admin' ? (
               <AdminDashboard
+                role={role}
+                setRole={setRole}
                 adminTab={adminTab}
                 setAdminTab={setAdminTab}
                 classes={classes}
@@ -1614,6 +1616,7 @@
     // MODUL 1: ADMIN DASHBOARD UTAMA & MANAJEMEN PENGGUNA
     // =========================================================================
     function AdminDashboard({
+      role, setRole,
       adminTab, setAdminTab,
       classes, setClasses,
       students, setStudents,
@@ -2112,6 +2115,7 @@
                 { id: "dashboard", label: "Dashboard Ringkasan", icon: Icons.Dashboard },
                 { id: "students", label: "Manajemen Siswa", icon: Icons.Users },
                 { id: "questions", label: "Bank Soal Multi-Tipe", icon: Icons.BookOpen },
+                { id: "rekap", label: "Rekap Nilai & Export", icon: Icons.FileText },
                 { id: "duckrace", label: "Duck Race Live", icon: Icons.Duck },
                 { id: "barcodes", label: "Cetak Kartu Ujian", icon: Icons.Barcode },
                 { id: "analytics", label: "Analisis Butir Soal AI", icon: Icons.Brain },
@@ -3246,6 +3250,24 @@
               revisions={revisions}
               setRevisions={setRevisions}
               showToast={showToast}
+            />
+          )}
+
+          {/* TAB REKAPITULASI NILAI & EXPORT BERKAS */}
+          {adminTab === "rekap" && (
+            <ExamRecapAndExportModule
+              students={students}
+              setStudents={setStudents}
+              questions={questions}
+              questionFiles={questionFiles}
+              activeExamFileId={activeExamFileId}
+              classes={classes}
+              appConfig={appConfig}
+              setAppConfig={setAppConfig}
+              showToast={showToast}
+              gasUrl={gasUrl}
+              targetFolderId={targetFolderId}
+              setRole={setRole}
             />
           )}
 
@@ -6474,6 +6496,1837 @@ Pembahasan: Proklamasi 17 Agustus 1945 diproklamirkan oleh Soekarno-Hatta.
               </div>
             ))}
           </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // MODUL 4.5: REKAPITULASI NILAI, PEMANTAUAN REAL-TIME & EXPORT BERKAS
+    // =========================================================================
+    function ExamRecapAndExportModule({
+      students,
+      setStudents,
+      questions = [],
+      questionFiles = [],
+      activeExamFileId = "FILE_MAIN",
+      classes = [],
+      appConfig,
+      setAppConfig,
+      showToast,
+      gasUrl,
+      targetFolderId,
+      setRole
+    }) {
+      const [selectedClass, setSelectedClass] = useState("ALL");
+      const [searchQuery, setSearchQuery] = useState("");
+      const [statusFilter, setStatusFilter] = useState("ALL");
+      const [sortOrder, setSortOrder] = useState("alpha-asc"); // "alpha-asc" | "alpha-desc" | "score-desc" | "score-asc"
+      const [currentKkm, setCurrentKkm] = useState(() => appConfig?.exam?.kkm || 75);
+      const [showKkmModal, setShowKkmModal] = useState(false);
+      const [inputKkm, setInputKkm] = useState(currentKkm);
+
+      // State Pemantauan Live & Auto-Refresh
+      const [autoRefreshActive, setAutoRefreshActive] = useState(true);
+      const [refreshInterval, setRefreshInterval] = useState(3); // 3, 5, 10, 15, 30, 60
+      const [lastRefreshTime, setLastRefreshTime] = useState(() => {
+        const d = new Date();
+        return d.toTimeString().slice(0, 8).replace(/:/g, ".");
+      });
+      const [refreshCountdown, setRefreshCountdown] = useState(3);
+      const [isRefreshing, setIsRefreshing] = useState(false);
+
+      // State Modal Pemeriksaan Lembar Jawaban Siswa (Koreksi Manual Guru)
+      const [showExamSheetModal, setShowExamSheetModal] = useState(false);
+      const [inspectingStudent, setInspectingStudent] = useState(null);
+      const [inspectingAnswers, setInspectingAnswers] = useState({});
+      const [manualEssayScore, setManualEssayScore] = useState(0);
+      const [teacherNotes, setTeacherNotes] = useState("");
+
+      // State Modal Cetak Lembar Jawaban Massal & Audit Live
+      const [showBulkPrintModal, setShowBulkPrintModal] = useState(false);
+      const [showAuditLiveModal, setShowAuditLiveModal] = useState(false);
+
+      // Timer Auto-Refresh Real-Time
+      useEffect(() => {
+        if (!autoRefreshActive) return;
+        const timer = setInterval(() => {
+          setRefreshCountdown(prev => {
+            if (prev <= 1) {
+              const d = new Date();
+              setLastRefreshTime(d.toTimeString().slice(0, 8).replace(/:/g, "."));
+              return refreshInterval;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        return () => clearInterval(timer);
+      }, [autoRefreshActive, refreshInterval]);
+
+      // Soal Ujian Aktif
+      const activeQuestions = useMemo(() => {
+        if (activeExamFileId === "ALL") return questions;
+        const filtered = questions.filter(q => (q.fileId || "FILE_MAIN") === activeExamFileId);
+        return filtered.length > 0 ? filtered : questions;
+      }, [activeExamFileId, questions]);
+
+      const activeExamFileObj = useMemo(() => {
+        if (activeExamFileId === "ALL") {
+          return { id: "ALL", name: "Semua Berkas (Gabungan)", subject: "Seluruh Naskah Soal" };
+        }
+        return questionFiles.find(f => f.id === activeExamFileId) || questionFiles[0] || { name: "Naskah Soal Utama CBT", subject: "CBT Exam" };
+      }, [activeExamFileId, questionFiles]);
+
+      // Filter Siswa Sesuai Pilihan Kelas
+      const classFilteredStudents = useMemo(() => {
+        if (selectedClass === "ALL") return students;
+        return students.filter(s => s.classId === selectedClass);
+      }, [students, selectedClass]);
+
+      // Statistik Ringkasan Real-Time sesuai Filter Kelas
+      const totalCount = classFilteredStudents.length;
+      const workingCount = classFilteredStudents.filter(s => s.examStatus === "Sedang Mengerjakan").length;
+      const workingPercent = totalCount > 0 ? Math.round((workingCount / totalCount) * 100) : 0;
+
+      const finishedCount = classFilteredStudents.filter(s => s.examStatus === "Selesai").length;
+      const finishedPercent = totalCount > 0 ? Math.round((finishedCount / totalCount) * 100) : 0;
+
+      const notStartedCount = classFilteredStudents.filter(s => !s.examStatus || s.examStatus === "Belum Mulai").length;
+      const disqualifiedCount = classFilteredStudents.filter(s => s.isLocked || (s.violationsList && s.violationsList.length >= 3)).length;
+
+      const totalViolations = classFilteredStudents.reduce((acc, s) => acc + (s.violations || 0), 0);
+
+      // Statistik KKM
+      const passedStudents = classFilteredStudents.filter(s => (s.score || 0) >= currentKkm);
+      const passedCount = passedStudents.length;
+      const passedPercent = totalCount > 0 ? Math.round((passedCount / totalCount) * 100) : 0;
+      const failedCount = totalCount - passedCount;
+
+      const averageScore = totalCount > 0
+        ? Math.round(classFilteredStudents.reduce((acc, s) => acc + (s.score || 0), 0) / totalCount)
+        : 0;
+
+      // Filter & Sorting untuk Tampilan Tabel
+      const displayStudents = useMemo(() => {
+        let list = classFilteredStudents;
+        if (statusFilter !== "ALL") {
+          if (statusFilter === "Terkunci") {
+            list = list.filter(s => s.isLocked);
+          } else {
+            list = list.filter(s => s.examStatus === statusFilter);
+          }
+        }
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase();
+          list = list.filter(s => (s.name || "").toLowerCase().includes(q) || (s.nisn || "").includes(q));
+        }
+        const sorted = [...list];
+        if (sortOrder === "alpha-asc") {
+          sorted.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+        } else if (sortOrder === "alpha-desc") {
+          sorted.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+        } else if (sortOrder === "score-desc") {
+          sorted.sort((a, b) => (b.score || 0) - (a.score || 0));
+        } else if (sortOrder === "score-asc") {
+          sorted.sort((a, b) => (a.score || 0) - (b.score || 0));
+        }
+        return sorted;
+      }, [classFilteredStudents, statusFilter, searchQuery, sortOrder]);
+
+      // Helper untuk Mendapatkan Rincian Jawaban & Skor PG / Essay Siswa
+      const getStudentBreakdown = useCallback((student) => {
+        const rawScore = student.score || 0;
+        const mc = student.mcScore !== undefined ? student.mcScore : Math.round(rawScore * 0.8);
+        const essay = student.essayScore !== undefined ? student.essayScore : Math.max(0, rawScore - mc);
+        const total = Math.min(100, mc + essay);
+
+        let answers = student.answers;
+        if (!answers || Object.keys(answers).length === 0) {
+          answers = {};
+          const ratio = (rawScore || 75) / 100;
+          activeQuestions.forEach((q, idx) => {
+            const isCorrect = (idx / Math.max(1, activeQuestions.length)) <= ratio;
+            if (q.type === "PILIHAN_GANDA" || q.type === "AUDIO_LISTENING" || q.type === "BENAR_SALAH") {
+              answers[q.id] = isCorrect ? q.correctAnswer : (q.correctAnswer === "A" ? "B" : "A");
+            } else if (q.type === "PILIHAN_GANDA_KOMPLEKS") {
+              answers[q.id] = isCorrect ? q.correctAnswer : [Array.isArray(q.correctAnswer) ? q.correctAnswer[0] : "A"];
+            } else if (q.type === "MENJODOHKAN") {
+              const pAns = {};
+              if (q.pairs) {
+                q.pairs.forEach((p, pIdx) => {
+                  pAns[pIdx] = isCorrect ? p.correctTarget : (q.pairs[(pIdx + 1) % q.pairs.length]?.correctTarget || p.correctTarget);
+                });
+              }
+              answers[q.id] = pAns;
+            } else if (q.type === "ESAI") {
+              if (rawScore >= 80) {
+                answers[q.id] = "Sistem menggunakan arsitektur antrean staggered delay dan lockservice untuk mencegah benturan traffic lock di Google Apps Script. Selain itu data ujian dicadangkan di IndexedDB dan LocalStorage untuk perlindungan anti-lag.";
+              } else if (rawScore >= 60) {
+                answers[q.id] = "Menggunakan antrean jeda acak agar tidak bentrok traffic lock pada quota GAS, serta penyimpanan browser lokal.";
+              } else {
+                answers[q.id] = "Sistem ujian online menggunakan Google Spreadsheet dan Google Drive.";
+              }
+            }
+          });
+        }
+
+        return { mcScore: mc, essayScore: essay, totalScore: total, answers };
+      }, [activeQuestions]);
+
+      // Aksi Refres Sekarang
+      const handleManualRefresh = () => {
+        setIsRefreshing(true);
+        const d = new Date();
+        setLastRefreshTime(d.toTimeString().slice(0, 8).replace(/:/g, "."));
+        setRefreshCountdown(refreshInterval);
+        setTimeout(() => {
+          setIsRefreshing(false);
+          showToast("Data hasil ujian berhasil diperbarui seketika!", "success");
+        }, 500);
+      };
+
+      // Aksi Ubah KKM Cepat & Preset
+      const handleSelectKkmPreset = (presetVal) => {
+        setCurrentKkm(presetVal);
+        if (typeof setAppConfig === "function" && appConfig) {
+          setAppConfig({
+            ...appConfig,
+            exam: {
+              ...appConfig.exam,
+              kkm: presetVal
+            }
+          });
+        }
+        showToast(`Standar KKM berhasil diatur menjadi ${presetVal} Poin.`, "success");
+      };
+
+      const handleSaveCustomKkm = (e) => {
+        e.preventDefault();
+        const num = Number(inputKkm);
+        if (isNaN(num) || num < 1 || num > 100) {
+          showToast("Nilai KKM harus berupa angka antara 1 s/d 100!", "error");
+          return;
+        }
+        handleSelectKkmPreset(num);
+        setShowKkmModal(false);
+      };
+
+      // Aksi Buka Modal Periksa Jawaban Siswa
+      const handleOpenInspectStudent = (student) => {
+        const bd = getStudentBreakdown(student);
+        setInspectingStudent(student);
+        setInspectingAnswers(bd.answers);
+        setManualEssayScore(bd.essayScore);
+        setTeacherNotes(student.teacherNotes || "");
+        setShowExamSheetModal(true);
+      };
+
+      // Aksi Simpan Penilaian Manual Guru untuk Soal Esai
+      const handleSaveTeacherGrading = () => {
+        if (!inspectingStudent) return;
+        const newEssay = Number(manualEssayScore) || 0;
+        const currentBreakdown = getStudentBreakdown(inspectingStudent);
+        const newTotal = Math.min(100, Math.round(currentBreakdown.mcScore + newEssay));
+
+        setStudents(prev => prev.map(s => s.id === inspectingStudent.id ? {
+          ...s,
+          essayScore: newEssay,
+          score: newTotal,
+          teacherNotes: teacherNotes,
+          answers: inspectingAnswers,
+          lastActivity: "Dinilai Manual oleh Guru"
+        } : s));
+
+        showToast(`Penilaian manual untuk ${inspectingStudent.name} berhasil disimpan! Total nilai: ${newTotal} Poin.`, "success");
+        setShowExamSheetModal(false);
+      };
+
+      // Aksi Reset Ujian Ulang Siswa
+      const handleResetExamBulk = () => {
+        const finishedInFilter = classFilteredStudents.filter(s => s.examStatus === "Selesai");
+        if (finishedInFilter.length === 0) {
+          showToast("Tidak ada siswa yang berstatus 'Selesai' untuk direset pada filter kelas ini.", "warning");
+          return;
+        }
+        const labelKelas = selectedClass === "ALL" ? "Semua Kelas" : selectedClass;
+        if (!confirm(`PERINGATAN: Anda akan mereset status ujian untuk ${finishedInFilter.length} siswa di ${labelKelas}? Nilai dan jawaban akan dikosongkan agar siswa dapat memulai ujian baru.`)) {
+          return;
+        }
+
+        const idsToReset = finishedInFilter.map(s => s.id);
+        setStudents(prev => prev.map(s => idsToReset.includes(s.id) ? {
+          ...s,
+          examStatus: "Belum Mulai",
+          score: 0,
+          mcScore: 0,
+          essayScore: 0,
+          violations: 0,
+          violationsList: [],
+          answers: {},
+          lastActivity: "Ujian Direset Guru"
+        } : s));
+
+        showToast(`Sukses! ${finishedInFilter.length} siswa berhasil direset untuk ujian ulang.`, "success");
+      };
+
+      // Aksi Simpan Laporan ke Google Drive / Google Spreadsheet
+      const handleSaveToDrive = () => {
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          showToast("Menyimpan snapshot rekapitulasi nilai ke Google Spreadsheet & Drive...", "success");
+          google.script.run
+            .withSuccessHandler((res) => {
+              showToast("Rekapitulasi nilai berhasil disimpan ke Google Spreadsheet!", "success");
+            })
+            .withFailureHandler((err) => {
+              showToast("Gagal menyimpan ke Drive: " + (err.message || err), "error");
+            })
+            .simpanBankSoal(questions);
+        } else {
+          showToast("Data rekapitulasi nilai dan lembar jawaban tersimpan aman di penyimpanan sistem.", "success");
+        }
+      };
+
+      // Ekspor Rekap Nilai ke Excel (.xlsx)
+      const exportGradebookExcel = () => {
+        if (!window.XLSX) {
+          showToast("Pustaka SheetJS belum siap!", "error");
+          return;
+        }
+        const labelKelas = selectedClass === "ALL" ? "Semua_Kelas" : selectedClass;
+        const rows = [
+          ["PEMERINTAH PROVINSI KALIMANTAN UTARA - DINAS PENDIDIKAN"],
+          ["SMAN 1 SEBATIK • SISTEM GUSTHYPALINPATANDAEXAM CBT"],
+          ["DAFTAR REKAPITULASI RESMI HASIL EVALUASI UJIAN ONLINE"],
+          [""],
+          ["Naskah Ujian:", activeExamFileObj.name, "Mata Pelajaran:", activeExamFileObj.subject || "Umum"],
+          ["Filter Kelas:", selectedClass === "ALL" ? "Semua Kelas" : selectedClass, "Tanggal Ekspor:", new Date().toLocaleDateString('id-ID')],
+          ["Standar KKM:", currentKkm, "Jumlah Peserta:", classFilteredStudents.length],
+          ["Statistik:", `Lulus: ${passedCount} (${passedPercent}%) | Belum Tuntas: ${failedCount} | Rata-rata: ${averageScore}`],
+          [""],
+          ["NO", "NISN", "NAMA SISWA", "KELAS", "STATUS PENGERJAAN", "SKOR PG", "SKOR ESSAY", "TOTAL NILAI", "KKM", "STATUS KELULUSAN", "PELANGGARAN", "DETAIL PELANGGARAN", "WAKTU SUBMIT"]
+        ];
+
+        classFilteredStudents.forEach((s, idx) => {
+          const bd = getStudentBreakdown(s);
+          const isLulus = (s.score || 0) >= currentKkm;
+          const violDetail = (s.violationsList && s.violationsList.length > 0)
+            ? s.violationsList.map(v => `${v.time || ""}: ${v.reason || ""}`).join("; ")
+            : (s.violations > 0 ? `${s.violations}x pelanggaran` : "Tertib");
+
+          rows.push([
+            idx + 1,
+            s.nisn,
+            s.name,
+            s.classId,
+            s.examStatus || "Belum Mulai",
+            bd.mcScore,
+            bd.essayScore,
+            s.score || 0,
+            currentKkm,
+            isLulus ? "LULUS" : "BELUM TUNTAS",
+            s.violations || 0,
+            violDetail,
+            s.submittedAt || s.lastActivity || "-"
+          ]);
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Rekap_Nilai");
+        XLSX.writeFile(wb, `Rekap_Nilai_CBT_${labelKelas}_${new Date().toISOString().slice(0, 10)}.xlsx`);
+        showToast(`Rekap nilai ${classFilteredStudents.length} siswa berhasil diekspor ke Excel!`, "success");
+      };
+
+      // Ekspor Rekap Nilai ke PDF (Jendela Cetak Ber-Kop Surat Resmi)
+      const exportGradebookPdf = () => {
+        const labelKelas = selectedClass === "ALL" ? "Semua Kelas" : selectedClass;
+        const printWindow = window.open("", "_blank");
+        if (!printWindow) {
+          showToast("Pop-up diblokir browser! Izinkan pop-up untuk mencetak PDF.", "error");
+          return;
+        }
+
+        let tableRowsHtml = "";
+        classFilteredStudents.forEach((s, idx) => {
+          const bd = getStudentBreakdown(s);
+          const isLulus = (s.score || 0) >= currentKkm;
+          tableRowsHtml += `
+            <tr style="border-bottom: 1px solid #cbd5e1; font-size: 10pt;">
+              <td style="padding: 6px; text-align: center;">${idx + 1}</td>
+              <td style="padding: 6px; font-family: monospace;">${s.nisn}</td>
+              <td style="padding: 6px; font-weight: bold;">${s.name}</td>
+              <td style="padding: 6px; text-align: center;">${s.classId}</td>
+              <td style="padding: 6px; text-align: center;">${s.examStatus || "Belum Mulai"}</td>
+              <td style="padding: 6px; text-align: center;">${bd.mcScore}</td>
+              <td style="padding: 6px; text-align: center;">${bd.essayScore}</td>
+              <td style="padding: 6px; text-align: center; font-weight: bold; font-size: 11pt;">${s.score || 0}</td>
+              <td style="padding: 6px; text-align: center;">
+                <span style="padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 9pt; ${isLulus ? 'background:#dcfce7; color:#15803d;' : 'background:#fee2e2; color:#b91c1c;'}">
+                  ${isLulus ? 'LULUS' : 'BELUM TUNTAS'}
+                </span>
+              </td>
+              <td style="padding: 6px; text-align: center;">${s.violations > 0 ? s.violations + 'x' : '0'}</td>
+            </tr>
+          `;
+        });
+
+        const fullHtml = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Laporan Rekapitulasi Nilai CBT - SMAN 1 SEBATIK</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; color: #0f172a; }
+              .kop { text-align: center; border-bottom: 3px double #000; padding-bottom: 8px; margin-bottom: 16px; }
+              .kop h3 { margin: 0; font-size: 13pt; letter-spacing: 0.5px; }
+              .kop h2 { margin: 3px 0; font-size: 16pt; font-weight: 900; }
+              .kop p { margin: 2px 0; font-size: 9.5pt; }
+              .meta-table { width: 100%; margin-bottom: 14px; font-size: 10pt; }
+              .meta-table td { padding: 3px 0; }
+              .stat-box { display: flex; gap: 10px; margin-bottom: 16px; }
+              .stat-item { flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center; background: #f8fafc; }
+              .stat-item h4 { margin: 0; font-size: 9pt; color: #64748b; }
+              .stat-item p { margin: 4px 0 0; font-size: 14pt; font-weight: bold; }
+              table.data-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+              table.data-table th { background: #0f172a; color: #fff; padding: 8px; font-size: 9.5pt; text-align: center; }
+              .ttd { margin-top: 35px; width: 100%; display: flex; justify-content: space-between; page-break-inside: avoid; }
+              .ttd-box { width: 240px; text-align: center; font-size: 10pt; }
+              @media print {
+                body { margin: 10mm; }
+                button { display: none; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="kop">
+              <h3>PEMERINTAH PROVINSI KALIMANTAN UTARA</h3>
+              <h2>SMAN 1 SEBATIK • SISTEM CBT GUSTHYPALINPATANDAEXAM</h2>
+              <p>Jl. Pangeran Diponegoro, Sebatik, Kab. Nunukan, Kalimantan Utara • Kode Pos 77482</p>
+              <p style="font-size: 9pt; color: #334155;">Naskah Ujian: <strong>${activeExamFileObj.name}</strong> • Mata Pelajaran: <strong>${activeExamFileObj.subject || "Umum"}</strong></p>
+            </div>
+
+            <h3 style="text-align: center; margin: 10px 0; font-size: 13pt;">DAFTAR REKAPITULASI HASIL UJIAN RESMI</h3>
+
+            <table class="meta-table">
+              <tr>
+                <td style="width: 15%;"><strong>Kelas / Rombel</strong></td>
+                <td style="width: 35%;">: ${labelKelas}</td>
+                <td style="width: 15%;"><strong>Standar KKM</strong></td>
+                <td style="width: 35%;">: ${currentKkm} Poin</td>
+              </tr>
+              <tr>
+                <td><strong>Waktu Cetak</strong></td>
+                <td>: ${new Date().toLocaleString('id-ID')}</td>
+                <td><strong>Total Peserta</strong></td>
+                <td>: ${classFilteredStudents.length} Siswa</td>
+              </tr>
+            </table>
+
+            <div class="stat-box">
+              <div class="stat-item"><h4>Total Peserta</h4><p>${totalCount}</p></div>
+              <div class="stat-item"><h4>Lulus KKM</h4><p style="color: #15803d;">${passedCount} (${passedPercent}%)</p></div>
+              <div class="stat-item"><h4>Belum Tuntas</h4><p style="color: #b91c1c;">${failedCount}</p></div>
+              <div class="stat-item"><h4>Rata-Rata Nilai</h4><p style="color: #0284c7;">${averageScore}</p></div>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 5%;">No</th>
+                  <th style="width: 14%;">NISN</th>
+                  <th style="width: 25%;">Nama Lengkap Siswa</th>
+                  <th style="width: 10%;">Kelas</th>
+                  <th style="width: 12%;">Status</th>
+                  <th style="width: 7%;">PG</th>
+                  <th style="width: 7%;">Essay</th>
+                  <th style="width: 8%;">Nilai</th>
+                  <th style="width: 12%;">Hasil KKM</th>
+                  <th style="width: 7%;">Pelangg.</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+              </tbody>
+            </table>
+
+            <div class="ttd" style="margin-top: 40px; display: flex; justify-content: space-between;">
+              <div class="ttd-box" style="float: left; width: 45%;">
+                <p>Mengetahui,<br/>Kepala SMAN 1 Sebatik</p>
+                <div style="height: 60px;"></div>
+                <p style="font-weight: bold; text-decoration: underline; margin-bottom: 2px;">Drs. H. Suwandi, M.Pd.</p>
+                <p style="margin: 0; font-size: 9pt;">NIP. 19710815 199802 1 004</p>
+              </div>
+              <div class="ttd-box" style="float: right; width: 45%;">
+                <p>Sebatik, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}<br/>Guru Mata Pelajaran / Proktor CBT</p>
+                <div style="height: 60px;"></div>
+                <p style="font-weight: bold; text-decoration: underline; margin-bottom: 2px;">Agustinus Pata, S.Pd., M.Kom.</p>
+                <p style="margin: 0; font-size: 9pt;">NIP. 19850312 201101 1 007</p>
+              </div>
+            </div>
+            <div style="clear: both;"></div>
+          </body>
+          </html>
+        `;
+
+        printWindow.document.open();
+        printWindow.document.write(fullHtml);
+        printWindow.document.close();
+        setTimeout(() => {
+          try { printWindow.print(); } catch(e) {}
+        }, 500);
+      };
+
+      // Ekspor Rekap Nilai ke Word (.doc)
+      const exportGradebookWord = () => {
+        const labelKelas = selectedClass === "ALL" ? "Semua_Kelas" : selectedClass;
+        let tableRowsHtml = "";
+        classFilteredStudents.forEach((s, idx) => {
+          const bd = getStudentBreakdown(s);
+          const isLulus = (s.score || 0) >= currentKkm;
+          tableRowsHtml += `
+            <tr>
+              <td align="center">${idx + 1}</td>
+              <td align="center">${s.nisn}</td>
+              <td>${s.name}</td>
+              <td align="center">${s.classId}</td>
+              <td align="center">${s.examStatus || "Belum Mulai"}</td>
+              <td align="center">${bd.mcScore}</td>
+              <td align="center">${bd.essayScore}</td>
+              <td align="center"><strong>${s.score || 0}</strong></td>
+              <td align="center"><strong>${isLulus ? 'LULUS' : 'BELUM TUNTAS'}</strong></td>
+              <td align="center">${s.violations || 0}</td>
+            </tr>
+          `;
+        });
+
+        const docHtml = `
+          <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+          <head><meta charset='utf-8'><title>Rekapitulasi Nilai CBT</title>
+          <style>
+            body { font-family: 'Times New Roman', serif; font-size: 11pt; }
+            .kop { text-align: center; border-bottom: 3px double #000; padding-bottom: 8px; margin-bottom: 16px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #000; padding: 5px; font-size: 10pt; }
+            th { background: #f1f5f9; }
+          </style>
+          </head>
+          <body>
+            <div class='kop'>
+              <h3 style='margin:0;'>PEMERINTAH PROVINSI KALIMANTAN UTARA</h3>
+              <h2 style='margin:0;'>SMAN 1 SEBATIK • SISTEM GUSTHYPALINPATANDAEXAM</h2>
+              <p style='margin:0;'>Laporan Resmi Rekapitulasi Hasil Ujian Berbasis Komputer (CBT)</p>
+            </div>
+            <h4 style='text-align:center; margin:10px 0;'>REKAPITULASI NILAI UJIAN (${labelKelas})</h4>
+            <p style='font-size:10pt;'>Naskah Ujian: <strong>${activeExamFileObj.name}</strong> | KKM: <strong>${currentKkm} Poin</strong> | Tanggal: <strong>${new Date().toLocaleDateString('id-ID')}</strong></p>
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th>Status</th><th>Skor PG</th><th>Skor Essay</th><th>Total</th><th>Kelulusan</th><th>Pelangg.</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+              </tbody>
+            </table>
+          </body>
+          </html>
+        `;
+
+        const blob = new Blob(['\ufeff' + docHtml], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Rekap_Nilai_${labelKelas}.doc`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("Laporan Word (.doc) berhasil diunduh!", "success");
+      };
+
+      // Cetak Lembar Jawaban Siswa Satuan (PDF)
+      const printSingleStudentPdf = (student) => {
+        const bd = getStudentBreakdown(student);
+        const printWindow = window.open("", "_blank");
+        if (!printWindow) {
+          showToast("Pop-up diblokir! Izinkan pop-up browser.", "error");
+          return;
+        }
+
+        let questionsHtml = "";
+        activeQuestions.forEach((q, idx) => {
+          const ans = bd.answers[q.id];
+          let answerDisplay = "-";
+          let isCorrect = false;
+
+          if (q.type === "PILIHAN_GANDA" || q.type === "AUDIO_LISTENING" || q.type === "BENAR_SALAH") {
+            const selectedOpt = q.options ? q.options.find(o => o.key === ans) : null;
+            answerDisplay = ans ? `${ans}. ${selectedOpt ? selectedOpt.text : ans}` : "Tidak Menjawab";
+            isCorrect = ans === q.correctAnswer;
+          } else if (q.type === "PILIHAN_GANDA_KOMPLEKS") {
+            answerDisplay = Array.isArray(ans) ? ans.join(", ") : (ans || "-");
+            isCorrect = Array.isArray(ans) && Array.isArray(q.correctAnswer) && q.correctAnswer.length === ans.length && q.correctAnswer.every(k => ans.includes(k));
+          } else if (q.type === "MENJODOHKAN") {
+            if (ans && typeof ans === 'object') {
+              const pairLines = [];
+              if (q.pairs) {
+                q.pairs.forEach((p, pIdx) => {
+                  pairLines.push(`${p.premise} ➔ ${ans[pIdx] || '?'}`);
+                });
+              }
+              answerDisplay = pairLines.join("<br/>");
+            }
+            isCorrect = true;
+          } else if (q.type === "ESAI") {
+            answerDisplay = `<div style="background:#f8fafc; padding:8px; border-left:3px solid #0284c7; margin-top:4px; font-style:italic;">"${ans || 'Tidak mengisi jawaban esai'}"</div>`;
+            isCorrect = bd.essayScore > 0;
+          }
+
+          questionsHtml += `
+            <div style="margin-bottom: 14px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; page-break-inside: avoid;">
+              <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:10pt; margin-bottom:5px;">
+                <span>Soal #${idx + 1} (${q.category} - Bobot: ${q.points} Poin)</span>
+                <span style="${isCorrect ? 'color:#15803d;' : 'color:#b91c1c;'}">${isCorrect ? '✓ Benar' : '✕ Salah'}</span>
+              </div>
+              <p style="margin:4px 0; font-size:10pt;">${(q.question || '').replace(/\$/g, '')}</p>
+              <div style="font-size:9.5pt; margin-top:6px; color:#334155;">
+                <p style="margin:2px 0;"><strong>Jawaban Siswa:</strong> ${answerDisplay}</p>
+                <p style="margin:2px 0; color:#047857;"><strong>Kunci Jawaban Resmi:</strong> ${Array.isArray(q.correctAnswer) ? q.correctAnswer.join(', ') : (q.correctAnswer || 'Sesuai Rubrik')}</p>
+              </div>
+            </div>
+          `;
+        });
+
+        const isLulus = (student.score || 0) >= currentKkm;
+        const html = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Lembar Jawaban - ${student.name} (${student.nisn})</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; color: #0f172a; line-height: 1.4; }
+              .kop { text-align: center; border-bottom: 3px double #000; padding-bottom: 6px; margin-bottom: 14px; }
+              .kop h3 { margin: 0; font-size: 12pt; }
+              .kop h2 { margin: 2px 0; font-size: 15pt; }
+              .kop p { margin: 2px 0; font-size: 9pt; }
+              .info-box { border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 14px; background: #f8fafc; font-size: 10pt; }
+              .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+              @media print { body { margin: 10mm; } }
+            </style>
+          </head>
+          <body>
+            <div class="kop">
+              <h3>PEMERINTAH PROVINSI KALIMANTAN UTARA • DINAS PENDIDIKAN</h3>
+              <h2>SMAN 1 SEBATIK • SISTEM CBT GUSTHYPALINPATANDAEXAM</h2>
+              <p>LEMBAR HASIL UJIAN SISWA & LEMBAR JAWABAN KOMPREHENSIF CBT</p>
+            </div>
+
+            <div class="info-box">
+              <div class="info-grid">
+                <div><strong>Nama Siswa:</strong> ${student.name}</div>
+                <div><strong>Mata Pelajaran:</strong> ${activeExamFileObj.name}</div>
+                <div><strong>NISN:</strong> ${student.nisn}</div>
+                <div><strong>Kelas / Rombel:</strong> ${student.classId}</div>
+                <div><strong>Status Pengerjaan:</strong> ${student.examStatus || "Selesai"}</div>
+                <div><strong>Waktu Selesai:</strong> ${student.submittedAt || new Date().toLocaleString('id-ID')}</div>
+                <div><strong>Skor Pilihan Ganda:</strong> ${bd.mcScore} Poin</div>
+                <div><strong>Skor Essay:</strong> ${bd.essayScore} Poin</div>
+                <div><strong>TOTAL NILAI AKHIR:</strong> <span style="font-size:12pt; font-weight:bold; color:#0284c7;">${student.score || 0} / 100</span></div>
+                <div><strong>Status KKM (${currentKkm}):</strong> <strong style="${isLulus ? 'color:#15803d;' : 'color:#b91c1c;'}">${isLulus ? 'LULUS' : 'BELUM TUNTAS'}</strong></div>
+              </div>
+              ${student.teacherNotes ? `<div style="margin-top:6px; padding-top:6px; border-top:1px dashed #cbd5e1;"><strong>Catatan / Evaluasi Guru:</strong> <em>"${student.teacherNotes}"</em></div>` : ''}
+            </div>
+
+            <h4 style="margin: 12px 0 8px;">RINCIAN BUTIR SOAL & JAWABAN SISWA</h4>
+            ${questionsHtml}
+
+            <div style="margin-top: 30px; display: flex; justify-content: space-between; page-break-inside: avoid;">
+              <div style="text-align: center; width: 220px; font-size: 10pt;">
+                <p>Mengetahui Orang Tua / Wali,</p>
+                <div style="height: 50px;"></div>
+                <p>( .................................................... )</p>
+              </div>
+              <div style="text-align: center; width: 240px; font-size: 10pt;">
+                <p>Sebatik, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}<br/>Guru Pemeriksa / Penguji,</p>
+                <div style="height: 50px;"></div>
+                <p style="font-weight: bold; text-decoration: underline;">Agustinus Pata, S.Pd., M.Kom.</p>
+                <p style="margin:0; font-size:9pt;">NIP. 19850312 201101 1 007</p>
+              </div>
+            </div>
+          </body>
+          </html>
+        `;
+
+        printWindow.document.open();
+        printWindow.document.write(html);
+        printWindow.document.close();
+        setTimeout(() => {
+          try { printWindow.print(); } catch(e) {}
+        }, 500);
+      };
+
+      // Unduh Lembar Jawaban Siswa Satuan (Word .doc)
+      const exportSingleStudentWord = (student) => {
+        const bd = getStudentBreakdown(student);
+        let questionsHtml = "";
+        activeQuestions.forEach((q, idx) => {
+          const ans = bd.answers[q.id];
+          let answerDisplay = "-";
+          let isCorrect = false;
+
+          if (q.type === "PILIHAN_GANDA" || q.type === "AUDIO_LISTENING" || q.type === "BENAR_SALAH") {
+            const selectedOpt = q.options ? q.options.find(o => o.key === ans) : null;
+            answerDisplay = ans ? `${ans}. ${selectedOpt ? selectedOpt.text : ans}` : "Tidak Menjawab";
+            isCorrect = ans === q.correctAnswer;
+          } else if (q.type === "PILIHAN_GANDA_KOMPLEKS") {
+            answerDisplay = Array.isArray(ans) ? ans.join(", ") : (ans || "-");
+            isCorrect = Array.isArray(ans) && Array.isArray(q.correctAnswer) && q.correctAnswer.length === ans.length && q.correctAnswer.every(k => ans.includes(k));
+          } else if (q.type === "MENJODOHKAN") {
+            answerDisplay = ans ? JSON.stringify(ans) : "-";
+            isCorrect = true;
+          } else if (q.type === "ESAI") {
+            answerDisplay = `<em>"${ans || 'Tidak mengisi jawaban esai'}"</em>`;
+            isCorrect = bd.essayScore > 0;
+          }
+
+          questionsHtml += `
+            <div style="margin-bottom:12px; page-break-inside:avoid; border:1px solid #000; padding:8px;">
+              <p><strong>No. ${idx + 1} (${q.category} - Bobot: ${q.points} Poin) [${isCorrect ? 'BENAR' : 'SALAH'}]</strong></p>
+              <p>${(q.question || '').replace(/\$/g, '')}</p>
+              <p><strong>Jawaban Siswa:</strong> ${answerDisplay}</p>
+              <p><strong>Kunci Jawaban Resmi:</strong> ${Array.isArray(q.correctAnswer) ? q.correctAnswer.join(', ') : (q.correctAnswer || 'Rubrik')}</p>
+            </div>
+          `;
+        });
+
+        const isLulus = (student.score || 0) >= currentKkm;
+        const docHtml = `
+          <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+          <head><meta charset='utf-8'><title>Lembar Jawaban - ${student.name}</title>
+          <style>
+            body { font-family: 'Times New Roman', serif; font-size: 11pt; }
+            .kop { text-align: center; border-bottom: 3px double #000; padding-bottom: 6px; margin-bottom: 14px; }
+          </style>
+          </head>
+          <body>
+            <div class='kop'>
+              <h3 style='margin:0;'>PEMERINTAH PROVINSI KALIMANTAN UTARA</h3>
+              <h2 style='margin:0;'>SMAN 1 SEBATIK • SISTEM CBT GUSTHYPALINPATANDAEXAM</h2>
+              <p style='margin:0;'>LEMBAR HASIL EVALUASI & LEMBAR JAWABAN SISWA</p>
+            </div>
+            <table style="width:100%; border:none; margin-bottom:12px;">
+              <tr><td><strong>Nama Siswa:</strong> ${student.name}</td><td><strong>Mata Pelajaran:</strong> ${activeExamFileObj.name}</td></tr>
+              <tr><td><strong>NISN:</strong> ${student.nisn}</td><td><strong>Kelas:</strong> ${student.classId}</td></tr>
+              <tr><td><strong>Skor PG:</strong> ${bd.mcScore} Poin</td><td><strong>Skor Esai:</strong> ${bd.essayScore} Poin</td></tr>
+              <tr><td><strong>TOTAL NILAI:</strong> <strong>${student.score || 0} / 100</strong></td><td><strong>Status KKM (${currentKkm}):</strong> <strong>${isLulus ? 'LULUS' : 'BELUM TUNTAS'}</strong></td></tr>
+            </table>
+            ${student.teacherNotes ? `<p><strong>Catatan Guru:</strong> <em>"${student.teacherNotes}"</em></p>` : ''}
+            <h4 style="margin-top:14px;">RINCIAN BUTIR SOAL & JAWABAN SISWA</h4>
+            ${questionsHtml}
+          </body>
+          </html>
+        `;
+
+        const blob = new Blob(['\ufeff' + docHtml], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        const safeName = student.name.replace(/[^a-zA-Z0-9_-]/g, "_");
+        a.download = `Lembar_Jawaban_${safeName}_${student.nisn}.doc`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(`Lembar jawaban ${student.name} berhasil diunduh (.doc)!`, "success");
+      };
+
+      // Cetak Lembar Jawaban Seluruh Kelas (Word .doc Massal dengan Page-Break)
+      const exportBulkStudentWord = () => {
+        const labelKelas = selectedClass === "ALL" ? "Semua_Kelas" : selectedClass;
+        let allStudentsDoc = "";
+
+        classFilteredStudents.forEach((student, sIdx) => {
+          const bd = getStudentBreakdown(student);
+          let questionsHtml = "";
+          activeQuestions.forEach((q, idx) => {
+            const ans = bd.answers[q.id];
+            let answerDisplay = "-";
+            let isCorrect = false;
+
+            if (q.type === "PILIHAN_GANDA" || q.type === "AUDIO_LISTENING" || q.type === "BENAR_SALAH") {
+              const selectedOpt = q.options ? q.options.find(o => o.key === ans) : null;
+              answerDisplay = ans ? `${ans}. ${selectedOpt ? selectedOpt.text : ans}` : "Tidak Menjawab";
+              isCorrect = ans === q.correctAnswer;
+            } else if (q.type === "PILIHAN_GANDA_KOMPLEKS") {
+              answerDisplay = Array.isArray(ans) ? ans.join(", ") : (ans || "-");
+              isCorrect = Array.isArray(ans) && Array.isArray(q.correctAnswer) && q.correctAnswer.length === ans.length && q.correctAnswer.every(k => ans.includes(k));
+            } else if (q.type === "MENJODOHKAN") {
+              answerDisplay = ans ? JSON.stringify(ans) : "-";
+              isCorrect = true;
+            } else if (q.type === "ESAI") {
+              answerDisplay = `<em>"${ans || 'Tidak mengisi esai'}"</em>`;
+              isCorrect = bd.essayScore > 0;
+            }
+
+            questionsHtml += `
+              <div style="margin-bottom:8px; border-bottom:1px solid #ccc; padding-bottom:4px;">
+                <p style="margin:2px 0;"><strong>#${idx + 1} (${q.category}) [${isCorrect ? 'BENAR' : 'SALAH'}]</strong> - ${(q.question || '').replace(/\$/g, '')}</p>
+                <p style="margin:2px 0; font-size:9.5pt;">Jawaban: ${answerDisplay} | Kunci: ${Array.isArray(q.correctAnswer) ? q.correctAnswer.join(', ') : (q.correctAnswer || 'Rubrik')}</p>
+              </div>
+            `;
+          });
+
+          const isLulus = (student.score || 0) >= currentKkm;
+          allStudentsDoc += `
+            <div ${sIdx > 0 ? "style='page-break-before:always;'" : ""}>
+              <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:5px; margin-bottom:10px;">
+                <h4 style="margin:0;">SMAN 1 SEBATIK • LEMBAR JAWABAN UJIAN CBT</h4>
+                <p style="margin:0; font-size:9pt;">Naskah: ${activeExamFileObj.name} • Tanggal: ${new Date().toLocaleDateString('id-ID')}</p>
+              </div>
+              <table style="width:100%; font-size:10pt; margin-bottom:10px;">
+                <tr><td><strong>Nama:</strong> ${student.name}</td><td><strong>Kelas:</strong> ${student.classId}</td></tr>
+                <tr><td><strong>NISN:</strong> ${student.nisn}</td><td><strong>Total Nilai:</strong> ${student.score || 0} (${isLulus ? 'LULUS' : 'BELUM TUNTAS'})</td></tr>
+              </table>
+              <div style="font-size:10pt;">
+                ${questionsHtml}
+              </div>
+            </div>
+          `;
+        });
+
+        const fullDoc = `
+          <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+          <head><meta charset='utf-8'><title>Lembar Jawaban Massal</title>
+          <style>body { font-family:'Times New Roman', serif; }</style>
+          </head>
+          <body>
+            ${allStudentsDoc}
+          </body>
+          </html>
+        `;
+
+        const blob = new Blob(['\ufeff' + fullDoc], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Lembar_Jawaban_Massal_${labelKelas}.doc`;
+        a.click();
+        URL.revokeObjectURL(url);
+        setShowBulkPrintModal(false);
+        showToast(`Seluruh lembar jawaban ${classFilteredStudents.length} siswa berhasil diunduh (.doc)!`, "success");
+      };
+
+      // Ekspor Matriks Jawaban Butir Soal ke Excel (.xlsx)
+      const exportMatrixExcel = () => {
+        if (!window.XLSX) return;
+        const labelKelas = selectedClass === "ALL" ? "Semua_Kelas" : selectedClass;
+        const headers = ["NO", "NISN", "NAMA SISWA", "KELAS", "TOTAL NILAI", "STATUS KKM"];
+        activeQuestions.forEach((q, idx) => {
+          headers.push(`SOAL_${idx + 1} (${q.type})`);
+        });
+
+        const rows = [
+          ["MATRIKS BUTIR SOAL & JAWABAN SISWA CBT - SMAN 1 SEBATIK"],
+          [`Naskah Ujian: ${activeExamFileObj.name} | Kelas: ${labelKelas} | KKM: ${currentKkm}`],
+          [""],
+          headers
+        ];
+
+        classFilteredStudents.forEach((student, idx) => {
+          const bd = getStudentBreakdown(student);
+          const isLulus = (student.score || 0) >= currentKkm;
+          const r = [
+            idx + 1,
+            student.nisn,
+            student.name,
+            student.classId,
+            student.score || 0,
+            isLulus ? "LULUS" : "BELUM TUNTAS"
+          ];
+
+          activeQuestions.forEach(q => {
+            const ans = bd.answers[q.id];
+            let ansStr = "-";
+            if (Array.isArray(ans)) ansStr = ans.join(",");
+            else if (typeof ans === "object" && ans !== null) ansStr = JSON.stringify(ans);
+            else if (ans !== undefined && ans !== null) ansStr = String(ans);
+            r.push(ansStr);
+          });
+
+          rows.push(r);
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Matriks_Jawaban");
+        XLSX.writeFile(wb, `Matriks_Jawaban_Soal_${labelKelas}.xlsx`);
+        setShowBulkPrintModal(false);
+        showToast("Matriks jawaban seluruh siswa berhasil diekspor ke Excel!", "success");
+      };
+
+      return (
+        <div className="space-y-5">
+          {/* 1. HEADER REKAPITULASI NILAI & ACTION BUTTONS BAR */}
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">
+                Rekapitulasi Nilai & Export Berkas
+              </h2>
+              <p className="text-xs text-slate-400 mt-1">
+                Export laporan nilai terverifikasi dalam format resmi PDF dan Spreadsheet Excel
+              </p>
+            </div>
+
+            {/* Tombol Aksi Kanan (Dropdown Kelas & Export Buttons) */}
+            <div className="flex flex-col items-end gap-2.5">
+              {/* Baris 1: Filter Kelas & Export Utama */}
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Dropdown Filter Kelas */}
+                <select
+                  value={selectedClass}
+                  onChange={(e) => setSelectedClass(e.target.value)}
+                  className="px-3.5 py-2 bg-slate-900 border border-slate-700 hover:border-slate-600 rounded-xl text-white text-xs font-bold focus:outline-none focus:border-cyan-500 shadow-sm cursor-pointer"
+                >
+                  <option value="ALL">Semua Kelas ({students.length})</option>
+                  {classes.map(c => {
+                    const count = students.filter(s => s.classId === c.id).length;
+                    return (
+                      <option key={c.id} value={c.id}>
+                        {c.name} ({count})
+                      </option>
+                    );
+                  })}
+                </select>
+
+                {/* Tombol Hijau: Export ke Excel */}
+                <button
+                  type="button"
+                  onClick={exportGradebookExcel}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center gap-2 transition shadow-sm shadow-emerald-600/30"
+                  title="Unduh rekapitulasi nilai resmi dalam format Microsoft Excel (.xlsx)"
+                >
+                  <Icons.FileText />
+                  <span>Export ke Excel ({totalCount})</span>
+                </button>
+
+                {/* Tombol Merah: Export ke PDF */}
+                <button
+                  type="button"
+                  onClick={exportGradebookPdf}
+                  className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs flex items-center gap-2 transition shadow-sm shadow-rose-600/30"
+                  title="Cetak atau simpan laporan nilai resmi sebagai file PDF ber-kop surat"
+                >
+                  <Icons.Printer />
+                  <span>Export ke PDF ({totalCount})</span>
+                </button>
+
+                {/* Tombol Biru: Cetak Lembar Jawaban (Word/XL/PDF) */}
+                <button
+                  type="button"
+                  onClick={() => setShowBulkPrintModal(true)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs flex items-center gap-2 transition shadow-sm shadow-blue-600/30"
+                  title="Cetak atau unduh lembar jawaban siswa untuk diperiksa guru secara manual"
+                >
+                  <Icons.BookOpen />
+                  <span>Cetak Lembar Jawaban (Word/XL/PDF)</span>
+                </button>
+              </div>
+
+              {/* Baris 2: Reset Ujian Ulang & Simpan ke Drive */}
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleResetExamBulk}
+                  className="px-3.5 py-1.5 bg-indigo-600/25 hover:bg-indigo-600/40 text-indigo-200 border border-indigo-500/40 font-bold rounded-xl text-xs flex items-center gap-1.5 transition"
+                  title="Reset status ujian bagi siswa yang telah selesai agar dapat ujian ulang"
+                >
+                  <Icons.RefreshCw />
+                  <span>Reset Ujian Ulang ({finishedCount})</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSaveToDrive}
+                  className="px-3.5 py-1.5 bg-amber-600/25 hover:bg-amber-600/40 text-amber-200 border border-amber-500/40 font-bold rounded-xl text-xs flex items-center gap-1.5 transition"
+                  title="Sinkronisasi dan simpan cadangan rekap nilai ke Google Drive & Spreadsheet"
+                >
+                  <Icons.Cloud />
+                  <span>Simpan ke Drive</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. CARD PEMANTAUAN PROSES & HASIL UJIAN REAL-TIME */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-sm font-extrabold text-white">
+                    Pemantauan Proses & Hasil Ujian Real-Time
+                  </h3>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase border ${
+                    autoRefreshActive
+                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                      : "bg-amber-500/20 text-amber-300 border-amber-500/40"
+                  }`}>
+                    {autoRefreshActive ? "AUTO-REFRES AKTIF" : "AUTO-REFRES JEDA"}
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 text-[10px] font-bold">
+                    UJIAN BERLANGSUNG • BEBAS DATA SAMPEL
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 mt-1">
+                  Memperbarui seketika status peserta, perolehan nilai, dan log pelanggaran keamanan secara otomatis. (Terakhir: {lastRefreshTime})
+                </p>
+              </div>
+            </div>
+
+            {/* Kontrol Interval Auto-Refresh & Refres Sekarang */}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1 p-1 bg-slate-950 border border-slate-800 rounded-xl text-[11px] font-bold text-slate-400">
+                <span className="px-2 text-slate-400">⏱ Update: {refreshInterval}s</span>
+                {[5, 10, 15, 30, 60].map(sec => (
+                  <button
+                    key={sec}
+                    type="button"
+                    onClick={() => { setRefreshInterval(sec); setRefreshCountdown(sec); }}
+                    className={`px-2 py-1 rounded-lg transition ${
+                      refreshInterval === sec ? "bg-indigo-600 text-white font-extrabold shadow" : "hover:text-slate-200"
+                    }`}
+                  >
+                    {sec}s
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setAutoRefreshActive(!autoRefreshActive)}
+                  className={`px-2 py-1 rounded-lg transition flex items-center gap-1 ${
+                    !autoRefreshActive ? "bg-amber-500/20 text-amber-300 border border-amber-500/40" : "hover:text-slate-200"
+                  }`}
+                >
+                  {autoRefreshActive ? "⏸ Jeda" : "▶ Lanjut"}
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleManualRefresh}
+                disabled={isRefreshing}
+                className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg shadow-indigo-600/25"
+              >
+                <span className={isRefreshing ? "animate-spin" : ""}>
+                  <Icons.RefreshCw />
+                </span>
+                <span>Refres Sekarang</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 3. GRID 6 KARTU STATISTIK RINGKASAN */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {/* Card 1: Peserta Real */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs font-medium text-slate-400">Peserta Real</p>
+                  <h3 className="text-2xl font-black text-white mt-1">{totalCount}</h3>
+                </div>
+                <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  <Icons.Users />
+                </div>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-2 truncate">Siswa Bebas Sampel</p>
+            </div>
+
+            {/* Card 2: Mengerjakan */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs font-medium text-slate-400">Mengerjakan</p>
+                  <h3 className="text-2xl font-black text-amber-400 mt-1">
+                    {workingCount} <span className="text-xs font-semibold text-slate-400">({workingPercent}%)</span>
+                  </h3>
+                </div>
+                <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  <Icons.Clock />
+                </div>
+              </div>
+              <p className="text-[11px] text-amber-300 mt-2">Sedang Berlangsung</p>
+            </div>
+
+            {/* Card 3: Selesai / Kirim */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs font-medium text-slate-400">Selesai / Kirim</p>
+                  <h3 className="text-2xl font-black text-cyan-400 mt-1">
+                    {finishedCount} <span className="text-xs font-semibold text-slate-400">({finishedPercent}%)</span>
+                  </h3>
+                </div>
+                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  <Icons.CheckCircle />
+                </div>
+              </div>
+              <p className="text-[11px] text-cyan-300 mt-2">Sudah Tuntas</p>
+            </div>
+
+            {/* Card 4: Belum Mulai */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs font-medium text-slate-400">Belum Mulai</p>
+                  <h3 className="text-2xl font-black text-slate-300 mt-1">{notStartedCount}</h3>
+                </div>
+                <div className="p-2 rounded-xl bg-slate-800 text-slate-400 border border-slate-700">
+                  <Icons.Clock />
+                </div>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-2">Menunggu Masuk</p>
+            </div>
+
+            {/* Card 5: Diskualifikasi */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-lg flex flex-col justify-between">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs font-medium text-slate-400">Diskualifikasi</p>
+                  <h3 className="text-2xl font-black text-rose-400 mt-1">{disqualifiedCount}</h3>
+                </div>
+                <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                  <Icons.AlertTriangle />
+                </div>
+              </div>
+              <p className="text-[11px] text-rose-400 mt-2">Pelanggaran Maksimal</p>
+            </div>
+
+            {/* Card 6: Pelanggaran */}
+            <div
+              onClick={() => setShowAuditLiveModal(true)}
+              className="bg-slate-900 border border-slate-800 hover:border-rose-500/40 rounded-2xl p-4 shadow-lg flex flex-col justify-between cursor-pointer transition group"
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs font-medium text-slate-400">Pelanggaran</p>
+                  <h3 className="text-2xl font-black text-rose-400 mt-1">{totalViolations} insiden</h3>
+                </div>
+                <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 group-hover:bg-rose-500/20">
+                  <Icons.ShieldAlert />
+                </div>
+              </div>
+              <p className="text-[11px] text-rose-300 group-hover:underline mt-2 flex items-center gap-1">
+                <span>Lihat Audit Live →</span>
+              </p>
+            </div>
+          </div>
+
+          {/* 4. KKM UJIAN BAR & STATISTIK KELULUSAN */}
+          <div className="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 text-xs">
+            {/* Box KKM UJIAN & Tombol Ubah KKM */}
+            <div className="flex items-center gap-3">
+              <div className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-2">
+                <span className="text-amber-400 font-extrabold flex items-center gap-1.5">
+                  <Icons.Lock /> KKM UJIAN
+                </span>
+                <span className="text-base font-black text-white">{currentKkm} Poin</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => { setInputKkm(currentKkm); setShowKkmModal(true); }}
+                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 rounded-xl font-bold transition flex items-center gap-1"
+              >
+                <Icons.Edit />
+                <span>Ubah KKM</span>
+              </button>
+
+              {/* Presets Nilai KKM */}
+              <div className="hidden sm:flex items-center gap-1.5 pl-2">
+                <span className="text-slate-400 font-semibold">Preset:</span>
+                {[60, 65, 70, 75, 80, 85].map(val => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => handleSelectKkmPreset(val)}
+                    className={`w-7 h-7 rounded-lg text-xs font-extrabold transition flex items-center justify-center ${
+                      currentKkm === val
+                        ? "bg-amber-400 text-slate-950 shadow"
+                        : "bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800"
+                    }`}
+                  >
+                    {val}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Statistik Kelulusan KKM */}
+            <div className="flex flex-wrap items-center gap-4">
+              <div>
+                <span className="text-slate-400">Lulus (≥ {currentKkm}): </span>
+                <strong className="text-emerald-400 font-black">{passedCount} ({passedPercent}%)</strong>
+              </div>
+              <div>
+                <span className="text-slate-400">Belum Tuntas (&lt; {currentKkm}): </span>
+                <strong className="text-amber-300 font-black">{failedCount}</strong>
+              </div>
+              <div>
+                <span className="text-slate-400">Rata-Rata: </span>
+                <strong className="text-cyan-400 font-black">{averageScore}</strong>
+              </div>
+            </div>
+
+            <p className="text-[11px] text-slate-400/90 hidden lg:block">
+              * Nilai KKM menentukan kelulusan di Duck Race, cetak PDF & Excel.
+            </p>
+          </div>
+
+          {/* 5. TOOLBAR PENCARIAN & FILTER TABEL SISWA */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 text-xs">
+            {/* Kolom Pencarian Siswa */}
+            <div className="relative flex-1 min-w-[200px] max-w-sm">
+              <input
+                type="text"
+                placeholder="Cari nama siswa atau NISN..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-cyan-500 text-xs"
+              />
+              <span className="absolute left-3 top-2.5 text-slate-500">
+                <Icons.Search />
+              </span>
+            </div>
+
+            {/* Filter Status Pengerjaan */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-slate-400 font-semibold mr-1">Status:</span>
+              {[
+                { id: "ALL", label: "Semua" },
+                { id: "Selesai", label: "Selesai" },
+                { id: "Sedang Mengerjakan", label: "Mengerjakan" },
+                { id: "Belum Mulai", label: "Belum Mulai" },
+                { id: "Terkunci", label: "Terkunci" }
+              ].map(st => (
+                <button
+                  key={st.id}
+                  type="button"
+                  onClick={() => setStatusFilter(st.id)}
+                  className={`px-2.5 py-1.5 rounded-lg font-semibold transition ${
+                    statusFilter === st.id
+                      ? "bg-cyan-500 text-slate-950 font-bold"
+                      : "bg-slate-950 text-slate-400 hover:text-white border border-slate-800"
+                  }`}
+                >
+                  {st.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Tombol Urutan (Abjad / Nilai) & Ekspor Word Ringkasan */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  if (sortOrder === "alpha-asc") setSortOrder("alpha-desc");
+                  else if (sortOrder === "alpha-desc") setSortOrder("score-desc");
+                  else setSortOrder("alpha-asc");
+                }}
+                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl font-bold flex items-center gap-1.5 transition"
+              >
+                <span>
+                  {sortOrder === "alpha-asc" && "Abjad A-Z"}
+                  {sortOrder === "alpha-desc" && "Abjad Z-A"}
+                  {sortOrder === "score-desc" && "Nilai Tertinggi"}
+                  {sortOrder === "score-asc" && "Nilai Terendah"}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={exportGradebookWord}
+                className="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 rounded-xl font-bold flex items-center gap-1.5 transition"
+                title="Unduh rekapitulasi nilai resmi dalam format Microsoft Word (.doc)"
+              >
+                <Icons.FileText />
+                <span>Word (.doc)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 6. TABEL HASIL EVALUASI & LEMBAR JAWABAN SISWA */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold">
+                    <th className="p-3.5">NAMA & NISN</th>
+                    <th className="p-3.5 text-center">KELAS</th>
+                    <th className="p-3.5 text-center">STATUS PENGERJAAN</th>
+                    <th className="p-3.5 text-center">SKOR PG</th>
+                    <th className="p-3.5 text-center">SKOR ESSAY</th>
+                    <th className="p-3.5 text-center">TOTAL NILAI</th>
+                    <th className="p-3.5 text-center">PELANGGARAN</th>
+                    <th className="p-3.5 text-center">KELULUSAN (KKM: {currentKkm})</th>
+                    <th className="p-3.5 text-center">LEMBAR JAWABAN SISWA</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {displayStudents.length === 0 ? (
+                    <tr>
+                      <td colSpan="9" className="p-8 text-center text-slate-400">
+                        Tidak ada data siswa yang cocok dengan filter atau pencarian saat ini.
+                      </td>
+                    </tr>
+                  ) : (
+                    displayStudents.map((student) => {
+                      const bd = getStudentBreakdown(student);
+                      const isLulus = (student.score || 0) >= currentKkm;
+                      const isCompleted = student.examStatus === "Selesai";
+
+                      return (
+                        <tr key={student.id} className="hover:bg-slate-800/40 transition">
+                          {/* Nama & NISN */}
+                          <td className="p-3.5">
+                            <p className="font-bold text-white text-sm">{student.name}</p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <span className="font-mono text-cyan-400 text-[11px]">{student.nisn}</span>
+                              <span className="text-[10px] text-slate-400 font-mono">({student.token})</span>
+                            </div>
+                          </td>
+
+                          {/* Kelas */}
+                          <td className="p-3.5 text-center">
+                            <span className="px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800 text-slate-300 font-bold text-[11px]">
+                              {student.classId}
+                            </span>
+                          </td>
+
+                          {/* Status Pengerjaan */}
+                          <td className="p-3.5 text-center">
+                            {student.isLocked ? (
+                              <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] font-bold inline-flex items-center gap-1">
+                                <Icons.Lock /> Terkunci
+                              </span>
+                            ) : student.examStatus === "Selesai" ? (
+                              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold inline-flex items-center gap-1">
+                                <Icons.CheckCircle /> Selesai / Kirim
+                              </span>
+                            ) : student.examStatus === "Sedang Mengerjakan" ? (
+                              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold inline-flex items-center gap-1">
+                                <Icons.Clock /> Mengerjakan
+                              </span>
+                            ) : (
+                              <span className="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 text-[10px] font-bold inline-flex items-center gap-1">
+                                Belum Mulai
+                              </span>
+                            )}
+                          </td>
+
+                          {/* Skor PG */}
+                          <td className="p-3.5 text-center font-mono font-bold text-slate-300 text-xs">
+                            {isCompleted ? bd.mcScore : "-"}
+                          </td>
+
+                          {/* Skor Essay */}
+                          <td className="p-3.5 text-center font-mono font-bold text-cyan-300 text-xs">
+                            <div className="flex items-center justify-center gap-1">
+                              <span>{isCompleted ? bd.essayScore : "-"}</span>
+                              {isCompleted && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenInspectStudent(student)}
+                                  className="text-slate-500 hover:text-cyan-400 p-0.5"
+                                  title="Koreksi nilai esai manual guru"
+                                >
+                                  <Icons.Edit />
+                                </button>
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Total Nilai */}
+                          <td className="p-3.5 text-center">
+                            <span className="text-sm font-black font-mono text-white">
+                              {student.score !== undefined ? student.score : "-"}
+                            </span>
+                          </td>
+
+                          {/* Pelanggaran */}
+                          <td className="p-3.5 text-center">
+                            {student.violations > 0 ? (
+                              <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold text-[10px]">
+                                {student.violations}x
+                              </span>
+                            ) : (
+                              <span className="text-emerald-400 font-bold text-[11px]">0</span>
+                            )}
+                          </td>
+
+                          {/* Kelulusan KKM */}
+                          <td className="p-3.5 text-center">
+                            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider ${
+                              isLulus
+                                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                                : "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                            }`}>
+                              {isLulus ? "LULUS" : "BELUM TUNTAS"}
+                            </span>
+                          </td>
+
+                          {/* Lembar Jawaban Siswa (Periksa Manual Guru) */}
+                          <td className="p-3.5 text-center">
+                            <button
+                              type="button"
+                              onClick={() => handleOpenInspectStudent(student)}
+                              className="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/35 text-blue-300 border border-blue-500/40 rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5 shadow-sm"
+                              title="Buka rincian jawaban siswa untuk diperiksa guru dan dicetak"
+                            >
+                              <Icons.FileText />
+                              <span>Periksa & Cetak Jawaban</span>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Footer Tabel dengan Tombol Tutup Dashboard di Kanan Bawah */}
+            <div className="p-4 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <span className="text-slate-400">
+                Menampilkan <strong>{displayStudents.length}</strong> dari <strong>{classFilteredStudents.length}</strong> siswa terpilih
+              </span>
+
+              {/* Tombol Merah Tutup Dashboard sesuai Desain Gambar */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof setRole === "function") {
+                    setRole("student");
+                    showToast("Kembali ke Mode Portal Siswa CBT.", "success");
+                  }
+                }}
+                className="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-extrabold rounded-xl text-xs flex items-center gap-2 transition shadow-lg shadow-rose-600/30 ml-auto"
+                title="Tutup antarmuka admin dan beralih ke portal siswa CBT"
+              >
+                <span>[→] Tutup Dashboard</span>
+              </button>
+            </div>
+          </div>
+
+          {/* MODAL 1: PERIKSA LEMBAR JAWABAN SISWA (KOREKSI MANUAL GURU) */}
+          {showExamSheetModal && inspectingStudent && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full p-6 shadow-2xl max-h-[92vh] flex flex-col space-y-4">
+                {/* Header Modal */}
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-bold text-white flex items-center gap-2">
+                        <Icons.BookOpen />
+                        <span>Lembar Jawaban Siswa: {inspectingStudent.name}</span>
+                      </h3>
+                      <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 text-[10px] font-bold">
+                        Pemeriksaan Manual Guru
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      NISN: <code className="text-cyan-400 font-mono">{inspectingStudent.nisn}</code> • Kelas: <strong>{inspectingStudent.classId}</strong> • Naskah: <strong>{activeExamFileObj.name}</strong>
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowExamSheetModal(false)}
+                    className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+                  >
+                    <Icons.X />
+                  </button>
+                </div>
+
+                {/* Ringkasan Skor Siswa */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                  <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                    <p className="text-slate-400">Skor Pilihan Ganda</p>
+                    <p className="text-lg font-black text-white mt-0.5">
+                      {getStudentBreakdown(inspectingStudent).mcScore} Poin
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                    <p className="text-slate-400">Skor Esai (Dapat Diedit)</p>
+                    <p className="text-lg font-black text-cyan-400 mt-0.5">
+                      {manualEssayScore} Poin
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                    <p className="text-slate-400">Total Nilai Akhir</p>
+                    <p className="text-lg font-black text-emerald-400 mt-0.5">
+                      {Math.min(100, Math.round(getStudentBreakdown(inspectingStudent).mcScore + Number(manualEssayScore)))} / 100
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                    <p className="text-slate-400">Status KKM ({currentKkm})</p>
+                    <p className="text-sm font-black mt-1">
+                      {Math.min(100, Math.round(getStudentBreakdown(inspectingStudent).mcScore + Number(manualEssayScore))) >= currentKkm ? (
+                        <span className="text-emerald-400 font-black">✓ LULUS KKM</span>
+                      ) : (
+                        <span className="text-rose-400 font-black">✕ BELUM TUNTAS</span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Daftar Soal & Jawaban Siswa */}
+                <div className="flex-1 overflow-y-auto space-y-3 pr-1 text-xs">
+                  {activeQuestions.map((q, idx) => {
+                    const ans = inspectingAnswers[q.id];
+                    let answerDisplay = "-";
+                    let isCorrect = false;
+
+                    if (q.type === "PILIHAN_GANDA" || q.type === "AUDIO_LISTENING" || q.type === "BENAR_SALAH") {
+                      const selectedOpt = q.options ? q.options.find(o => o.key === ans) : null;
+                      answerDisplay = ans ? `${ans}. ${selectedOpt ? selectedOpt.text : ans}` : "Tidak Menjawab";
+                      isCorrect = ans === q.correctAnswer;
+                    } else if (q.type === "PILIHAN_GANDA_KOMPLEKS") {
+                      answerDisplay = Array.isArray(ans) ? ans.join(", ") : (ans || "-");
+                      isCorrect = Array.isArray(ans) && Array.isArray(q.correctAnswer) && q.correctAnswer.length === ans.length && q.correctAnswer.every(k => ans.includes(k));
+                    } else if (q.type === "MENJODOHKAN") {
+                      if (ans && typeof ans === 'object') {
+                        const pairLines = [];
+                        if (q.pairs) {
+                          q.pairs.forEach((p, pIdx) => {
+                            pairLines.push(`${p.premise} ➔ ${ans[pIdx] || '?'}`);
+                          });
+                        }
+                        answerDisplay = pairLines.join(" | ");
+                      }
+                      isCorrect = true;
+                    }
+
+                    return (
+                      <div key={q.id} className="p-4 rounded-xl bg-slate-950 border border-slate-800/90 space-y-2">
+                        <div className="flex justify-between items-center border-b border-slate-800/60 pb-2">
+                          <span className="font-bold text-white flex items-center gap-2">
+                            <span className="w-5 h-5 rounded bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-[10px]">
+                              #{idx + 1}
+                            </span>
+                            <span>{q.category}</span>
+                            <span className="text-slate-400 text-[11px] font-normal">({q.points} Poin)</span>
+                          </span>
+
+                          {q.type !== "ESAI" && (
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              isCorrect
+                                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                                : "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                            }`}>
+                              {isCorrect ? `✓ Benar (+${q.points})` : "✕ Salah (0)"}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Pertanyaan */}
+                        <div className="text-slate-200 font-medium leading-relaxed">
+                          <KatexMath text={q.question} />
+                        </div>
+
+                        {/* Jawaban Pilihan Ganda / Menjodohkan */}
+                        {q.type !== "ESAI" ? (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-[11px]">
+                            <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+                              <span className="text-slate-400 block text-[10px] font-semibold">Jawaban Siswa:</span>
+                              <span className={`font-bold ${isCorrect ? "text-emerald-300" : "text-rose-400"}`}>
+                                {answerDisplay}
+                              </span>
+                            </div>
+                            <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+                              <span className="text-slate-400 block text-[10px] font-semibold">Kunci Jawaban Resmi:</span>
+                              <span className="text-emerald-400 font-bold">
+                                {Array.isArray(q.correctAnswer) ? q.correctAnswer.join(", ") : (q.correctAnswer || "-")}
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          /* Khusus Soal Esai: Jawaban Siswa & Form Penilaian Manual Guru */
+                          <div className="space-y-3 pt-1">
+                            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
+                              <span className="text-cyan-400 block text-[11px] font-bold mb-1">
+                                Teks Jawaban Lengkap Siswa:
+                              </span>
+                              <p className="text-slate-200 leading-relaxed italic bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+                                "{ans || "Siswa tidak mengisi jawaban pada butir esai ini."}"
+                              </p>
+                              {q.rubric && q.rubric.keywords && (
+                                <p className="text-[11px] text-slate-400 mt-2">
+                                  Kata Kunci Wajib AI: {q.rubric.keywords.join(", ")}
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Form Input Penilaian Esai Guru */}
+                            <div className="p-3 rounded-xl bg-indigo-950/30 border border-indigo-500/30 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+                              <div>
+                                <label className="block text-indigo-300 font-bold text-[11px] mb-1">
+                                  Beri Nilai Esai Guru (Maks: {q.points} Poin):
+                                </label>
+                                <input
+                                  type="number"
+                                  min="0"
+                                  max={q.points}
+                                  value={manualEssayScore}
+                                  onChange={(e) => setManualEssayScore(e.target.value)}
+                                  className="w-full px-3 py-1.5 bg-slate-950 border border-indigo-500/40 rounded-xl text-white font-bold font-mono focus:outline-none focus:border-cyan-500"
+                                />
+                              </div>
+
+                              <div className="sm:col-span-2">
+                                <label className="block text-indigo-300 font-bold text-[11px] mb-1">
+                                  Catatan / Komentar Evaluasi Guru untuk Siswa:
+                                </label>
+                                <input
+                                  type="text"
+                                  value={teacherNotes}
+                                  onChange={(e) => setTeacherNotes(e.target.value)}
+                                  placeholder="Contoh: Jawaban sangat tepat, pemahaman traffic lock tuntas."
+                                  className="w-full px-3 py-1.5 bg-slate-950 border border-indigo-500/40 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Footer Modal Action Buttons */}
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => printSingleStudentPdf(inspectingStudent)}
+                      className="px-3.5 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition"
+                    >
+                      <Icons.Printer />
+                      <span>Cetak Lembar Jawaban (PDF)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => exportSingleStudentWord(inspectingStudent)}
+                      className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition"
+                    >
+                      <Icons.FileText />
+                      <span>Download Word (.doc)</span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowExamSheetModal(false)}
+                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleSaveTeacherGrading}
+                      className="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-lg shadow-emerald-500/20"
+                    >
+                      Simpan Penilaian Guru
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL 2: CETAK LEMBAR JAWABAN MASSAL (WORD/XL/PDF) */}
+          {showBulkPrintModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Icons.BookOpen /> Cetak / Download Lembar Jawaban Massal
+                  </h3>
+                  <button onClick={() => setShowBulkPrintModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Pilih format cetak atau unduh berkas lembar jawaban seluruh <strong>{classFilteredStudents.length} siswa</strong> pada filter <strong>{selectedClass === "ALL" ? "Semua Kelas" : selectedClass}</strong> untuk diperiksa dan diarsipkan guru:
+                </p>
+
+                <div className="space-y-3 text-xs">
+                  {/* Opsi 1: Unduh Seluruh Lembar Jawaban Kelas (Word .doc) */}
+                  <div
+                    onClick={exportBulkStudentWord}
+                    className="p-4 rounded-xl bg-slate-950 border border-blue-500/30 hover:border-blue-500 cursor-pointer transition flex items-center gap-3 group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                      <Icons.FileText />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-white group-hover:text-blue-300">
+                        Unduh Seluruh Lembar Jawaban Kelas (Word .doc)
+                      </h4>
+                      <p className="text-[11px] text-slate-400">
+                        1 Dokumen Word berisi seluruh lembar jawaban siswa dipisahkan otomatis per halaman (Page Break).
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Opsi 2: Cetak Lembar Jawaban PDF */}
+                  <div
+                    onClick={exportGradebookPdf}
+                    className="p-4 rounded-xl bg-slate-950 border border-rose-500/30 hover:border-rose-500 cursor-pointer transition flex items-center gap-3 group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+                      <Icons.Printer />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-white group-hover:text-rose-300">
+                        Cetak Lembar Laporan Nilai Resmi (PDF)
+                      </h4>
+                      <p className="text-[11px] text-slate-400">
+                        Format PDF ber-kop surat resmi sekolah, statistik mutu, dan kolom tanda tangan Kepala Sekolah.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Opsi 3: Ekspor Matriks Butir Soal ke Excel (.xlsx) */}
+                  <div
+                    onClick={exportMatrixExcel}
+                    className="p-4 rounded-xl bg-slate-950 border border-emerald-500/30 hover:border-emerald-500 cursor-pointer transition flex items-center gap-3 group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                      <Icons.Download />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-white group-hover:text-emerald-300">
+                        Ekspor Matriks Butir Soal ke Excel (.xlsx)
+                      </h4>
+                      <p className="text-[11px] text-slate-400">
+                        Tabel kolom respon jawaban setiap butir soal per siswa untuk analisis butir soal guru.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowBulkPrintModal(false)}
+                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition"
+                  >
+                    Tutup
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL 3: UBAH STANDAR KKM */}
+          {showKkmModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Icons.Edit /> Ubah Nilai Standar KKM
+                  </h3>
+                  <button onClick={() => setShowKkmModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+
+                <form onSubmit={handleSaveCustomKkm} className="space-y-3 text-xs">
+                  <div>
+                    <label className="block text-slate-400 font-semibold mb-1">
+                      Kriteria Ketuntasan Minimal (KKM):
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="100"
+                      required
+                      value={inputKkm}
+                      onChange={(e) => setInputKkm(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-bold font-mono focus:outline-none focus:border-cyan-500"
+                    />
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      Standar nilai kelulusan yang menentukan status tuntas pada rekap nilai, Duck Race, dan PDF.
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowKkmModal(false)}
+                      className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl"
+                    >
+                      Simpan KKM
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL 4: AUDIT LOG PELANGGARAN KEAMANAN LIVE */}
+          {showAuditLiveModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Icons.ShieldAlert /> Log Audit Pelanggaran Keamanan Peserta
+                  </h3>
+                  <button onClick={() => setShowAuditLiveModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
+                  {classFilteredStudents.filter(s => (s.violations || 0) > 0).length === 0 ? (
+                    <p className="text-center text-slate-400 py-6">
+                      Tidak ada insiden pelanggaran keamanan yang terdeteksi pada kelas ini.
+                    </p>
+                  ) : (
+                    classFilteredStudents.filter(s => (s.violations || 0) > 0).map(s => (
+                      <div key={s.id} className="p-3 bg-slate-950 border border-rose-900/40 rounded-xl space-y-1">
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-white">{s.name} ({s.classId})</span>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                            {s.violations}x Pelanggaran
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 font-mono">NISN: {s.nisn}</p>
+                        {s.violationsList && s.violationsList.length > 0 && (
+                          <div className="mt-1 space-y-1">
+                            {s.violationsList.map((v, vIdx) => (
+                              <div key={vIdx} className="text-[11px] text-rose-300 flex items-center gap-1.5">
+                                <span className="font-mono text-slate-500">[{v.time || "-"}]</span>
+                                <span>{v.reason || "Pindah Tab"}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div className="flex justify-end pt-2 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => setShowAuditLiveModal(false)}
+                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs"
+                  >
+                    Tutup
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       );
     }
